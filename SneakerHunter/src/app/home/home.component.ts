@@ -123,15 +123,15 @@ export class HomeComponent implements OnInit {
   toggleFavorite(s: Sneaker) { this.fav.toggleFavorite(s); }
   isFavorited(s: Sneaker): boolean { return this.fav.isFavoriteId(s.id); }
 
-  openPreview(s: Sneaker) {
-    this.selectedSneaker = s;
-    this.showPreview = true;
-    document.body.style.overflow = 'hidden';
-  }
+  // openPreview(s: Sneaker) {
+  //   this.selectedSneaker = s;
+  //   this.showPreview = true;
+  //   document.body.style.overflow = 'hidden';
+  // }
 
-  closePreview() {
-    this.selectedSneaker = null;
-    this.showPreview = false;
-    document.body.style.overflow = '';
-  }
+  // closePreview() {
+  //   this.selectedSneaker = null;
+  //   this.showPreview = false;
+  //   document.body.style.overflow = '';
+  // }
 }
