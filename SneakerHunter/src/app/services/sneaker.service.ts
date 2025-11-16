@@ -14,25 +14,41 @@ export class SneakerService {
   sneakers$ = this.sneakersSubject.asObservable();
 
   constructor(private http: HttpClient) {
-    this.loadAll();
+    this.loadAll();  // já chama no constructor
   }
 
-  // carrega todos os tênis do backend e atualiza o subject
   loadAll(): void {
     this.http.get<Sneaker[]>(this.apiUrl).subscribe({
       next: list => {
-        console.log('[SneakerService] Loaded from db.json:', list);
+        console.log('[SneakerService] Loaded from backend:', list);
         this.sneakersSubject.next(list || []);
       },
       error: err => {
         console.error('[SneakerService] loadAll error:', err);
-        this.sneakersSubject.next([]);
+        // tenta fallback local se backend indisponível
+        console.warn('[SneakerService] Tentando carregar de assets/db.json...');
+        this.loadFromAssets();
       }
     });
   }
 
+  private loadFromAssets(): void {
+    // fallback para arquivo local em assets
+    fetch('assets/db.json')
+      .then(res => res.json())
+      .then((data: any) => {
+        const list = Array.isArray(data) ? data : (data?.sneakers || []);
+        console.log('[SneakerService] Loaded from assets:', list);
+        this.sneakersSubject.next(list);
+      })
+      .catch(err => {
+        console.error('[SneakerService] loadFromAssets error:', err);
+        this.sneakersSubject.next([]);
+      });
+  }
+
   getSneakers(): Observable<Sneaker[]> {
-    return this.http.get<Sneaker[]>(this.apiUrl);
+    return this.sneakersSubject.asObservable();
   }
 
   getSneaker(id: number): Observable<Sneaker> {

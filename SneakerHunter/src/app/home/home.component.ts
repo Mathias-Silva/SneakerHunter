@@ -1,140 +1,137 @@
-import { Component, OnInit, OnDestroy, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
-import { SneakerService } from '../services/sneaker.service';
+import { RouterModule } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 import { Sneaker } from '../models/sneaker';
-import { Subscription } from 'rxjs';
+import { SneakerService } from '../services/sneaker.service';
+import { CartService } from '../services/cart.service';
+import { FavoritesService } from '../services/favorite.service';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FormsModule, IonicModule],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit {
   sneakers: Sneaker[] = [];
-  filteredSneakers: Sneaker[] = [];
-  
-  // Filtros
+  loading = false;
+  error: string | null = null;
+
+  // filter state
   searchTerm = '';
-  selectedGender: 'todos' | 'masculino' | 'feminino' | 'unissex' = 'todos';
+  selectedGender = 'todos';
   selectedBrands: string[] = [];
   brands: string[] = [];
-  
-  loading = false;
-  error = '';
-  private sub?: Subscription;
 
-  constructor(public sneakerService: SneakerService) {}
+  // observables for header badges
+  cartCount$;
+  favCount$;
+
+  // preview state
+  selectedSneaker: Sneaker | null = null;
+  showPreview = false;
+
+  constructor(
+    private sneakerService: SneakerService,
+    private cart: CartService,
+    private fav: FavoritesService
+  ) {
+    this.cartCount$ = this.cart.items$.pipe(
+      map((list: any[]) => list.reduce((s, e) => s + (e.qty || 0), 0))
+    );
+
+    this.favCount$ = this.fav.favs$.pipe(
+      map((list: number[]) => list.length)
+    );
+  }
 
   ngOnInit(): void {
-    this.loading = true;
-    console.log('[HomeComponent] Iniciando...');
-    
-    // Assina o stream de produtos
-    this.sub = this.sneakerService.sneakers$.subscribe({
-      next: list => {
-        console.log('[HomeComponent] Produtos atualizados:', list);
-        this.sneakers = list;
-        this.extractBrands();
-        this.applyFilters();
-        this.loading = false;
-      },
-      error: err => {
-        console.error('[HomeComponent] Erro ao carregar:', err);
+    // subscrever direto ao Observable do SneakerService (já carrega automaticamente)
+    this.sneakerService.sneakers$.subscribe({
+      next: (list: Sneaker[]) => this.onLoadSuccess(list),
+      error: (err) => {
+        console.error('[HomeComponent] Erro ao carregar sneakers:', err);
         this.error = 'Erro ao carregar produtos';
         this.loading = false;
       }
     });
-
-    this.sneakerService.loadAll();
   }
 
-  ngOnDestroy(): void {
-    this.sub?.unsubscribe();
+  private onLoadSuccess(list: Sneaker[]) {
+    this.sneakers = list || [];
+    this.brands = Array.from(new Set(this.sneakers.map(s => s.brand ?? '').filter(b => b !== '')));
+    this.loading = false;
   }
 
-  // Extrai marcas únicas dos produtos
-  extractBrands(): void {
-    const uniqueBrands = [...new Set(this.sneakers.map(s => s.brand))];
-    this.brands = uniqueBrands.sort();
-    console.log('[HomeComponent] Marcas disponíveis:', this.brands);
-  }
-
-  // Aplica todos os filtros
-  applyFilters(): void {
-    let filtered = [...this.sneakers];
-
-    // Filtro de pesquisa
-    if (this.searchTerm.trim()) {
-      const term = this.searchTerm.toLowerCase();
-      filtered = filtered.filter(s =>
-        s.name.toLowerCase().includes(term) ||
-        s.brand.toLowerCase().includes(term) ||
-        (s.description && s.description.toLowerCase().includes(term))
-      );
-    }
-
-    // Filtro de gênero
-    if (this.selectedGender !== 'todos') {
-      filtered = filtered.filter(s => s.gender === this.selectedGender || s.gender === 'unissex');
-    }
-
-    // Filtro de marca
-    if (this.selectedBrands.length > 0) {
-      filtered = filtered.filter(s => this.selectedBrands.includes(s.brand));
-    }
-
-    this.filteredSneakers = filtered;
-    console.log('[HomeComponent] Produtos após filtro:', this.filteredSneakers.length);
-  }
-
-  // Métodos chamados pelos filtros
-  onSearchChange(): void {
-    this.applyFilters();
-  }
-
-  onGenderChange(gender: 'todos' | 'masculino' | 'feminino' | 'unissex'): void {
-    this.selectedGender = gender;
-    this.applyFilters();
-  }
-
-  toggleBrand(brand: string): void {
-    const index = this.selectedBrands.indexOf(brand);
-    if (index > -1) {
-      this.selectedBrands.splice(index, 1);
-    } else {
-      this.selectedBrands.push(brand);
-    }
-    this.applyFilters();
-  }
-
-  isBrandSelected(brand: string): boolean {
-    return this.selectedBrands.includes(brand);
-  }
-
-  clearFilters(): void {
+  // template helpers / actions
+  clearFilters() {
     this.searchTerm = '';
     this.selectedGender = 'todos';
     this.selectedBrands = [];
-    this.applyFilters();
   }
 
-  addToCart(sneaker: Sneaker): void {
-    console.log('[HomeComponent] Adicionar ao carrinho:', sneaker);
+  onSearchChange() { }
+
+  onGenderChange(g: string) {
+    this.selectedGender = g;
   }
 
-  addToFavorites(sneaker: Sneaker): void {
-    console.log('[HomeComponent] Adicionar aos favoritos:', sneaker);
+  isBrandSelected(brand: string) {
+    return this.selectedBrands.includes(brand);
   }
 
-  reload(): void {
+  toggleBrand(brand: string) {
+    const i = this.selectedBrands.indexOf(brand);
+    if (i > -1) this.selectedBrands.splice(i, 1);
+    else this.selectedBrands.push(brand);
+  }
+
+  reload() {
     this.loading = true;
-    this.error = '';
     this.sneakerService.loadAll();
   }
-}
 
+  get filteredSneakers(): Sneaker[] {
+    let filtered = [...this.sneakers];
+    const term = this.searchTerm.trim().toLowerCase();
+    if (term) {
+      filtered = filtered.filter(s =>
+        (s.name || '').toLowerCase().includes(term) ||
+        (s.brand || '').toLowerCase().includes(term) ||
+        (s.description || '').toLowerCase().includes(term)
+      );
+    }
+
+    if (this.selectedGender && this.selectedGender !== 'todos') {
+      filtered = filtered.filter(s => (s.gender || 'unissex') === this.selectedGender || s.gender === 'unissex');
+    }
+
+    if (this.selectedBrands.length > 0) {
+      filtered = filtered.filter(s => this.selectedBrands.includes(s.brand || ''));
+    }
+
+    return filtered;
+  }
+
+  addToCart(s: Sneaker) { this.cart.addToCart(s); }
+  addToFavorites(s: Sneaker) { this.fav.toggleFavorite(s); }
+  toggleFavorite(s: Sneaker) { this.fav.toggleFavorite(s); }
+  isFavorited(s: Sneaker): boolean { return this.fav.isFavoriteId(s.id); }
+
+  openPreview(s: Sneaker) {
+    this.selectedSneaker = s;
+    this.showPreview = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  closePreview() {
+    this.selectedSneaker = null;
+    this.showPreview = false;
+    document.body.style.overflow = '';
+  }
+}

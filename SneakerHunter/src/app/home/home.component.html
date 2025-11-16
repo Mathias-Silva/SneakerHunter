@@ -127,8 +127,12 @@
                   <button (click)="addToCart(sneaker)" class="btn-cart" title="Adicionar ao carrinho">
                     <ion-icon name="cart-outline"></ion-icon>
                   </button>
-                  <button (click)="addToFavorites(sneaker)" class="btn-favorite" title="Adicionar aos favoritos">
-                    <ion-icon name="heart-outline"></ion-icon>
+
+                  <button (click)="addToFavorites(sneaker)"
+                          class="btn-favorite"
+                          [class.active]="isFavorited(sneaker)"
+                          title="Adicionar aos favoritos">
+                    <ion-icon [attr.name]="isFavorited(sneaker) ? 'heart' : 'heart-outline'"></ion-icon>
                   </button>
                 </div>
               </div>
@@ -144,6 +148,21 @@
       </section>
     </div>
 
+  
+
+    <div class="products-grid">
+      <div class="card" *ngFor="let s of sneakers">
+        <img [src]="s.image || s.imageUrl" (click)="openPreview(s)" alt="{{ s.name }}" />
+        <h3>{{ s.name }}</h3>
+        <p>R$ {{ s.price }}</p>
+        <div class="card-actions">
+          <button (click)="addToCart(s)">Adicionar ao carrinho</button>
+          <button (click)="toggleFavorite(s)" [class.active]="isFavorited(s)">
+            <ion-icon [attr.name]="isFavorited(s) ? 'heart' : 'heart-outline'"></ion-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
   </article>
 </main>
-

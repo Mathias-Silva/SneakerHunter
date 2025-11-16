@@ -3,8 +3,11 @@ export interface Sneaker {
   id: number;
   name: string;
   price: number;
-  brand: string;
-  description: string;
-  imageUrl: string;
-  gender?: 'masculino' | 'feminino' | 'unissex';
+  description?: string;
+  image?: string;
+  imageUrl?: string;
+  brand?: string;
+  gender?: string;
+  quantity?: number;
+  rating?: number;
 }

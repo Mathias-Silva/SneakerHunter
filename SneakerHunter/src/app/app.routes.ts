@@ -8,8 +8,8 @@ import { AdminComponent } from './admin/admin.component';
 import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', loadComponent: () => import('./home/home.component').then(m => m.HomeComponent) },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'sobre', component: SobreComponent },
   { path: 'produtos', component: ProdutosComponent },
   { path: 'login', component: LoginComponent },
@@ -19,5 +19,7 @@ export const routes: Routes = [
     component: AdminComponent,
     canActivate: [AuthGuard]
   },
+  { path: 'cart', loadComponent: () => import('./cart/cart.component').then(m => m.CartComponent) },
+  { path: 'favorites', loadComponent: () => import('./favorites/favorites.component').then(m => m.FavoritesComponent) },
   { path: '**', redirectTo: '/home' }
 ];

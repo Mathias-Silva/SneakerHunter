@@ -4,7 +4,8 @@ import { IonicModule } from '@ionic/angular';
 import { SneakerService } from '../services/sneaker.service';
 import { Sneaker } from '../models/sneaker';
 import { Subscription } from 'rxjs';
-
+import { CartService } from '../services/cart.service';
+import { FavoritesService } from '../services/favorite.service'
 @Component({
   selector: 'app-produtos',
   standalone: true,
@@ -19,7 +20,9 @@ export class ProdutosComponent implements OnInit, OnDestroy {
   error = '';
   private sub?: Subscription;
 
-  constructor(public sneakerService: SneakerService) {} // mudei de private para public
+  constructor(public sneakerService: SneakerService,
+              private cartService: CartService,
+              private favService: FavoritesService) {} // mudei de private para public
 
   ngOnInit(): void {
     this.loading = true;
@@ -52,11 +55,16 @@ export class ProdutosComponent implements OnInit, OnDestroy {
   }
 
   addToCart(sneaker: Sneaker): void {
-    console.log('[ProdutosComponent] Adicionar ao carrinho:', sneaker);
+    this.cartService.addToCart(sneaker);
+    console.log('[ProdutosComponent] Adicionado ao carrinho:', sneaker);
   }
 
   addToFavorites(sneaker: Sneaker): void {
-    console.log('[ProdutosComponent] Adicionar aos favoritos:', sneaker);
+    this.favService.toggleFavorite(sneaker);
+    console.log('[ProdutosComponent] Favoritos atualizados', this.favService.getAll());
+  }
+
+  isFavorited(s: Sneaker): boolean {
+    return this.favService.isFavoriteId(s.id);
   }
 }
-

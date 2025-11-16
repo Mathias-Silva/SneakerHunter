@@ -1,0 +1,5 @@
+/* ...existing code... */
+.cart-row{ display:flex; gap:12px; align-items:center; padding:8px 0; border-bottom:1px solid #eee; }
+.thumb{ width:72px; height:72px; object-fit:cover; border-radius:6px; }
+.cart-total{ margin-top:16px; display:flex; justify-content:space-between; align-items:center; }
+/* ...existing code... */

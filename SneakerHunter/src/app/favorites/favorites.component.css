@@ -1,0 +1,4 @@
+/* ...existing code... */
+.favorites-page ul{ list-style:none; padding:0; }
+.favorites-page li{ display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #eee; }
+/* ...existing code... */

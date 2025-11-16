@@ -37,8 +37,12 @@
             <button (click)="addToCart(sneaker)" class="btn-cart" title="Adicionar ao carrinho">
               <ion-icon name="cart-outline"></ion-icon>
             </button>
-            <button (click)="addToFavorites(sneaker)" class="btn-favorite" title="Adicionar aos favoritos">
-              <ion-icon name="heart-outline"></ion-icon>
+
+            <button (click)="addToFavorites(sneaker)"
+                    class="btn-favorite"
+                    [class.active]="isFavorited(sneaker)"
+                    title="Adicionar aos favoritos">
+              <ion-icon [attr.name]="isFavorited(sneaker) ? 'heart' : 'heart-outline'"></ion-icon>
             </button>
           </div>
         </div>
@@ -51,4 +55,3 @@
     <p>Nenhum produto disponível no momento.</p>
   </div>
 </div>
-
