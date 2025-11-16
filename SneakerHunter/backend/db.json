@@ -1,0 +1,22 @@
+{
+  "sneakers": [
+    {
+      "id": "1",
+      "name": "Air Max DN8",
+      "price": 450,
+      "brand": "Nike",
+      "description": "Clássico confortável",
+      "imageUrl": "assets/images/airmax.jpg",
+      "gender": "masculino"
+    },
+    {
+      "id": "c19c",
+      "name": "Tênis adidas Grand Court Base 2.0 - Masculino",
+      "price": 218.49,
+      "brand": "Adidas",
+      "description": "Tenis ",
+      "imageUrl": "assets/images/product-4.jpg",
+      "gender": "feminino"
+    }
+  ]
+}

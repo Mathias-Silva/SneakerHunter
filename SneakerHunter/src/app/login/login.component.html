@@ -1,0 +1,48 @@
+<div class="container login-container">
+  <div class="carousel" aria-hidden="true">
+    <div class="carousel-images">
+      <img src="assets/images/airmax.jpg" alt="Tênis 1" class="carousel-image active">
+      <img src="assets/images/vomero.jpg" alt="Tênis 2" class="carousel-image">
+      <img src="assets/images/nikeAir.png" alt="Tênis 3" class="carousel-image">
+    </div>
+  </div>
+
+  <div class="form-container">
+    <h2 class="form-title">{{ registerMode ? 'Criar Conta' : 'Login' }}</h2>
+
+    <div *ngIf="isLoggedIn" class="signed-in">
+      <p>Conectado como: <strong>{{ currentUserEmail }}</strong></p>
+      <div class="actions-logged">
+        <button class="btn-secondary" (click)="logout()">Sair</button>
+      </div>
+      <hr />
+      <p *ngIf="!registerMode">Se quiser criar outra conta, clique em <a (click)="toggleRegister()">Criar conta</a>.</p>
+    </div>
+
+    <form *ngIf="!isLoggedIn || registerMode" (submit)="onSubmit($event)" #loginForm="ngForm" novalidate>
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" required [(ngModel)]="email" class="input-field" placeholder="seu@exemplo.com">
+      </div>
+
+      <div class="field">
+        <label for="password">Senha</label>
+        <input id="password" name="password" type="password" required [(ngModel)]="password" class="input-field" placeholder="********">
+      </div>
+
+      <div *ngIf="error" class="error">{{ error }}</div>
+
+      <div class="actions">
+        <button type="submit" class="btn-primary">{{ registerMode ? 'Cadastrar' : 'Entrar' }}</button>
+        <button type="button" class="btn-secondary" (click)="toggleRegister()">
+          {{ registerMode ? 'Já tenho conta' : 'Criar conta' }}
+        </button>
+      </div>
+    </form>
+
+    <div class="form-footer" *ngIf="!isLoggedIn && !registerMode">
+      <button (click)="voltar()" class="btn-link">Voltar para a Página Principal</button>
+    </div>
+  </div>
+</div>
+

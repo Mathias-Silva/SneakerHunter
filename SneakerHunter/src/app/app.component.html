@@ -1,0 +1,170 @@
+<header class="header" data-header>
+  <div class="container">
+
+    <div class="overlay" data-overlay></div>
+
+    <a routerLink="/home" class="logo">
+      <img src="assets/images/logo_Sneaker-removebg-preview (1).png" width="160" height="50" alt="SneakerHunter">
+    </a>
+
+    <button class="nav-open-btn" data-nav-open-btn aria-label="Open Menu">
+      <ion-icon name="menu-outline"></ion-icon>
+    </button>
+
+    <nav class="navbar" data-navbar>
+
+      <button class="nav-close-btn" data-nav-close-btn aria-label="Close Menu">
+        <ion-icon name="close-outline"></ion-icon>
+      </button>
+
+      <a routerLink="/home" class="logo">
+        <img src="assets/images/logo_Sneaker-removebg-preview (1).png" width="190" height="50" alt="SneakerHunter logo">
+      </a>
+
+      <ul class="navbar-list">
+
+        <li class="navbar-item">
+          <a routerLink="/home" class="navbar-link">Home</a>
+        </li>
+
+        <li class="navbar-item">
+          <a routerLink="/sobre" class="navbar-link">Sobre nos</a>
+        </li>
+
+        <li class="navbar-item">
+          <a routerLink="/produtos" class="navbar-link">Produtos</a>
+        </li>
+
+        <li class="navbar-item">
+          <a routerLink="/contato" class="navbar-link">Contato</a>
+        </li>
+
+      </ul>
+
+      <ul class="nav-action-list">
+
+        <li>
+          <form class="nav-action-form" action="/search" method="GET">
+            <input type="text" name="query" class="nav-action-input" placeholder="Search...">
+            <button type="submit" class="nav-action-btn">
+              <ion-icon name="search-outline" aria-hidden="true"></ion-icon>
+              <span class="nav-action-text">Search</span>
+            </button>
+          </form>
+        </li>
+
+        <li>
+          <a routerLink="/login" class="nav-action-btn">
+            <ion-icon name="person-outline" aria-hidden="true"></ion-icon>
+
+            <span class="nav-action-text">Login / Register</span>
+          </a>
+        </li>
+
+        <li>
+          <button class="nav-action-btn">
+            <ion-icon name="heart-outline" aria-hidden="true"></ion-icon>
+
+            <span class="nav-action-text">Wishlist</span>
+
+            <data class="nav-action-badge" value="5" aria-hidden="true">5</data>
+          </button>
+        </li>
+
+        <li>
+          <button class="nav-action-btn">
+            <ion-icon name="bag-outline" aria-hidden="true"></ion-icon>
+
+            <data class="nav-action-text" value="318.00">Basket: <strong>$318.00</strong></data>
+
+            <data class="nav-action-badge" value="4" aria-hidden="true">4</data>
+          </button>
+        </li>
+
+      </ul>
+
+    </nav>
+
+  </div>
+</header>
+
+<router-outlet></router-outlet>
+
+<footer class="footer">
+  <div class="footer-top section">
+    <div class="container">
+      <div class="footer-brand">
+        <a href="#" class="logo">
+          <img src="assets/images/logo_Sneaker-removebg-preview (1).png" width="160" height="50" alt="SneakerHunter">
+        </a>
+        <ul class="social-list">
+          <li><a href="#" class="social-link"><ion-icon name="logo-facebook"></ion-icon></a></li>
+          <li><a href="#" class="social-link"><ion-icon name="logo-twitter"></ion-icon></a></li>
+          <li><a href="#" class="social-link"><ion-icon name="logo-pinterest"></ion-icon></a></li>
+          <li><a href="#" class="social-link"><ion-icon name="logo-linkedin"></ion-icon></a></li>
+        </ul>
+    </div>
+
+      <div class="footer-link-box">
+        <ul class="footer-list">
+          <li><p class="footer-list-title">Contate-nos</p></li>
+          <li>
+            <address class="footer-link">
+              <ion-icon name="location"></ion-icon>
+              <span class="footer-link-text">Av. Eng. Eusébio Stevaux 823, São Paulo, SP, 04696-000</span>
+            </address>
+          </li>
+          <li>
+            <a href="tel:+557343673257" class="footer-link">
+              <ion-icon name="call"></ion-icon>
+              <span class="footer-link-text">+55(11) 91336-3303</span>
+            </a>
+          </li>
+          <li>
+            <a href="mailto:footcap@help.com" class="footer-link">
+              <ion-icon name="mail"></ion-icon>
+              <span class="footer-link-text">igorgabriellemos.mendes&#64;gmail.com</span>
+            </a>
+          </li>
+          <li>
+            <p><strong>Email:</strong> contato_sneakerhunter&#64;gmail.com</p>
+          </li>
+        </ul>
+
+        <ul class="footer-list">
+          <li><p class="footer-list-title">Minha Conta</p></li>
+          <li><a href="#" class="footer-link"><ion-icon name="chevron-forward-outline"></ion-icon><span class="footer-link-text">Minha conta</span></a></li>
+          <li><a href="#" class="footer-link"><ion-icon name="chevron-forward-outline"></ion-icon><span class="footer-link-text">Lista de Compras</span></a></li>
+          <li><a href="#" class="footer-link"><ion-icon name="chevron-forward-outline"></ion-icon><span class="footer-link-text">Compare</span></a></li>
+          <li><a href="#" class="footer-link"><ion-icon name="chevron-forward-outline"></ion-icon><span class="footer-link-text">Novos Produtos</span></a></li>
+        </ul>
+
+        <div class="footer-list">
+          <p class="footer-list-title">Quando estamos abertos?</p>
+          <table class="footer-table">
+            <tbody>
+              <tr class="table-row">
+                <th class="table-head" scope="row">Segunda - Sabado:</th>
+                <td class="table-data">10AM - 10PM</td>
+              </tr>
+              <tr class="table-row">
+                <th class="table-head" scope="row">Domingo e Feriados:</th>
+                <td class="table-data">2PM - 8PM</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="container">
+      <p class="copyright">&copy; 2025 <a href="#" class="copyright-link">SneakerHunter</a></p>
+    </div>
+  </div>
+</footer>
+
+<a href="#top" class="go-top-btn" data-go-top>
+  <ion-icon name="arrow-up-outline"></ion-icon>
+</a>

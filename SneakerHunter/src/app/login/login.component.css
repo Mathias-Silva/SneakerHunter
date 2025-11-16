@@ -1,0 +1,141 @@
+.login-container {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+/* Carousel mínimo para não atrapalhar layout */
+.carousel {
+  flex: 1 1 480px;
+  max-width: 520px;
+}
+
+.carousel-images {
+  display: flex;
+  gap: 8px;
+}
+
+.carousel-image {
+  width: 100%;
+  max-width: 480px;
+  height: auto;
+  border-radius: 6px;
+  object-fit: cover;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+/* Form */
+.form-container {
+  flex: 0 0 420px;
+  max-width: 480px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+
+.form-title {
+  margin: 0 0 12px 0;
+  font-size: 1.4rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.field label {
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.input-field {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.input-field:focus {
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.06);
+}
+
+/* Erro */
+.error {
+  color: #b91c1c;
+  margin-bottom: 8px;
+}
+
+/* Ações */
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.btn-primary {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-secondary {
+  background: #e5e7eb;
+  color: #111827;
+  border: none;
+  padding: 10px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  color: #2563eb;
+  cursor: pointer;
+  padding: 6px 0;
+}
+
+/* Logged In States */
+.signed-in {
+  margin-bottom: 12px;
+}
+
+.actions-logged {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+/* Responsivo */
+@media (max-width: 900px) {
+  .login-container {
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+  }
+  
+  .carousel {
+    order: 2;
+  }
+  
+  .form-container {
+    order: 1;
+    width: 100%;
+    max-width: 100%;
+  }
+}
+

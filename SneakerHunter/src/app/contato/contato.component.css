@@ -1,0 +1,79 @@
+/* Estilos já estão no styles.css global, mas podemos adicionar estilos específicos aqui se necessário */
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.form-input textarea {
+  resize: vertical;
+}
+
+.btn-entrar {
+  width: 100%;
+  padding: 10px;
+  background-color: var(--bittersweet);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.btn-entrar:hover {
+  background-color: var(--salmon);
+}
+
+.form-footer {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.form-footer p {
+  margin-bottom: 10px;
+}
+
+.social-links {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.social-icon {
+  padding: 8px 16px;
+  border-radius: 4px;
+  text-decoration: none;
+  color: #fff;
+  font-weight: 500;
+}
+
+.social-icon.instagram {
+  background-color: #E4405F;
+}
+
+.social-icon.facebook {
+  background-color: #1877F2;
+}
+
+.social-icon.twitter {
+  background-color: #1DA1F2;
+}
+
+.social-icon:hover {
+  opacity: 0.8;
+}
+

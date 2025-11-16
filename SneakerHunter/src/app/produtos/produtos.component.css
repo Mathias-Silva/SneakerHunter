@@ -1,0 +1,296 @@
+/* Reset e estilos gerais */
+.page-container {
+  display: flex;
+  min-height: 100vh;
+  padding-top: 90px;
+}
+
+/* Sidebar com listagem de marcas */
+.sidebar {
+  width: 220px;
+  background-color: #fff;
+  padding: 20px;
+  border-right: 1px solid #ddd;
+  position: fixed;
+  height: calc(100vh - 90px);
+  overflow-y: auto;
+}
+
+.sidebar h2 {
+  font-size: 1.5em;
+  color: var(--rich-black-fogra-29);
+  margin-bottom: 15px;
+}
+
+.sidebar ul {
+  list-style: none;
+}
+
+.sidebar ul li {
+  margin-bottom: 12px;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  display: block;
+  padding: 8px 12px;
+  border-radius: 4px;
+  color: #555;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.sidebar ul li a:hover {
+  background-color: var(--bittersweet);
+  color: #fff;
+}
+
+/* Grade de produtos com 4 colunas */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  flex: 1;
+  background-color: #f4f4f4;
+  margin-left: 220px;
+}
+
+/* Cada card de produto */
+.product-item {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.2s;
+}
+
+.product-item:hover {
+  transform: translateY(-5px);
+}
+
+.product-card {
+  display: block;
+  text-align: center;
+  position: relative;
+}
+
+.card-banner {
+  position: relative;
+  height: 350px;
+  overflow: hidden;
+}
+
+.card-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover .card-banner img {
+  transform: scale(1.1);
+}
+
+.card-actions {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.card-action-btn {
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  padding: 8px;
+  cursor: pointer;
+  font-size: 1.2em;
+}
+
+.card-banner:hover .card-actions {
+  opacity: 1;
+}
+
+.card-content {
+  padding: 10px 0;
+}
+
+.card-title a {
+  text-decoration: none;
+  color: var(--rich-black-fogra-29);
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.card-price {
+  display: block;
+  color: var(--bittersweet);
+  margin-top: 5px;
+  font-size: 1em;
+  font-weight: var(--fw-600);
+}
+
+.produtos-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.produtos-container h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2rem;
+  color: #111;
+}
+
+.loading, .error, .empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.error {
+  background: #fee;
+  color: #b91c1c;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.error button {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background: #b91c1c;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.produtos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.produto-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: box-shadow 0.3s, transform 0.3s;
+  display: flex;
+  flex-direction: column;
+}
+
+.produto-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+}
+
+.produto-imagem {
+  width: 100%;
+  height: 240px;
+  background: #f8fafc;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.produto-imagem img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.no-image {
+  color: #9ca3af;
+  font-size: 0.9rem;
+}
+
+.produto-info {
+  padding: 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.produto-info h3 {
+  margin: 0 0 8px 0;
+  font-size: 1.1rem;
+  color: #111;
+}
+
+.brand {
+  margin: 0 0 8px 0;
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.description {
+  margin: 0 0 12px 0;
+  color: #4b5563;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  flex: 1;
+}
+
+.produto-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.preco {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #2563eb;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-cart, .btn-favorite {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.3rem;
+  color: #6b7280;
+  transition: color 0.2s;
+}
+
+.btn-cart:hover {
+  color: #2563eb;
+}
+
+.btn-favorite:hover {
+  color: #dc2626;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+  
+  .product-grid {
+    margin-left: 0;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  .produtos-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+
+  .produtos-container h1 {
+    font-size: 1.5rem;
+  }
+}
+

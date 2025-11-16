@@ -1,0 +1,149 @@
+<main>
+  <article>
+
+    <div class="home-container">
+      <!-- Hero Section -->
+      <section class="hero">
+        <div class="hero-content">
+          <h1>SneakerHunter</h1>
+          <p>Encontre os melhores tênis do mercado</p>
+        </div>
+      </section>
+
+      <!-- Filtros Section -->
+      <section class="filters-section">
+        <div class="filters-header">
+          <h2>Filtros</h2>
+          <button class="btn-clear" (click)="clearFilters()" [disabled]="!searchTerm && selectedGender === 'todos' && selectedBrands.length === 0">
+            Limpar filtros
+          </button>
+        </div>
+
+        <!-- Pesquisa -->
+        <div class="filter-group">
+          <label for="search">Pesquisar</label>
+          <input
+            id="search"
+            type="text"
+            class="search-input"
+            placeholder="Nome, marca, descrição..."
+            [(ngModel)]="searchTerm"
+            (input)="onSearchChange()"
+          />
+        </div>
+
+        <!-- Gênero -->
+        <div class="filter-group">
+          <label>Gênero</label>
+          <div class="filter-options">
+            <button
+              class="filter-btn"
+              [class.active]="selectedGender === 'todos'"
+              (click)="onGenderChange('todos')"
+            >
+              Todos
+            </button>
+            <button
+              class="filter-btn"
+              [class.active]="selectedGender === 'masculino'"
+              (click)="onGenderChange('masculino')"
+            >
+              Masculino
+            </button>
+            <button
+              class="filter-btn"
+              [class.active]="selectedGender === 'feminino'"
+              (click)="onGenderChange('feminino')"
+            >
+              Feminino
+            </button>
+            <button
+              class="filter-btn"
+              [class.active]="selectedGender === 'unissex'"
+              (click)="onGenderChange('unissex')"
+            >
+              Unissex
+            </button>
+          </div>
+        </div>
+
+        <!-- Marca -->
+        <div class="filter-group" *ngIf="brands.length > 0">
+          <label>Marca</label>
+          <div class="filter-brands">
+            <button
+              *ngFor="let brand of brands"
+              class="brand-btn"
+              [class.active]="isBrandSelected(brand)"
+              (click)="toggleBrand(brand)"
+            >
+              {{ brand }}
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Products Section -->
+      <section class="products-section">
+        <!-- Loading -->
+        <div *ngIf="loading" class="loading">
+          <p>Carregando produtos...</p>
+        </div>
+
+        <!-- Erro -->
+        <div *ngIf="error && !loading" class="error">
+          <p>{{ error }}</p>
+          <button class="btn-retry" (click)="reload()">Tentar novamente</button>
+        </div>
+
+        <!-- Resultados -->
+        <div *ngIf="!loading && !error" class="results-info">
+          <p>{{ filteredSneakers.length }} produtos encontrados</p>
+        </div>
+
+        <!-- Produtos Grid -->
+        <div *ngIf="!loading && filteredSneakers.length > 0" class="produtos-grid">
+          <div *ngFor="let sneaker of filteredSneakers" class="produto-card">
+            <div class="produto-imagem">
+              <img
+                *ngIf="sneaker.imageUrl"
+                [src]="sneaker.imageUrl"
+                [alt]="sneaker.name"
+                onerror="this.src='assets/images/placeholder.png'"
+              />
+              <div *ngIf="!sneaker.imageUrl" class="no-image">Sem imagem</div>
+              <span *ngIf="sneaker.gender" class="gender-badge">{{ sneaker.gender }}</span>
+            </div>
+
+            <div class="produto-info">
+              <h3>{{ sneaker.name }}</h3>
+              <p class="brand">{{ sneaker.brand }}</p>
+              <p class="description">{{ sneaker.description }}</p>
+
+              <div class="produto-footer">
+                <span class="preco">{{ sneaker.price | currency:'BRL':'symbol':'1.2-2' }}</span>
+
+                <div class="actions">
+                  <button (click)="addToCart(sneaker)" class="btn-cart" title="Adicionar ao carrinho">
+                    <ion-icon name="cart-outline"></ion-icon>
+                  </button>
+                  <button (click)="addToFavorites(sneaker)" class="btn-favorite" title="Adicionar aos favoritos">
+                    <ion-icon name="heart-outline"></ion-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vazio -->
+        <div *ngIf="!loading && filteredSneakers.length === 0 && !error" class="empty">
+          <p>Nenhum produto encontrado com esses filtros.</p>
+          <button class="btn-clear-filters" (click)="clearFilters()">Limpar filtros</button>
+        </div>
+      </section>
+    </div>
+
+  </article>
+</main>
+

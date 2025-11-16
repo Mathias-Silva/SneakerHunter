@@ -1,0 +1,64 @@
+<div class="admin-container">
+  <h2>Administração de Produtos</h2>
+
+  <form (ngSubmit)="onSubmit()" #sneakerForm="ngForm" class="admin-form" novalidate>
+    <div class="row">
+      <label for="name">Nome</label>
+      <input id="name" name="name" required [(ngModel)]="newSneaker.name" placeholder="Nome do tênis" />
+    </div>
+
+    <div class="row">
+      <label for="price">Preço (R$)</label>
+      <input id="price" name="price" type="number" min="0" step="0.01" required [(ngModel)]="newSneaker.price" />
+    </div>
+
+    <div class="row">
+      <label for="brand">Marca</label>
+      <input id="brand" name="brand" required [(ngModel)]="newSneaker.brand" placeholder="Marca" />
+    </div>
+
+    <div class="row">
+      <label for="imageUrl">URL da Imagem</label>
+      <input id="imageUrl" name="imageUrl" [(ngModel)]="newSneaker.imageUrl" placeholder="https://..." />
+    </div>
+
+    <div class="row">
+      <label for="description">Descrição</label>
+      <textarea id="description" name="description" rows="3" [(ngModel)]="newSneaker.description" placeholder="Descrição"></textarea>
+    </div>
+
+    <div class="actions">
+      <button type="submit" class="btn primary">{{ editMode ? 'Atualizar' : 'Cadastrar' }}</button>
+      <button type="button" class="btn neutral" (click)="resetForm()">Limpar</button>
+    </div>
+
+    <div *ngIf="error" class="error">{{ error }}</div>
+  </form>
+
+  <hr />
+
+  <div *ngIf="loading" class="loading">Carregando...</div>
+
+  <div class="products-list" *ngIf="!loading && sneakers.length">
+    <div *ngFor="let sneaker of sneakers" class="product-item">
+      <div class="thumb">
+        <img *ngIf="sneaker.imageUrl" [src]="sneaker.imageUrl" [alt]="sneaker.name" />
+        <div *ngIf="!sneaker.imageUrl" class="no-thumb">sem imagem</div>
+      </div>
+      <div class="info">
+        <h3 class="name">{{ sneaker.name }}</h3>
+        <div class="meta">
+          <span class="brand">{{ sneaker.brand }}</span>
+          <span class="price">{{ sneaker.price | currency:'BRL':'symbol':'1.2-2' }}</span>
+        </div>
+        <p class="desc" *ngIf="sneaker.description">{{ sneaker.description }}</p>
+        <div class="item-actions">
+          <button (click)="editSneaker(sneaker)" class="btn small">Editar</button>
+          <button (click)="deleteSneaker(sneaker.id)" class="btn danger small">Excluir</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && !sneakers.length" class="empty">Nenhum produto cadastrado.</div>
+</div>

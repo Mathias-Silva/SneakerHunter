@@ -1,0 +1,62 @@
+import { Component, OnInit, OnDestroy, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { IonicModule } from '@ionic/angular';
+import { SneakerService } from '../services/sneaker.service';
+import { Sneaker } from '../models/sneaker';
+import { Subscription } from 'rxjs';
+
+@Component({
+  selector: 'app-produtos',
+  standalone: true,
+  imports: [CommonModule, IonicModule],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  templateUrl: './produtos.component.html',
+  styleUrls: ['./produtos.component.css']
+})
+export class ProdutosComponent implements OnInit, OnDestroy {
+  sneakers: Sneaker[] = [];
+  loading = false;
+  error = '';
+  private sub?: Subscription;
+
+  constructor(public sneakerService: SneakerService) {} // mudei de private para public
+
+  ngOnInit(): void {
+    this.loading = true;
+    console.log('[ProdutosComponent] Iniciando...');
+    
+    this.sub = this.sneakerService.sneakers$.subscribe({
+      next: list => {
+        console.log('[ProdutosComponent] Produtos atualizados:', list);
+        this.sneakers = list;
+        this.loading = false;
+      },
+      error: err => {
+        console.error('[ProdutosComponent] Erro ao carregar:', err);
+        this.error = 'Erro ao carregar produtos';
+        this.loading = false;
+      }
+    });
+
+    this.sneakerService.loadAll();
+  }
+
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
+  }
+
+  reload(): void {
+    this.loading = true;
+    this.error = '';
+    this.sneakerService.loadAll();
+  }
+
+  addToCart(sneaker: Sneaker): void {
+    console.log('[ProdutosComponent] Adicionar ao carrinho:', sneaker);
+  }
+
+  addToFavorites(sneaker: Sneaker): void {
+    console.log('[ProdutosComponent] Adicionar aos favoritos:', sneaker);
+  }
+}
+
