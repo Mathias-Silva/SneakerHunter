@@ -27,6 +27,25 @@
       <textarea id="description" name="description" rows="3" [(ngModel)]="newSneaker.description" placeholder="Descrição"></textarea>
     </div>
 
+    <div class="row">
+      <label for="brand">Modelo</label>
+      <input id="gender" name="gender" required [(ngModel)]="newSneaker.gender" placeholder="Modelo" />
+    </div>
+    <div class="row sizes-row">
+      <label for="size">Tamanhos disponíveis</label>
+      <div class="sizes-input">
+        <input id="size" #sizeInput type="number" min="34" max="46" step="1" placeholder="Ex: 38" />
+        <button type="button" class="btn neutral" (click)="addSize(sizeInput.value); sizeInput.value=''; sizeInput.focus()">Adicionar tamanho</button>
+      </div>
+
+      <div class="sizes-list" *ngIf="newSneaker.sizes && newSneaker.sizes.length">
+        <span class="size-chip" *ngFor="let s of newSneaker.sizes; let i = index">
+          {{ s }}
+          <button type="button" class="btn small danger" (click)="removeSize(i)">x</button>
+        </span>
+      </div>
+    </div>
+
     <div class="actions">
       <button type="submit" class="btn primary">{{ editMode ? 'Atualizar' : 'Cadastrar' }}</button>
       <button type="button" class="btn neutral" (click)="resetForm()">Limpar</button>

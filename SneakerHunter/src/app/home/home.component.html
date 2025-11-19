@@ -147,22 +147,96 @@
         </div>
       </section>
     </div>
+  </article>
 
-  
-<!-- //testes -->
-    <!-- <div class="products-grid">
-      <div class="card" *ngFor="let s of sneakers">
-        <img [src]="s.image || s.imageUrl" (click)="openPreview(s)" alt="{{ s.name }}" />
-        <h3>{{ s.name }}</h3>
-        <p>R$ {{ s.price }}</p>
-        <div class="card-actions">
-          <button (click)="addToCart(s)">Adicionar ao carrinho</button>
-          <button (click)="toggleFavorite(s)" [class.active]="isFavorited(s)">
-            <ion-icon [attr.name]="isFavorited(s) ? 'heart' : 'heart-outline'"></ion-icon>
-          </button>
+  <footer class="footer">
+  <div class="footer-top section">
+    <div class="container">
+      <div class="footer-brand">
+        <a href="#" class="logo">
+          <img
+            src="assets/images/logo_Sneaker-removebg-preview (1).png"
+            width="160"
+            height="50"
+            alt="SneakerHunter"
+          />
+        </a>
+        <ul class="social-list">
+          <li>
+            <a href="#" class="social-link"
+              ><ion-icon name="logo-facebook"></ion-icon
+            ></a>
+          </li>
+          <li>
+            <a href="#" class="social-link"
+              ><ion-icon name="logo-twitter"></ion-icon
+            ></a>
+          </li>
+          <li>
+            <a href="#" class="social-link"
+              ><ion-icon name="logo-pinterest"></ion-icon
+            ></a>
+          </li>
+          <li>
+            <a href="#" class="social-link"
+              ><ion-icon name="logo-instagram"></ion-icon
+            ></a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="footer-link-box">
+        <ul class="footer-list">
+          <li><p class="footer-list-title">Contate-nos</p></li>
+          <li>
+            <address class="footer-link">
+              <ion-icon name="location"></ion-icon>
+              <span class="footer-link-text"
+                >Av. Eng. Eusébio Stevaux 823, São Paulo, SP, 04696-000</span
+              >
+            </address>
+          </li>
+          <li>
+            <a href="tel:+557343673257" class="footer-link">
+              <ion-icon name="call"></ion-icon>
+              <span class="footer-link-text">+55(11) 91336-3303</span>
+            </a>
+          </li>
+          <li>
+            <a href="mailto:footcap@help.com" class="footer-link">
+              <ion-icon name="mail"></ion-icon>
+              <span class="footer-link-text"
+                >contato_sneakerhunter&#64;gmail.com</span
+              >
+            </a>
+          </li>
+        </ul>
+
+        <div class="footer-list">
+          <p class="footer-list-title">Quando estamos abertos?</p>
+          <table class="footer-table">
+            <tbody>
+              <tr class="table-row">
+                <th class="table-head" scope="row">Segunda - Sabado:</th>
+                <td class="table-data">10h - 18h</td>
+              </tr>
+              <tr class="table-row">
+                <th class="table-head" scope="row">Domingo e Feriados:</th>
+                <td class="table-data"> 10h - 14h</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
-    </div> -->
+    </div>
+  </div>
 
-  </article>
+  <div class="footer-bottom">
+    <div class="container">
+      <p class="copyright">
+        &copy; 2025 <a href="#" class="copyright-link">SneakerHunter</a>
+      </p>
+    </div>
+  </div>
+</footer>
 </main>

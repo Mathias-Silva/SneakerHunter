@@ -15,7 +15,15 @@ import { Subscription } from 'rxjs';
 })
 export class AdminComponent implements OnInit, OnDestroy {
   sneakers: Sneaker[] = [];
-  newSneaker: Sneaker = { id: 0, name: '', price: 0, brand: '', description: '', imageUrl: '' };
+  newSneaker: any = {
+    name: '',
+    price: null,
+    brand: '',
+    imageUrl: '',
+    description: '',
+    gender: '',
+    sizes: [] as number[]
+  };
   editMode = false;
   loading = false;
   error = '';
@@ -29,7 +37,6 @@ export class AdminComponent implements OnInit, OnDestroy {
       next: list => { console.debug('[AdminComponent] sneakers$', list); this.sneakers = list; this.loading = false; },
       error: err => { console.error('[AdminComponent] sneakers$ error', err); this.sneakers = []; this.loading = false; this.error = 'Erro ao carregar produtos'; }
     });
-    // garante que dados estejam carregados
     this.sneakerService.loadAll();
   }
 
@@ -39,11 +46,15 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   onSubmit(): void {
     this.error = '';
-    if (!this.newSneaker.name || !this.newSneaker.brand) {
-      this.error = 'Nome e marca são obrigatórios';
+    if (!this.newSneaker.name || !this.newSneaker.brand || !this.newSneaker.price) {
+      this.error = 'Nome, marca e preço são obrigatórios';
       return;
     }
 
+    if(this.newSneaker.gender === '') {
+      this.newSneaker.gender = 'unissex';
+    }
+    
     if (this.editMode) {
       if (!this.newSneaker.id || this.newSneaker.id === 0) {
         this.error = 'ID inválido para atualização';
@@ -82,9 +93,44 @@ export class AdminComponent implements OnInit, OnDestroy {
       error: err => { this.error = 'Erro ao excluir'; console.error('[AdminComponent] delete error', err); }
     });
   }
+    addSize(value: string): void {
+    this.error = '';
+    if (!value || !value.toString().trim()) {
+      this.error = 'Informe um tamanho';
+      return;
+    }
+    // aceita vírgula como separador decimal
+    const size = parseFloat(value.replace(',', '.'));
+    if (isNaN(size)) {
+      this.error = 'Tamanho inválido';
+      return;
+    }
+    // valida intervalo permitido
+    if (size < 34 || size > 46) {
+      this.error = 'Tamanhos inválidos. Aceitamos apenas tamanhos entre 34 e 46.';
+      return;
+    }
+    // aceita apenas tamanhos inteiros
+    if (!Number.isInteger(size)) {
+      this.error = 'Aceitamos apenas tamanhos inteiros (ex: 38, 39)';
+      return;
+    }
+    if (!this.newSneaker.sizes) this.newSneaker.sizes = [];
+    if (!this.newSneaker.sizes.includes(size)) {
+      this.newSneaker.sizes.push(size);
+      this.newSneaker.sizes.sort((a: number, b: number) => a - b);
+    } else {
+      this.error = 'Tamanho já adicionado';
+    }
+  }
+
+  removeSize(index: number): void {
+    if (!this.newSneaker.sizes) return;
+    this.newSneaker.sizes.splice(index, 1);
+  }
 
   resetForm(): void {
-    this.newSneaker = { id: 0, name: '', price: 0, brand: '', description: '', imageUrl: '' };
+    this.newSneaker = { name: '', price: 0, brand: '', description: '', imageUrl: '', gender: '', sizes: [] as number[] };
     this.editMode = false;
     this.error = '';
   }
