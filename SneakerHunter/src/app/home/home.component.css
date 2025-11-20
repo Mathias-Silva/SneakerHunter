@@ -9,7 +9,7 @@
 
 /* Hero Section */
 .hero {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #ff7a18 0%, #ffb347 100%);
   color: #fff;
   padding: 10px 17px;               /* padding reduzido */
   text-align: center;
@@ -126,8 +126,8 @@
 }
 
 .search-input:focus {
-  border-color: #667eea;
-  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.06);
+  border-color: #ff7a18;
+  box-shadow: 0 0 0 4px rgba(255,122,24,0.06);
 }
 
 .filter-options {
@@ -148,14 +148,14 @@
 }
 
 .filter-btn:hover {
-  border-color: #667eea;
-  color: #667eea;
+  border-color: #ff7a18;
+  color: #ff7a18;
 }
 
 .filter-btn.active {
-  background: #667eea;
+  background: #ff7a18;
   color: #fff;
-  border-color: #667eea;
+  border-color: #ff7a18;
 }
 
 .filter-brands {
@@ -176,14 +176,14 @@
 }
 
 .brand-btn:hover {
-  border-color: #667eea;
-  background: #f3f4f6;
+  border-color: #ff7a18;
+  background: #fff4ed;
 }
 
 .brand-btn.active {
-  background: #667eea;
+  background: #ff7a18;
   color: #fff;
-  border-color: #667eea;
+  border-color: #ff7a18;
 }
 
 /* Products Section */
@@ -226,7 +226,7 @@
 .btn-clear-filters {
   margin-top: 16px;
   padding: 8px 16px;
-  background: #667eea;
+  background: #ff7a18;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -281,7 +281,7 @@
   position: absolute;
   top: 8px;
   right: 8px;
-  background: #667eea;
+  background: #ff7a18;
   color: #fff;
   padding: 4px 10px;
   border-radius: 4px;
@@ -328,7 +328,7 @@
 .preco {
   font-size: 1.2rem;
   font-weight: bold;
-  color: #667eea;
+  color: #ff7a18;
 }
 
 .actions {
@@ -347,7 +347,7 @@
 }
 
 .btn-cart:hover {
-  color: #667eea;
+  color: #ff7a18;
 }
 
 .btn-favorite:hover {

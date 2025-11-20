@@ -1,81 +1,43 @@
-<!-- <div class="container login-container">
-  <div class="carousel" aria-hidden="true">
-    <div class="carousel-images">
-      <img src="assets/images/airmax.jpg" alt="Tênis 1" class="carousel-image active">
-      <img src="assets/images/vomero.jpg" alt="Tênis 2" class="carousel-image">
-      <img src="assets/images/nikeAir.png" alt="Tênis 3" class="carousel-image">
-    </div>
-  </div>
-
-  <div class="form-container">
-    <h2 class="form-title">{{ registerMode ? 'Criar Conta' : 'Login' }}</h2>
-
-    <div *ngIf="isLoggedIn" class="signed-in">
-      <p>Conectado como: <strong>{{ currentUserEmail }}</strong></p>
-      <div class="actions-logged">
-        <button class="btn-secondary" (click)="logout()">Sair</button>
-      </div>
-      <hr />
-      <p *ngIf="!registerMode">Se quiser criar outra conta, clique em <a (click)="toggleRegister()">Criar conta</a>.</p>
-    </div>
-
-    <form *ngIf="!isLoggedIn || registerMode" (submit)="onSubmit($event)" #loginForm="ngForm" novalidate>
-      <div class="field">
-        <label for="email">Email</label>
-        <input id="email" name="email" type="email" required [(ngModel)]="email" class="input-field" placeholder="seu@exemplo.com">
-      </div>
-
-      <div class="field">
-        <label for="password">Senha</label>
-        <input id="password" name="password" type="password" required [(ngModel)]="password" class="input-field" placeholder="********">
-      </div>
-
-      <div *ngIf="error" class="error">{{ error }}</div>
-
-      <div class="actions">
-        <button type="submit" class="btn-primary">{{ registerMode ? 'Cadastrar' : 'Entrar' }}</button>
-        <button type="button" class="btn-secondary" (click)="toggleRegister()">
-          {{ registerMode ? 'Já tenho conta' : 'Criar conta' }}
-        </button>
-      </div>
-    </form>
-
-    <div class="form-footer" *ngIf="!isLoggedIn && !registerMode">
-      <button (click)="voltar()" class="btn-link">Voltar para a Página Principal</button>
-    </div>
-  </div>
-</div>
- -->
-
- <div class="container login-container">
-  <!-- Carrossel de imagens -->
+<div class="container login-container">
+  <!-- Imagem/visual -->
   <div class="carousel" aria-hidden="true">
     <div class="carousel-images">
       <img src="assets/images/airmax.jpg" alt="Tênis Air Max" class="carousel-image active">
-      <img src="assets/images/vomero.jpg" alt="Tênis Vomero" class="carousel-image">
-      <img src="assets/images/nikeAir.png" alt="Tênis Nike Air" class="carousel-image">
     </div>
   </div>
 
   <!-- Formulário de login/cadastro -->
   <div class="form-container">
-    <h2 class="form-title">{{ registerMode ? 'Criar Conta' : 'Login' }}</h2>
+    <h2 class="form-title">{{ modoCadastro ? 'Criar Conta' : 'Login' }}</h2>
 
     <!-- Usuário logado -->
-    <div *ngIf="isLoggedIn" class="signed-in">
-      <p>Conectado como: <strong>{{ currentUserEmail }}</strong></p>
+    <div *ngIf="estaLogado" class="signed-in">
+      <p>Conectado como: <strong>{{ emailUsuarioAtual }}</strong></p>
       <div class="actions-logged">
-        <button class="btn-secondary" (click)="logout()">Sair</button>
+        <button class="btn-secondary" (click)="deslogar()">Sair</button>
       </div>
       <hr />
-      <p *ngIf="!registerMode">
+      <p *ngIf="!modoCadastro">
         Se quiser criar outra conta, clique em
-        <button class="btn-link" (click)="toggleRegister()">Criar conta</button>
+        <button class="btn-link" (click)="alternarCadastro()">Criar conta</button>
       </p>
     </div>
 
     <!-- Formulário de login ou cadastro -->
-    <form *ngIf="!isLoggedIn || registerMode" (submit)="onSubmit($event)" #loginForm="ngForm" novalidate>
+    <form *ngIf="!estaLogado || modoCadastro" (submit)="aoEnviar($event)" #loginForm="ngForm" novalidate>
+      <div class="field" *ngIf="modoCadastro">
+        <label for="nome">Nome Completo</label>
+        <input
+          id="nome"
+          name="nome"
+          type="text"
+          required
+          [(ngModel)]="nome"
+          class="input-field"
+          placeholder="Digite seu nome completo"
+        />
+      </div>
+
       <div class="field">
         <label for="email">Email</label>
         <input
@@ -85,53 +47,64 @@
           required
           [(ngModel)]="email"
           class="input-field"
-          placeholder="seu@exemplo.com"
+          placeholder="Digite seu email"
+        />
+      </div>
+
+      <div class="field" *ngIf="modoCadastro">
+        <label for="cpf">CPF</label>
+        <input
+          id="cpf"
+          name="cpf"
+          type="text"
+          required
+          [(ngModel)]="cpf"
+          class="input-field"
+          placeholder="Digite seu CPF (somente números)"
+          pattern="[0-9]{11}"
+          title="11 dígitos"
         />
       </div>
 
       <div class="field">
-        <label for="password">Senha</label>
+        <label for="senha">Senha</label>
         <input
-          id="password"
-          name="password"
+          id="senha"
+          name="senha"
           type="password"
           required
-          [(ngModel)]="password"
+          [(ngModel)]="senha"
           class="input-field"
           placeholder="********"
         />
       </div>
 
-      <!-- Campo adicional para cadastro -->
-      <div class="field" *ngIf="registerMode">
-        <label for="confirmPassword">Confirmar Senha</label>
+      <div class="field" *ngIf="modoCadastro">
+        <label for="confirmacaoSenha">Confirmar Senha</label>
         <input
-          id="confirmPassword"
-          name="confirmPassword"
+          id="confirmacaoSenha"
+          name="confirmacaoSenha"
           type="password"
           required
-          [(ngModel)]="confirmPassword"
+          [(ngModel)]="confirmacaoSenha"
           class="input-field"
           placeholder="********"
         />
       </div>
 
-      <!-- Mensagem de erro -->
-      <div *ngIf="error" class="error">{{ error }}</div>
+      <div *ngIf="erro" class="error">{{ erro }}</div>
 
-      <!-- Botões de ação -->
       <div class="actions">
         <button type="submit" class="btn-primary">
-          {{ registerMode ? 'Cadastrar' : 'Entrar' }}
+          {{ modoCadastro ? 'Cadastrar' : 'Entrar' }}
         </button>
-        <button type="button" class="btn-secondary" (click)="toggleRegister()">
-          {{ registerMode ? 'Já tenho conta' : 'Criar conta' }}
+        <button type="button" class="btn-secondary" (click)="alternarCadastro()">
+          {{ modoCadastro ? 'Já tenho conta' : 'Criar conta' }}
         </button>
       </div>
     </form>
 
-    <!-- Rodapé com link de retorno -->
-    <div class="form-footer" *ngIf="!isLoggedIn && !registerMode">
+    <div class="form-footer" *ngIf="!estaLogado && !modoCadastro">
       <button (click)="voltar()" class="btn-link">Voltar para a Página Principal</button>
     </div>
   </div>

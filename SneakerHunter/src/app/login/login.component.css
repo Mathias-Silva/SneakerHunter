@@ -1,65 +1,83 @@
+/* Container centralizado e layout que alinha imagem e formulário com mesmo tamanho */
 .login-container {
+  min-height: calc(100vh - var(--site-header-height, 0px));
   display: flex;
-  flex-wrap: wrap;
-  gap: 32px;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   padding: 32px 16px;
   box-sizing: border-box;
-  background-color: #f9fafb;
+  background-color: #fafbfc; /* fundo consistente com Home */
 }
 
-/* Carrossel */
-.carousel {
-  flex: 1 1 480px;
-  max-width: 520px;
-  overflow: hidden;
-  border-radius: 8px;
-}
-
-.carousel-images {
+/* Wrapper que mantém os dois blocos lado a lado e com mesma altura */
+.login-content {
   display: flex;
-  gap: 12px;
-  transition: transform 0.3s ease-in-out;
+  gap: 32px;
+  align-items: stretch; /* faz ambos terem mesma altura */
+  width: 100%;
+  max-width: 1100px;
+  box-sizing: border-box;
+  padding: 8px;
+}
+
+/* Carrossel / imagem — ocupa metade do espaço, com altura fixa máxima */
+.carousel {
+  flex: 1 1 520px;
+  max-width: 520px;
+  height: 520px;                 /* altura igual à do formulário */
+  overflow: hidden;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  background: #fff;
+}
+
+/* Imagem única grande (ou primeira imagem do carrossel) */
+.carousel-images {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 .carousel-image {
   width: 100%;
-  max-width: 480px;
-  height: auto;
-  border-radius: 8px;
+  height: 100%;
   object-fit: cover;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  opacity: 0.8;
-  transition: opacity 0.3s ease;
+  border-radius: 12px;
+  display: block;
 }
 
-.carousel-image.active {
-  opacity: 1;
-}
-
-/* Formulário */
+/* Formulário com mesma largura/altura visual do bloco da imagem */
 .form-container {
-  flex: 0 0 420px;
-  max-width: 480px;
+  flex: 1 1 520px;
+  max-width: 520px;
+  height: 520px;                 /* mesma altura da imagem */
   background: #ffffff;
-  padding: 24px;
-  border-radius: 10px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  padding: 28px;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(2,6,23,0.06);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;       /* centraliza verticalmente o formulário dentro do cartão */
 }
 
+/* Título do formulário menor e consistente */
 .form-title {
-  margin-bottom: 16px;
-  font-size: 1.6rem;
-  font-weight: 600;
-  color: #1f2937;
+  margin: 0 0 12px;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #111827;
 }
 
+/* Campos */
 .field {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  margin-bottom: 16px;
+  gap: 8px;
+  margin-bottom: 12px;
 }
 
 .field label {
@@ -67,108 +85,119 @@
   color: #374151;
 }
 
+/* Inputs maiores para preencher o cartão */
 .input-field {
   width: 100%;
-  min-height: 44px;
-  padding: 10px 12px;
+  min-height: 48px;
+  padding: 10px 14px;
   font-size: 1rem;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  background-color: #f9fafb;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  border: 1px solid #e6e6e6;
+  border-radius: 10px;
+  background-color: #fff;
+  box-sizing: border-box;
+  transition: border-color 0.18s, box-shadow 0.18s;
 }
 
 .input-field:focus {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-  background-color: #fff;
+  border-color: #ff7a18; /* laranja padrão da Home */
+  box-shadow: 0 0 0 6px rgba(255,122,24,0.06);
   outline: none;
 }
 
 /* Erro */
 .error {
-  color: #dc2626;
+  color: #b91c1c;
   font-size: 0.9rem;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
-/* Ações */
+/* Ações/botões grandes e preenchendo espaço horizontal */
 .actions {
   display: flex;
-  flex-wrap: wrap;
   gap: 12px;
   margin-top: 12px;
 }
 
 .btn-primary {
-  background: #3b82f6;
+  background: #ff7a18; /* laranja da Home */
   color: #fff;
   border: none;
-  padding: 10px 18px;
-  border-radius: 6px;
+  padding: 12px 16px;
+  border-radius: 10px;
   cursor: pointer;
-  font-weight: 500;
-  transition: background 0.2s;
+  font-weight: 700;
+  flex: 1 1 auto;
 }
 
 .btn-primary:hover {
-  background: #2563eb;
+  background: #ff6a00;
 }
 
 .btn-secondary {
-  background: #e5e7eb;
+  background: #f3f4f6;
   color: #111827;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  padding: 12px 16px;
+  border-radius: 10px;
   cursor: pointer;
-  font-weight: 500;
-  transition: background 0.2s;
+  font-weight: 700;
+  flex: 1 1 auto;
 }
 
 .btn-secondary:hover {
-  background: #d1d5db;
+  background: #eee;
 }
 
 .btn-link {
   background: none;
   border: none;
-  color: #2563eb;
+  color: #ff7a18;
   cursor: pointer;
   padding: 6px 0;
   font-size: 0.95rem;
   text-decoration: underline;
+  margin-top: 12px;
+  align-self: flex-start;
 }
 
 /* Estado logado */
 .signed-in {
-  margin-bottom: 16px;
-  font-size: 0.95rem;
+  margin-bottom: 12px;
   color: #374151;
+  font-size: 0.95rem;
 }
 
-.actions-logged {
-  display: flex;
-  gap: 10px;
-  margin-top: 8px;
-}
-
-/* Responsivo */
+/* Responsivo: empilha verticalmente e mantém proporções */
 @media (max-width: 900px) {
-  .login-container {
+  .login-content {
     flex-direction: column;
-    gap: 24px;
-    padding: 24px 16px;
+    gap: 20px;
+    align-items: center;
   }
 
-  .carousel {
-    order: 2;
+  .carousel,
+  .form-container {
+    max-width: 680px;
     width: 100%;
+    height: 420px; /* mantém grande, mas reduz para caber em telas menores */
   }
 
   .form-container {
-    order: 1;
-    width: 100%;
-    max-width: 100%;
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel,
+  .form-container {
+    height: 360px;
+  }
+
+  .input-field {
+    min-height: 44px;
+  }
+
+  .actions {
+    flex-direction: column;
   }
 }

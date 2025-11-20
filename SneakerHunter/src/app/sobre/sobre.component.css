@@ -1,90 +1,96 @@
 main {
   font-family: 'Segoe UI', sans-serif;
   color: #333;
-  line-height: 1.6;
-  padding: 32px 16px;
+  line-height: 1.45;           /* linha mais compacta */
+  padding: 24px 12px;          /* menos padding para reduzir scroll */
   background-color: #fdfdfd;
 }
 
 .container {
-  max-width: 960px;
+  max-width: 880px;            /* largura levemente reduzida para melhor leitura */
   margin: 0 auto;
 }
 
 /* Introdução */
 .about-intro {
   text-align: center;
-  margin-bottom: 48px;
+  margin-bottom: 32px;         /* menos espaço vertical */
 }
 
 .about-title {
-  font-size: 36px;
-  margin-bottom: 16px;
+  font-size: 28px;             /* menor para evitar scroll */
+  margin-bottom: 12px;
   color: #222;
 }
 
 .about-text {
-  font-size: 18px;
+  font-size: 15px;             /* texto menor e mais compacto */
   color: #555;
   max-width: 720px;
   margin: 0 auto;
+  text-align: center;          /* mantém centralizado e alinhado */
 }
 
 /* Equipe */
 .about-team {
-  margin-bottom: 48px;
+  margin-bottom: 32px;         /* reduzido */
 }
 
 .section-title {
-  font-size: 28px;
-  margin-bottom: 24px;
+  font-size: 22px;             /* menor */
+  margin-bottom: 18px;
   text-align: center;
   color: #222;
 }
 
 .team-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* colunas menores para caber mais itens por linha */
+  gap: 12px;                   /* gap reduzido para compactar */
+  align-items: start;
 }
 
 .team-member {
   background-color: #fff;
   border: 1px solid #eee;
   border-radius: 8px;
-  padding: 16px;
+  padding: 10px;               /* padding ligeiramente menor */
   text-align: center;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-  transition: transform 0.2s ease;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  transition: transform 0.18s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .team-member:hover {
-  transform: translateY(-4px);
+  transform: translateY(-3px);
 }
 
 .team-photo {
-  width: 100px;
-  height: 100px;
+  width: 96px;                /* imagem menor e quadrada */
+  height: 96px;
   object-fit: cover;
-  border-radius: 50%;
-  margin-bottom: 12px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border-radius: 6px;         /* cantos levemente arredondados, não totalmente circulares */
+  margin-bottom: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  flex-shrink: 0;
 }
 
 .team-name {
-  font-size: 18px;
+  font-size: 16px;             /* menor e mais proporcional */
   font-weight: 600;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .team-role {
-  font-size: 14px;
+  font-size: 13px;
   color: #777;
 }
 
 /* Valores */
 .about-values {
-  margin-bottom: 32px;
+  margin-bottom: 24px;         /* reduzido */
 }
 
 .values-list {
@@ -92,19 +98,31 @@ main {
   padding: 0;
   margin: 0 auto;
   max-width: 720px;
-  font-size: 16px;
+  font-size: 14px;             /* menor */
   color: #444;
 }
 
 .values-list li {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 0;
+  gap: 10px;
+  padding: 10px 0;             /* padding menor */
   border-bottom: 1px solid #eee;
 }
 
 .values-list ion-icon {
-  font-size: 20px;
-  color: #5bc0de;
+  font-size: 18px;
+  color: #38ac18;
+}
+
+/* Ajustes para telas muito pequenas: manter várias colunas quando possível */
+@media (max-width: 480px) {
+  .team-grid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+  }
+  .team-photo {
+    width: 80px;
+    height: 80px;
+  }
 }

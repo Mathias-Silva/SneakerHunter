@@ -67,7 +67,7 @@
 
 
 .qty-controls button {
-  background-color: #eee;
+  background-color: #fb923c;
   border: 1px solid #ccc;
   padding: 4px 8px;
   font-size: 16px;
@@ -116,7 +116,7 @@ button:hover {
 }
 
 .cart-total button {
-  background-color: #5bc0de;
+  background-color: #fb923c;
   color: white;
   padding: 8px 16px;
   font-size: 14px;
