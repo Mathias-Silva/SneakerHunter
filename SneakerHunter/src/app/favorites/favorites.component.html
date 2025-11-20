@@ -1,15 +1,21 @@
-<!-- ...existing code... -->
 <section class="favorites-page">
   <h2>Favoritos</h2>
-  <div *ngIf="(favIds$ | async) as ids; else empty">
-    <p *ngIf="ids.length === 0">Nenhum favorito salvo.</p>
-    <ul *ngIf="ids.length > 0">
-      <li *ngFor="let id of ids">
-        <span>Produto ID: {{ id }}</span>
-        <button (click)="remove(id)">Remover</button>
+  <div *ngIf="(favItems$ | async) as items; else empty">
+    <p *ngIf="items.length === 0">Nenhum favorito salvo.</p>
+    <ul *ngIf="items.length > 0">
+      <li *ngFor="let s of items" class="fav-row">
+        <img [src]="s.image || s.imageUrl" alt="{{ s.name }}" class="thumb"/>
+        <div class="info">
+          <strong>{{ s.name }}</strong>
+          <div>R$ {{ s.price | number:'1.2-2' }}</div>
+        </div>
+        <div class="actions">
+          <button (click)="addToCart(s)">Adicionar ao carrinho</button>
+          <button (click)="remove(s.id)">Remover</button>
+        </div>
       </li>
     </ul>
   </div>
   <ng-template #empty><p>Carregando favoritos...</p></ng-template>
 </section>
-<!-- ...existing code... --><p>favorites works!</p>
+

@@ -28,15 +28,16 @@
     </div>
 
     <div class="row">
-      <label for="brand">Modelo</label>
-      <input id="gender" name="gender" required [(ngModel)]="newSneaker.gender" placeholder="Modelo" />
+      <label for="gender">Genero</label>
+      <input id="gender" name="gender" required [(ngModel)]="newSneaker.gender" placeholder="Genero" />
     </div>
     <div class="row sizes-row">
       <label for="size">Tamanhos disponíveis</label>
       <div class="sizes-input">
-        <input id="size" #sizeInput type="number" min="34" max="46" step="1" placeholder="Ex: 38" />
+        <input id="size" required [(ngModel)]="newSneaker.sizes" #sizeInput type="number" min="34" max="46" step="1" placeholder="Ex: 38" />
         <button type="button" class="btn neutral" (click)="addSize(sizeInput.value); sizeInput.value=''; sizeInput.focus()">Adicionar tamanho</button>
       </div>
+
 
       <div class="sizes-list" *ngIf="newSneaker.sizes && newSneaker.sizes.length">
         <span class="size-chip" *ngFor="let s of newSneaker.sizes; let i = index">

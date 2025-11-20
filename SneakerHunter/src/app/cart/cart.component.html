@@ -1,21 +1,35 @@
 <section class="cart-page">
   <h2>Carrinho</h2>
   <div *ngIf="(items$ | async) as items; else empty">
+    <p *ngIf="items.length === 0">Nenhum Produto no carrinho.</p>
     <div *ngFor="let e of items" class="cart-row">
       <img [src]="e.item.image || e.item.imageUrl" alt="{{ e.item.name }}" class="thumb"/>
       <div class="info">
         <strong>{{ e.item.name }}</strong>
-        <div>Qtd: {{ e.qty }}</div>
-        <div>R$ {{ e.item.price }}</div>
+        <div id="teste">
+          
+          <div>Qtd: {{ e.qty }}</div>
+          <div>Preço unit.: R$ {{ e.item.price | number:'1.2-2' }}</div>
+          <div>Subtotal: R$ {{ (e.item.price * e.qty) | number:'1.2-2' }}</div>
+          <div class="qty-controls">
+            <button (click)="decrease(e.item.id)" title="Diminuir">-</button>
+            <input type="number" min="1" [value]="e.qty" (change)="setQty(e.item.id, $any($event.target).valueAsNumber || 1)" />
+            <button (click)="increase(e.item)" title="Aumentar">+</button>
+          </div>
+        </div>
+        <button (click)="remove(e.item.id)">Remover</button>
       </div>
-      <button (click)="remove(e.item.id)">Remover</button>
     </div>
     <div class="cart-total">
       <strong>Total: R$ {{ (total$ | async) | number:'1.2-2' }}</strong>
       <button (click)="clear()">Limpar carrinho</button>
+
+ 
+      
+      
+
+      
     </div>
   </div>
-  <ng-template #empty>
-    <p>Seu carrinho está vazio.</p>
-  </ng-template>
+  <ng-template #empty><p>Carregando carrinho...</p></ng-template>
 </section>

@@ -28,6 +28,26 @@ export class CartService {
     this.save(list);
   }
 
+  // reduz quantidade; remove se <= 0
+  decreaseQty(id: number, qty = 1) {
+    const list = [...this.sub.value];
+    const idx = list.findIndex(e => e.item.id === id);
+    if (idx === -1) return;
+    list[idx].qty -= qty;
+    if (list[idx].qty <= 0) list.splice(idx, 1);
+    this.save(list);
+  }
+
+  // define quantidade diretamente (remove se <=0)
+  updateQty(id: number, newQty: number) {
+    const list = [...this.sub.value];
+    const idx = list.findIndex(e => e.item.id === id);
+    if (idx === -1) return;
+    if (newQty <= 0) list.splice(idx, 1);
+    else list[idx].qty = newQty;
+    this.save(list);
+  }
+
   removeFromCart(id: number) {
     const list = this.sub.value.filter(e => e.item.id !== id);
     this.save(list);
