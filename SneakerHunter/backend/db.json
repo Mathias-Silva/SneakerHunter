@@ -110,6 +110,16 @@
       "description": "O Adidas Adizero Evo SL Feminino é um tênis de corrida leve e moderno, projetado para oferecer velocidade, conforto e estilo. Ele combina design minimalista com tecnologia de amortecimento eficiente, ideal para treinos e provas",
       "imageUrl": "assets/images/AdidasAdizero.jpg",
       "gender": "feminino"
+    },
+    {
+      "id": "cbf1",
+      "name": "NIKE SHOX R4 Metallic Silver Deep",
+      "price": 1299,
+      "brand": "Nike",
+      "imageUrl": "assets/images/NikeShow.jpg",
+      "description": "Uma versão repaginada do ícone do início dos anos 2000, o Nike Shox R4 replica o original com suas linhas de design futuristas e amortecimento de alto desempenho. As colunas Nike Shox no calcanhar distribuem o peso para maximizar o conforto, proporcionando um visual ousado nas ruas.",
+      "gender": "masculino",
+      "sizes": []
     }
   ]
 }

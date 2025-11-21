@@ -7,11 +7,10 @@
   padding-bottom: 20px;
 }
 
-/* Hero Section */
 .hero {
-  background: linear-gradient(135deg, #ff7a18 0%, #ffb347 100%);
+  background: linear-gradient(135deg, #ff6a00 0%, #ffa200 100%);
   color: #fff;
-  padding: 10px 17px;               /* padding reduzido */
+  padding: 10px 17px;
   text-align: center;
   margin-bottom: 10px;
   display: flex;
@@ -19,21 +18,18 @@
   justify-content: center;
   background-position: center;
   background-size: cover;
-  min-height: 120px;                /* altura mínima menor */
-  max-height: 220px;                /* limita altura máxima */
+  min-height: 120px;
+  max-height: 220px;
   box-sizing: border-box;
   position: relative;
 }
 
-/* Se o header for fixed / sticky, ajuste a distância do topo aqui.
-   Defina --site-header-height no CSS global para o valor real (ex.: 64px) */
 .hero::before {
   content: "";
   display: block;
-  height: var(--site-header-height, 0px); /* empurra o hero caso header seja fixo */
+  height: var(--site-header-height, 0px);
 }
 
-/* Conteúdo centralizado e com tipografia menor para não ocupar tanto */
 .hero-content {
   width: 100%;
   max-width: 1100px;
@@ -43,23 +39,21 @@
 
 .hero-content h1 {
   margin: 0 0 6px 0;
-  font-size: 4.9rem;                 /* reduzido */
+  font-size: 4.9rem;
   font-weight: 700;
   line-height: 1.05;
 }
 
 .hero-content p {
   margin: 0;
-  font-size: 0.95rem;                /* reduzido */
+  font-size: 0.95rem;
   opacity: 0.95;
 }
 
-/* Opcional: sombra suave para separar do header */
 .hero {
   box-shadow: 0 1px 0 rgba(0,0,0,0.06);
 }
 
-/* Filtros Section */
 .filters-section {
   max-width: 1200px;
   margin: 0 auto 40px;
@@ -101,7 +95,6 @@
   cursor: not-allowed;
 }
 
-/* Filter Group */
 .filter-group {
   margin-bottom: 24px;
 }
@@ -186,7 +179,6 @@
   border-color: #ff7a18;
 }
 
-/* Products Section */
 .products-section {
   max-width: 1200px;
   margin: 0 auto;
@@ -233,7 +225,6 @@
   cursor: pointer;
 }
 
-/* Produtos Grid */
 .produtos-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -354,7 +345,6 @@
   color: #dc2626;
 }
 
-/* Responsivo */
 @media (max-width: 768px) {
   .hero-content h1 {
     font-size: 2rem;

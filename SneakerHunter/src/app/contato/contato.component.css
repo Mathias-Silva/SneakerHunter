@@ -1,79 +1,233 @@
-/* Estilos já estão no styles.css global, mas podemos adicionar estilos específicos aqui se necessário */
+:root {
+  --site-header-height: 0px;
+  --page-padding: 24px;
+  --accent: #ff7a18;
+  --accent-dark: #ff6a00;
+  --bg: #fafbfc;
+  --card-bg: #ffffff;
+  --text: #222;
+  --muted: #6b7280;
+  --radius: 12px;
+  --max-width: 1100px;
+}
 
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.contact-page {
+  min-height: calc(100vh - var(--site-header-height));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--page-padding);
+  background: var(--bg);
+  box-sizing: border-box;
+}
+
+.contact-card {
+  display: flex;
+  gap: 28px;
+  width: 100%;
+  max-width: var(--max-width);
+  height: calc(100vh - var(--site-header-height) - (var(--page-padding) * 2));
+  align-items: stretch;
+  box-sizing: border-box;
+}
+
+.contact-info,
+.contact-form {
+  flex: 1 1 50%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.contact-info {
+  padding: 32px;
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* mantém detalhes no rodapé */
+  gap: 18px;                       /* menos gap que antes */
+  background: linear-gradient(180deg, rgba(255,122,24,0.03), rgba(255,122,24,0.01));
+  color: var(--text);
+  text-align: left;
+  box-sizing: border-box;
+}
+
+.contact-title {
+  margin: 0 0 8px 0;
+  font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+  font-size: 2rem;
+  line-height: 1.08;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.contact-text {
+  margin: 0 0 18px 0;
+  font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+  color: var(--muted);
+  max-width: 60ch;
+}
+
+/* empurra os detalhes para o final da coluna e organiza itens verticalmente */
+.contact-details {
+  margin: 0;
+  color: var(--muted);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: auto;
+}
+
+/* garante que cada parágrafo tenha espaçamento consistente */
+.contact-details p {
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+/* mantém links sociais alinhados à esquerda e com espaçamento visual */
+.social-links {
+  margin-top: 8px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.social-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform .12s ease, opacity .12s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+}
+
+/* atribui as cores conforme a ordem/versão anterior */
+.social-links a:nth-child(1) {
+  background: linear-gradient(45deg,#f09433 0%,#bc1888 50%,#515bd4 100%); /* Instagram */
+}
+.social-links a:nth-child(2) {
+  background: #1877F2; /* Facebook */
+}
+.social-links a:nth-child(3) {
+  background: #1DA1F2; /* Twitter */
+}
+
+.social-links a:hover {
+  transform: translateY(-3px);
+  opacity: 0.95;
+}
+
+/* formulário */
+.contact-form {
+  padding: 80px;
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: 0 12px 30px rgba(2,6,23,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contact-form form {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+  text-align: left;
+  box-sizing: border-box;
+}
+
+/* campos */
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .form-group label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: 500;
+  font-weight: 600;
+  color: var(--text);
+  font-size: 10;
 }
 
 .form-input {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 16px;
+  padding: 10px 12px;
+  border: 1px solid #e6e6e6;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+  font-family: inherit;
+  color: var(--text);
+  background: #e6e6e6;
 }
 
-.form-input textarea {
-  resize: vertical;
-}
-
+/* botão Enviar: cor laranja padrão e efeito hover */
 .btn-entrar {
-  width: 100%;
-  padding: 10px;
-  background-color: var(--bittersweet);
-  color: #fff;
+  width: 160px;
+  padding: 12px 18px;
+  background: var(--accent);
+  color: hsl(34, 100%, 50%);
   border: none;
-  border-radius: 4px;
-  font-size: 16px;
+  border-radius: 10px;
+  font-weight: 700;
   cursor: pointer;
+  box-shadow: 0 8px 20px rgba(255,122,24,0.14);
+  align-self: flex-start;
 }
 
 .btn-entrar:hover {
-  background-color: var(--salmon);
+  background-color: var(--accent-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(255,122,24,0.18);
 }
 
-.form-footer {
-  text-align: center;
-  margin-top: 20px;
+.btn-entrar:focus {
+  outline: none;
+  box-shadow: 0 0 0 6px rgba(255,122,24,0.12);
 }
 
-.form-footer p {
-  margin-bottom: 10px;
+/* responsivo: empilha sem scroll e reduz tamanhos */
+@media (max-width: 900px) {
+  .contact-card {
+    flex-direction: column;
+    height: auto;
+    max-height: calc(100vh - var(--site-header-height) - (var(--page-padding) * 2));
+  }
+
+  .contact-info,
+  .contact-form {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .contact-form form {
+    max-width: 100%;
+  }
 }
 
-.social-links {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.social-icon {
-  padding: 8px 16px;
-  border-radius: 4px;
-  text-decoration: none;
-  color: #fff;
-  font-weight: 500;
-}
-
-.social-icon.instagram {
-  background-color: #E4405F;
-}
-
-.social-icon.facebook {
-  background-color: #1877F2;
-}
-
-.social-icon.twitter {
-  background-color: #1DA1F2;
-}
-
-.social-icon:hover {
-  opacity: 0.8;
+/* para telas baixas em altura */
+@media (max-height: 640px) {
+  .contact-card { gap: 12px; }
+  .contact-info { padding: 16px; }
+  .contact-form { padding: 16px; }
+  .contact-title { font-size: 1.6rem; }
+  .form-input { padding: 8px 10px; }
 }
 

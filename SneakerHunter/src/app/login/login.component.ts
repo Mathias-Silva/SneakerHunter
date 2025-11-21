@@ -129,7 +129,7 @@ export class LoginComponent {
     return this.authService.currentUser?.email ?? null;
   }
 
-  // helpers de validação
+  // validações
 
   private validarEmail(email: string): boolean {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -142,25 +142,30 @@ export class LoginComponent {
 
   // validação de CPF (verificação dos dígitos)
   private validarCPF(cpf: string): boolean {
-    const s = (cpf || '').replace(/\D/g, '');
-    if (s.length !== 11) return false;
-    if (/^(\d)\1{10}$/.test(s)) return false; // todos os dígitos iguais -> inválido
+    // validação simples: exatamente 11 dígitos numéricos
+    const digits = (cpf || '').replace(/\D/g, '');
+    return digits.length === 11;
+  }
 
-    const num = s.split('').map(ch => parseInt(ch, 10));
+  onCpfInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    // remove tudo que não for dígito e limita a 11 dígitos
+    const digits = (input.value || '').replace(/\D/g, '').slice(0, 11);
 
-    const calc = (t: number): number => {
-      let sum = 0;
-      for (let i = 0; i < t - 1; i++) {
-        sum += num[i] * (t - i);
-      }
-      const res = (sum * 10) % 11;
-      return res === 10 ? 0 : res;
-    };
+    // formata progressivamente: ###.###.###.##
+    let formatted = '';
+    if (digits.length <= 3) {
+      formatted = digits;
+    } else if (digits.length <= 6) {
+      formatted = `${digits.slice(0,3)}.${digits.slice(3)}`;
+    } else if (digits.length <= 9) {
+      formatted = `${digits.slice(0,3)}.${digits.slice(3,6)}.${digits.slice(6)}`;
+    } else {
+      formatted = `${digits.slice(0,3)}.${digits.slice(3,6)}.${digits.slice(6,9)}-${digits.slice(9,11)}`;
+    }
 
-    const dig1 = calc(10);
-    const dig2 = calc(11);
-
-    return dig1 === num[9] && dig2 === num[10];
+    // atualiza o modelo com formato
+    this.cpf = formatted;
   }
 }
 

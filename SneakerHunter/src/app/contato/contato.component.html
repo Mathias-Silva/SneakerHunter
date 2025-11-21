@@ -1,46 +1,44 @@
-<main>
-  <section class="about-intro">
-    <div class="container">
-      <h1 class="about-title">Fale Conosco</h1>
-      <p class="about-text">
-        Tem dúvidas, sugestões ou quer falar com a equipe SneakerHunter? Preencha o formulário abaixo ou utilize nossos canais de contato.
+<main class="contact-page">
+  <section class="contact-card" role="region" aria-label="Fale Conosco">
+    <div class="contact-info">
+      <h1 class="contact-title">Fale Conosco</h1>
+      <p class="contact-text">
+        Tem dúvidas, sugestões ou quer falar com a equipe SneakerHunter? Preencha o formulário ao lado ou utilize nossos canais de contato. Responderemos o mais rápido possível.
       </p>
-    </div>
-  </section>
 
-  <section class="about-team">
-    <div class="container" style="max-width:500px;">
-      <form class="form" id="contatoForm">
-        <div class="form-group">
-          <label for="nome">Nome</label>
-          <input type="text" id="nome" name="nome" class="form-input" placeholder="Seu nome" required>
-        </div>
-        <div class="form-group">
-          <label for="email">E-mail</label>
-          <input type="email" id="email" name="email" class="form-input" placeholder="Seu e-mail" required>
-        </div>
-        <div class="form-group">
-          <label for="mensagem">Mensagem</label>
-          <textarea id="mensagem" name="mensagem" class="form-input" rows="5" placeholder="Digite sua mensagem" required></textarea>
-        </div>
-        <button type="submit" class="btn btn-entrar">Enviar</button>
-      </form>
-      <div class="form-footer" style="margin-top:20px;">
+      <div class="contact-details">
         <p><strong>Endereço:</strong> Rua Dr. Antônio Bento 393, São Paulo, SP, 04750-000</p>
-        <p><strong>Telefones:</strong> (71) 91234-5678 -- (11) 98765-4321</p>
+        <p><strong>Telefones:</strong> (71) 91234-5678 • (11) 98765-4321</p>
         <p><strong>Email:</strong> contato_sneakerhunter&#64;gmail.com</p>
         <div class="social-links">
-          <a href="https://instagram.com/sneakerhunter" target="_blank" class="social-icon instagram">
-            Instagram
-          </a>
-          <a href="https://facebook.com/sneakerhunter" target="_blank" class="social-icon facebook">
-            Facebook
-          </a>
-          <a href="https://twitter.com/sneakerhunter" target="_blank" class="social-icon twitter">
-            Twitter
-          </a>
+          <a href="https://instagram.com/sneakerhunter" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://facebook.com/sneakerhunter" target="_blank" rel="noopener">Facebook</a>
+          <a href="https://twitter.com/sneakerhunter" target="_blank" rel="noopener">Twitter</a>
         </div>
       </div>
+    </div>
+
+    <div class="contact-form">
+      <form id="contatoForm" (submit)="$event.preventDefault()" autocomplete="off">
+        <div class="form-group">
+          <label for="nome">Nome</label>
+          <input id="nome" name="nome" type="text" class="form-input" placeholder="Seu nome" required />
+        </div>
+
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <input id="email" name="email" type="email" class="form-input" placeholder="Seu e-mail" required />
+        </div>
+
+        <div class="form-group">
+          <label for="mensagem">Mensagem</label>
+          <textarea id="mensagem" name="mensagem" rows="6" class="form-input" placeholder="Digite sua mensagem" required></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-entrar">Enviar</button>
+        </div>
+      </form>
     </div>
   </section>
 </main>

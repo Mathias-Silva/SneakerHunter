@@ -2,7 +2,7 @@
   <!-- Imagem/visual -->
   <div class="carousel" aria-hidden="true">
     <div class="carousel-images">
-      <img src="assets/images/airmax.jpg" alt="Tênis Air Max" class="carousel-image active">
+      <img src="assets/images/AirMaxLoguin.jpg" alt="Tênis Air Max" class="carousel-image active">
     </div>
   </div>
 
@@ -59,10 +59,12 @@
           type="text"
           required
           [(ngModel)]="cpf"
+          (input)="onCpfInput($event)"
           class="input-field"
-          placeholder="Digite seu CPF (somente números)"
-          pattern="[0-9]{11}"
-          title="11 dígitos"
+          placeholder="000.000.000-00"
+          inputmode="numeric"
+          maxlength="14"
+          autocomplete="off"
         />
       </div>
 
