@@ -27,6 +27,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   editMode = false;
   loading = false;
   error = '';
+  message: string | null = null;
   private sub?: Subscription;
 
   constructor(private sneakerService: SneakerService) {}
@@ -61,16 +62,18 @@ export class AdminComponent implements OnInit, OnDestroy {
         console.error('[AdminComponent] update attempted with id 0', this.newSneaker);
         return;
       }
-      this.sneakerService.updateSneaker(this.newSneaker.id, this.newSneaker).subscribe({
-        next: () => { this.resetForm(); },
-        error: err => { this.error = 'Erro ao atualizar'; console.error('[AdminComponent] update error', err); }
+      const id = String(this.newSneaker.id);
+      this.sneakerService.updateSneaker(id, this.newSneaker).subscribe({
+        next: (updated: any) => { this.resetForm(); },
+        error: (err: any) => { this.error = 'Erro ao atualizar'; console.error(err); }
       });
     } else {
       const toCreate = { ...this.newSneaker };
-      delete (toCreate as any).id;
-      this.sneakerService.createSneaker(toCreate as Sneaker).subscribe({
-        next: created => { console.debug('[AdminComponent] created', created); this.resetForm(); },
-        error: err => { this.error = 'Erro ao criar'; console.error('[AdminComponent] create error', err); }
+      // force id as string if present
+      if (toCreate.id != null) toCreate.id = String(toCreate.id);
+      this.sneakerService.createSneaker(toCreate as any).subscribe({
+        next: (created: any) => { console.debug('[Admin] created', created); this.sneakerService.loadAll(); },
+        error: (err: any) => { this.error = 'Erro ao criar'; console.error(err); }
       });
     }
   }
@@ -88,9 +91,17 @@ export class AdminComponent implements OnInit, OnDestroy {
       return;
     }
     if (!confirm('Tem certeza que deseja excluir este produto?')) return;
-    this.sneakerService.deleteSneaker(id).subscribe({
-      next: () => {},
-      error: err => { this.error = 'Erro ao excluir'; console.error('[AdminComponent] delete error', err); }
+    // garantir string para o serviço que usa id encoded como string
+    const sid = String(id);
+    this.sneakerService.deleteSneaker(sid).subscribe({
+      next: () => {
+        this.message = 'Excluído com sucesso';
+        this.sneakerService.loadAll();
+      },
+      error: (err: any) => {
+        this.error = 'Erro ao excluir';
+        console.error('[AdminComponent] delete error', err);
+      }
     });
   }
     addSize(value: string): void {

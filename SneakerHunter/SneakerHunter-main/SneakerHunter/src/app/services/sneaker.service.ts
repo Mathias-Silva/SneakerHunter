@@ -2,93 +2,57 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
 import { Sneaker } from '../models/sneaker';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class SneakerService {
-  private apiUrl = 'http://localhost:3000/sneakers';
-  private sneakersSubject = new BehaviorSubject<Sneaker[]>([]);
-  sneakers$ = this.sneakersSubject.asObservable();
+  private api = 'http://localhost:3000';
+  private subject = new BehaviorSubject<Sneaker[]>([]);
+  sneakers$ = this.subject.asObservable();
 
-  constructor(private http: HttpClient) {
-    this.loadAll();  // já chama no constructor
-  }
+  constructor(private http: HttpClient) {}
 
+  // Carrega todos do backend e atualiza sneakers$
   loadAll(): void {
-    this.http.get<Sneaker[]>(this.apiUrl).subscribe({
-      next: list => {
-        console.log('[SneakerService] Loaded from backend:', list);
-        this.sneakersSubject.next(list || []);
-      },
-      error: err => {
-        console.error('[SneakerService] loadAll error:', err);
-        // tenta fallback local se backend indisponível
-        console.warn('[SneakerService] Tentando carregar de assets/db.json...');
-        this.loadFromAssets();
-      }
+    this.http.get<Sneaker[]>(`${this.api}/sneakers`).pipe(
+      tap(list => this.subject.next(list || []))
+    ).subscribe({
+      error: err => console.error('[SneakerService] loadAll error', err)
     });
   }
 
-  private loadFromAssets(): void {
-    // fallback para arquivo local em assets
-    fetch('assets/db.json')
-      .then(res => res.json())
-      .then((data: any) => {
-        const list = Array.isArray(data) ? data : (data?.sneakers || []);
-        console.log('[SneakerService] Loaded from assets:', list);
-        this.sneakersSubject.next(list);
-      })
-      .catch(err => {
-        console.error('[SneakerService] loadFromAssets error:', err);
-        this.sneakersSubject.next([]);
-      });
+  // compatibilidade: muitos componentes chamam getAll() esperando Observable<Sneaker[]>
+  getAll(): Observable<Sneaker[]> {
+    // se ainda não carregado, dispara loadAll()
+    if (!this.subject.value || this.subject.value.length === 0) {
+      this.loadAll();
+    }
+    return this.sneakers$;
   }
 
-  getSneakers(): Observable<Sneaker[]> {
-    return this.sneakersSubject.asObservable();
-  }
-
-  getSneaker(id: number): Observable<Sneaker> {
-    return this.http.get<Sneaker>(`${this.apiUrl}/${id}`);
-  }
-
-  createSneaker(sneaker: Sneaker): Observable<Sneaker> {
-    const payload: any = { ...sneaker };
-    // json-server gera o id, não envie id=0
-    delete payload.id;
-    return this.http.post<Sneaker>(this.apiUrl, payload).pipe(
-      tap(created => {
-        console.log('[SneakerService] Created:', created);
-        // recarrega para garantir sincronização com backend
-        this.loadAll();
-      })
+  // busca um sneaker por id (retorna Observable<Sneaker | undefined>)
+  getById(id: string): Observable<Sneaker | undefined> {
+    return this.http.get<Sneaker[]>(`${this.api}/sneakers?id=${encodeURIComponent(id)}`).pipe(
+      map(list => (list && list.length) ? list[0] : undefined)
     );
   }
 
-  updateSneaker(id: number, sneaker: Sneaker): Observable<Sneaker> {
-    if (!id || id === 0) {
-      throw new Error('updateSneaker: invalid id');
-    }
-    return this.http.put<Sneaker>(`${this.apiUrl}/${id}`, sneaker).pipe(
-      tap(updated => {
-        console.log('[SneakerService] Updated:', updated);
-        this.loadAll();
-      })
+  createSneaker(s: Sneaker): Observable<Sneaker> {
+    return this.http.post<Sneaker>(`${this.api}/sneakers`, s).pipe(
+      tap(() => this.loadAll())
     );
   }
 
-  deleteSneaker(id: number): Observable<void> {
-    if (!id || id === 0) {
-      throw new Error('deleteSneaker: invalid id');
-    }
-    return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
-      tap(() => {
-        console.log('[SneakerService] Deleted id:', id);
-        this.loadAll();
-      })
+  updateSneaker(id: string, payload: Partial<Sneaker>): Observable<Sneaker> {
+    return this.http.patch<Sneaker>(`${this.api}/sneakers/${encodeURIComponent(id)}`, payload).pipe(
+      tap(() => this.loadAll())
+    );
+  }
+
+  deleteSneaker(id: string): Observable<any> {
+    return this.http.delete(`${this.api}/sneakers/${encodeURIComponent(id)}`).pipe(
+      tap(() => this.loadAll())
     );
   }
 }

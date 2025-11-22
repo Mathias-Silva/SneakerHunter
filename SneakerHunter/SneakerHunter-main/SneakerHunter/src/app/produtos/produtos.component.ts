@@ -66,10 +66,13 @@ export class ProdutosComponent implements OnInit, OnDestroy {
   }
 
   addToFavorites(sneaker: Sneaker): void {
-    this.favService.toggleFavorite(sneaker);
-    console.log('[ProdutosComponent] Favoritos atualizados', this.favService.getAll());
+    this.favService.toggle(sneaker);
+    
   }
 
+getAll(): string[] {
+  return this.favService.getAll();
+}
   isFavorited(s: Sneaker): boolean {
     return this.favService.isFavoriteId(s.id);
   }

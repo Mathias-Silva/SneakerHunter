@@ -1,60 +1,148 @@
-// ...existing code...
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { Sneaker } from '../models/sneaker';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { switchMap, tap, map } from 'rxjs/operators';
+import { AuthService } from './auth.service';
 
-type CartEntry = { item: Sneaker; qty: number };
+interface CartRecord { id?: number; userId: number; items: { sneakerId: string; qty: number }[]; }
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
-  private key = 'cart';
-  private sub = new BehaviorSubject<CartEntry[]>(this.load());
-  items$ = this.sub.asObservable();
+  private api = 'http://localhost:3000';
+  private itemsSubject = new BehaviorSubject<{ sneakerId: string; qty: number }[]>([]);
+  items$ = this.itemsSubject.asObservable();
 
-  private load(): CartEntry[] {
-    try { return JSON.parse(localStorage.getItem(this.key) || '[]'); } catch { return []; }
+  // evita criar múltiplos registros no backend
+  private loadedFor = new Set<number>();
+
+  constructor(private http: HttpClient, private auth: AuthService) {}
+
+  // load cart for current user or provided id
+  loadCartForUser(userId?: number): Observable<{ sneakerId: string; qty: number }[]> {
+    const uid = userId ?? this.auth.getCurrentUser()?.id;
+    if (!uid) { this.itemsSubject.next([]); return of([]); }
+    if (this.loadedFor.has(uid)) return of(this.itemsSubject.value);
+
+    return this.http.get<CartRecord[]>(`${this.api}/carts?userId=${uid}`).pipe(
+      switchMap(list => {
+        if (list && list.length) {
+          const items = list[0].items || [];
+          this.itemsSubject.next(items);
+          this.loadedFor.add(uid);
+          return of(items);
+        } else {
+          const newRec: CartRecord = { userId: uid, items: [] };
+          return this.http.post<CartRecord>(`${this.api}/carts`, newRec).pipe(
+            tap(rec => {
+              this.itemsSubject.next(rec.items || []);
+              this.loadedFor.add(uid);
+            }),
+            map(rec => rec.items || [])
+          );
+        }
+      })
+    );
   }
 
-  private save(list: CartEntry[]) {
-    localStorage.setItem(this.key, JSON.stringify(list));
-    this.sub.next(list);
+  // addToCart accepts object or id; uses current user
+  addToCart(itemOrId: any, qty = 1): void {
+    const uid = this.auth.getCurrentUser()?.id;
+    if (!uid) return;
+    const sneakerId = String(itemOrId?.id ?? itemOrId);
+    this.http.get<CartRecord[]>(`${this.api}/carts?userId=${uid}`).pipe(
+      switchMap(list => {
+        if (list && list.length) {
+          const rec = list[0];
+          const items = rec.items || [];
+          const idx = items.findIndex(i => i.sneakerId === sneakerId);
+          if (idx > -1) items[idx].qty += qty;
+          else items.push({ sneakerId, qty });
+          return this.http.patch(`${this.api}/carts/${rec.id}`, { items }).pipe(
+            tap(() => this.itemsSubject.next(items))
+          );
+        } else {
+          const newRec: CartRecord = { userId: uid, items: [{ sneakerId, qty }] };
+          return this.http.post<CartRecord>(`${this.api}/carts`, newRec).pipe(
+            tap(rec => this.itemsSubject.next(rec.items || []))
+          );
+        }
+      })
+    ).subscribe();
   }
 
-  addToCart(item: Sneaker, qty = 1) {
-    const list = [...this.sub.value];
-    const idx = list.findIndex(e => e.item.id === item.id);
-    if (idx > -1) list[idx].qty += qty;
-    else list.push({ item, qty });
-    this.save(list);
+  decreaseQty(itemOrId: any, qty = 1): void {
+    const uid = this.auth.getCurrentUser()?.id;
+    if (!uid) return;
+    const sneakerId = String(itemOrId);
+    this.http.get<CartRecord[]>(`${this.api}/carts?userId=${uid}`).pipe(
+      switchMap(list => {
+        if (!list || !list.length) return of(null as any);
+        const rec = list[0];
+        const items = (rec.items || []).map(i => ({ ...i }));
+        const idx = items.findIndex(i => i.sneakerId === sneakerId);
+        if (idx === -1) return of(null as any);
+        items[idx].qty = Math.max(0, (items[idx].qty || 0) - qty);
+        if (items[idx].qty === 0) items.splice(idx, 1);
+        return this.http.patch(`${this.api}/carts/${rec.id}`, { items }).pipe(
+          tap(() => this.itemsSubject.next(items))
+        );
+      })
+    ).subscribe();
   }
 
-  // reduz quantidade; remove se <= 0
-  decreaseQty(id: number, qty = 1) {
-    const list = [...this.sub.value];
-    const idx = list.findIndex(e => e.item.id === id);
-    if (idx === -1) return;
-    list[idx].qty -= qty;
-    if (list[idx].qty <= 0) list.splice(idx, 1);
-    this.save(list);
+  updateQty(itemOrId: any, qty: number): void {
+    const uid = this.auth.getCurrentUser()?.id;
+    if (!uid) return;
+    const sneakerId = String(itemOrId);
+    this.http.get<CartRecord[]>(`${this.api}/carts?userId=${uid}`).pipe(
+      switchMap(list => {
+        if (!list || !list.length) return of(null as any);
+        const rec = list[0];
+        const items = (rec.items || []).map(i => ({ ...i }));
+        const idx = items.findIndex(i => i.sneakerId === sneakerId);
+        if (idx === -1) return of(null as any);
+        items[idx].qty = Math.max(1, qty);
+        return this.http.patch(`${this.api}/carts/${rec.id}`, { items }).pipe(
+          tap(() => this.itemsSubject.next(items))
+        );
+      })
+    ).subscribe();
   }
 
-  // define quantidade diretamente (remove se <=0)
-  updateQty(id: number, newQty: number) {
-    const list = [...this.sub.value];
-    const idx = list.findIndex(e => e.item.id === id);
-    if (idx === -1) return;
-    if (newQty <= 0) list.splice(idx, 1);
-    else list[idx].qty = newQty;
-    this.save(list);
+  removeFromCart(itemOrId: any): void {
+    const uid = this.auth.getCurrentUser()?.id;
+    if (!uid) return;
+    const sneakerId = String(itemOrId);
+    this.http.get<CartRecord[]>(`${this.api}/carts?userId=${uid}`).pipe(
+      switchMap(list => {
+        if (!list || !list.length) return of(null as any);
+        const rec = list[0];
+        const items = (rec.items || []).filter(i => i.sneakerId !== sneakerId);
+        return this.http.patch(`${this.api}/carts/${rec.id}`, { items }).pipe(
+          tap(() => this.itemsSubject.next(items))
+        );
+      })
+    ).subscribe();
   }
 
-  removeFromCart(id: number) {
-    const list = this.sub.value.filter(e => e.item.id !== id);
-    this.save(list);
+  clear(): void {
+    const uid = this.auth.getCurrentUser()?.id;
+    if (!uid) return;
+    this.http.get<CartRecord[]>(`${this.api}/carts?userId=${uid}`).pipe(
+      switchMap(list => {
+        if (!list || !list.length) return of(null as any);
+        const rec = list[0];
+        return this.http.patch(`${this.api}/carts/${rec.id}`, { items: [] }).pipe(
+          tap(() => this.itemsSubject.next([]))
+        );
+      })
+    ).subscribe();
   }
 
-  clear() { this.save([]); }
-
-  count(): number { return this.sub.value.reduce((s, e) => s + e.qty, 0); }
+  // mergeSessionIntoUser: placeholder para evitar erro de compilação
+  // Implementar migração do carrinho da sessão para o usuário quando desejar
+  mergeSessionIntoUser(userId: number): void {
+    // sem-op por enquanto; se existir SessionService, faça o merge dos itens aqui
+    return;
+  }
 }
-// ...existing code...

@@ -91,7 +91,7 @@ input[type="number"] {
 }
 
 button {
-  background-color: #d9534f;
+  background-color: #fb923c;
   color: white;
   border: none;
   padding: 8px 12px;
@@ -102,10 +102,10 @@ button {
 }
 
 button:hover {
-  background-color: #c9302c;
+  background-color: #d4c1b6;
 }
 
-.cart-total {
+.cart-actions {
   margin-top: 24px;
   display: flex;
   justify-content: space-between;
@@ -115,7 +115,7 @@ button:hover {
   border-top: 2px solid #ddd;
 }
 
-.cart-total button {
+.cart-actions button {
   background-color: #fb923c;
   color: white;
   padding: 8px 16px;
@@ -125,13 +125,13 @@ button:hover {
   cursor: pointer;
 }
 
-.cart-total button:hover {
-  background-color: #31b0d5;
+.cart-actions button:hover {
+  background-color: #dd7d00 !important;
   
 }
-.cart-total .btn-primary:disabled, .cart-total .btn-clear:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
+.cart-actions .btn-primary:disabled, .cart-actions .btn-clear:disabled {
+  background-color: #ccc !important;
+  cursor: not-allowed !important;
 }
 
 @media (max-width: 600px) {
@@ -154,7 +154,7 @@ button:hover {
     justify-content: center;
   }
 
-  .cart-total {
+  .cart-actions {
     flex-direction: column;
     gap: 12px;
     text-align: center;

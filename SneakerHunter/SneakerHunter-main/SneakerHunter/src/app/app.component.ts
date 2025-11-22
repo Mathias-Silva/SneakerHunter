@@ -28,8 +28,8 @@ export class AppComponent implements OnInit {
       map((list: any[]) => list.reduce((s, e) => s + ((e.item?.price || 0) * (e.qty || 0)), 0).toFixed(2))
     );
 
-    this.favCount$ = this.fav.favs$.pipe(
-      map((list: number[]) => list.length)
+    this.favCount$ = this.fav.items$.pipe(
+      map((list: string[]) => list.length)
     );
   }
 

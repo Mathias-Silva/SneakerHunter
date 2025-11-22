@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
+import { CartService } from '../services/cart.service';
+import { FavoritesService } from '../services/favorite.service';
 
 @Component({
   selector: 'app-login',
@@ -23,9 +25,26 @@ export class LoginComponent {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private cartService: CartService,
+    private favoritesService: FavoritesService
   ) {}
 
+    fazerLogin() {
+    this.authService.login(this.email, this.senha).subscribe(user => {
+      if (!user) { this.erro = 'Credenciais inválidas'; return; }
+      const userId = user.id;
+      // merge guest/session data if needed (services provide merge methods)
+      this.favoritesService.mergeSessionIntoUser?.(userId);
+      this.cartService.mergeSessionIntoUser?.(userId);
+      // load user data
+      this.favoritesService.loadForUser(userId).subscribe();
+      this.cartService.loadCartForUser(userId).subscribe();
+      // navigate
+      if (user.role === 'admin') this.router.navigate(['/admin']);
+      else this.router.navigate(['/']);
+    }, () => this.erro = 'Erro ao conectar');
+  }
   aoEnviar(event?: Event): void {
     if (event) event.preventDefault();
     this.erro = '';
@@ -83,19 +102,23 @@ export class LoginComponent {
       return;
     }
 
-    const user = this.authService.login(this.email, this.senha);
-    if (user && user.role === 'admin') {
-      this.isAdmin = true;
-    } else {
-      this.isAdmin = false;
-    }
+    this.authService.login(this.email, this.senha).subscribe(user => {
+      if (!user) {
+        this.erro = 'Credenciais inválidas';
+        return;
+      }
+      // user salvo no AuthService via tap
+      const userId = user.id;
+      // carregar dados dependentes do usuário
+      this.favoritesService.loadForUser(userId).subscribe();
+      this.cartService.loadCartForUser(userId).subscribe();
 
-    if (!user) {
-      this.erro = 'Credenciais inválidas';
-      return;
-    }
-
-    this.navegarAposLogin();
+      if (user.role === 'admin') {
+        this.router.navigate(['/admin']);
+        return;
+      }
+      this.navegarAposLogin();
+    });
   }
 
   alternarCadastro(): void {
@@ -180,6 +203,19 @@ export class LoginComponent {
 
     // atualiza o modelo com formato
     this.cpf = formatted;
+  }
+
+    cadastrar() {
+    if (!this.email || !this.senha) { this.erro = 'Preencha email e senha'; return; }
+    this.authService.register(this.email, this.senha, this.nome).subscribe({
+      next: () => {
+        // após cadastro, direciona para tela de login
+        this.router.navigate(['/login']);
+      },
+      error: () => {
+        this.erro = 'Erro ao cadastrar usuário';
+      }
+    });
   }
 
   goToAdmin() {

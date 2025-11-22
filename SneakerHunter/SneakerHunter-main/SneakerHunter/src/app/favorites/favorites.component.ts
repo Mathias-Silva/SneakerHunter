@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { combineLatest, map, Observable } from 'rxjs';
 import { FavoritesService } from '../services/favorite.service';
 import { SneakerService } from '../services/sneaker.service';
 import { CartService } from '../services/cart.service';
-import { combineLatest, Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
 import { Sneaker } from '../models/sneaker';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-favorites',
@@ -15,47 +15,31 @@ import { Sneaker } from '../models/sneaker';
   styleUrls: ['./favorites.component.css']
 })
 export class FavoritesComponent implements OnInit {
-  favItems$: Observable<Sneaker[]>;
+  favItems$!: Observable<Sneaker[]>;
 
   constructor(
-    private fav: FavoritesService,
+    public fav: FavoritesService,
     private sneakerService: SneakerService,
-    private cart: CartService
-  ) {
-    // combina lista de IDs favoritos com lista de sneakers do serviço
-    this.favItems$ = combineLatest([
-      this.fav.favs$.pipe(startWith([])),
-      this.sneakerService.sneakers$.pipe(startWith([]))
-    ]).pipe(
-      map(([ids, allSneakers]: [number[], Sneaker[]]) => {
-        // valida arrays
-        if (!Array.isArray(ids) || !Array.isArray(allSneakers)) {
-          console.log('[FavoritesComponent] IDs ou Sneakers não são arrays:', { ids, allSneakers });
-          return [];
-        }
-        // mapeia cada ID para o Sneaker correspondente
-        const result = ids
-          .map((id: number) => {
-            const found = allSneakers.find((s: Sneaker) => s.id === id);
-            return found;
-          })
-          .filter((s): s is Sneaker => !!s); // remove undefined
-        console.log('[FavoritesComponent] Favoritos mapeados:', result);
-        return result;
-      })
+    private cart: CartService,
+    public auth: AuthService
+  ) {}
+
+  ngOnInit(): void {
+    // garante carregamento do registro (usa sessionId quando anon)
+    this.fav.loadForUser().subscribe();
+
+    // agora use diretamente getAll() que retorna Observable<Sneaker[]>
+    const allSneakers$ = this.sneakerService.getAll();
+
+    this.favItems$ = combineLatest([this.fav.items$, allSneakers$]).pipe(
+      map(([ids, allSneakers]: [string[], Sneaker[]]) =>
+        ids
+          .map(id => allSneakers.find(s => String(s.id) === String(id)))
+          .filter(Boolean) as Sneaker[]
+      )
     );
   }
 
-  ngOnInit(): void {
-    // força carregamento de sneakers ao iniciar
-    (this.sneakerService as any).loadAll?.();
-  }
-
-  remove(id: number) {
-    this.fav.toggleFavorite({ id } as Sneaker);
-  }
-
-  addToCart(s: Sneaker) {
-    this.cart.addToCart(s, 1);
-  }
+  addToCart(s: Sneaker) { this.cart.addToCart(s, 1); }
+  toggleFavorite(s: Sneaker) { this.fav.toggle(s.id); }
 }

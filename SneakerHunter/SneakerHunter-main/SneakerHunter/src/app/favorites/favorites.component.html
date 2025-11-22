@@ -11,7 +11,11 @@
         </div>
         <div class="actions">
           <button (click)="addToCart(s)">Adicionar ao carrinho</button>
-          <button (click)="remove(s.id)">Remover</button>
+          <button (click)="fav.toggle(s.id)">Remover</button>
+          <!-- <button (click)="fav.toggle(s.id)">
+            <span *ngIf="fav.isFavorite(s.id)">♥</span>
+            <span *ngIf="!fav.isFavorite(s.id)">♡</span>
+          </button> -->
         </div>
       </li>
     </ul>
