@@ -120,6 +120,18 @@
       "description": "Uma versão repaginada do ícone do início dos anos 2000, o Nike Shox R4 replica o original com suas linhas de design futuristas e amortecimento de alto desempenho. As colunas Nike Shox no calcanhar distribuem o peso para maximizar o conforto, proporcionando um visual ousado nas ruas.",
       "gender": "masculino",
       "sizes": []
+    },
+    {
+      "id": "2865",
+      "name": "TESTE",
+      "price": 21231.01,
+      "brand": "Nike",
+      "imageUrl": "assets/images/airmax.jpg",
+      "description": "3ere",
+      "gender": "masculino",
+      "sizes": [
+        40
+      ]
     }
   ]
 }

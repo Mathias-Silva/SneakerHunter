@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { CartService } from '../services/cart.service';
 import { AuthService } from '../services/auth.service';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { Sneaker } from '../models/sneaker';
 
@@ -49,5 +49,26 @@ export class CartComponent implements OnInit {
 
   clear() {
     this.cart.clear();
+  }
+
+  get estaLogado(): boolean {
+    return this.auth.isLoggedIn();
+  }
+
+  comprarTodos() {
+    this.items$.pipe(take(1)).subscribe(items => {
+      if (!items || items.length === 0) {
+        return;
+      }
+      if (!this.estaLogado) {
+      alert('Você precisa estar logado para comprar!');
+      return;
+    }
+      const confirmado = window.confirm(`Deseja realmente finalizar a compra de R$ ${items.reduce((total, e) => total + ((e.item?.price || 0) * (e.qty || 0)), 0).toFixed(2)}?`);
+      if (confirmado) {
+        this.clear();
+        alert('Compra realizada com sucesso! Obrigado por comprar conosco.');
+      }
+    });
   }
 }

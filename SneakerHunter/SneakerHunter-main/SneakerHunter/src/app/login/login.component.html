@@ -109,5 +109,9 @@
     <div class="form-footer" *ngIf="!estaLogado && !modoCadastro">
       <button (click)="voltar()" class="btn-link">Voltar para a Página Principal</button>
     </div>
+
+    <button *ngIf="isAdminUser" (click)="goToAdmin()" class="admin-btn">
+      Ir para Admin
+    </button>
   </div>
 </div>

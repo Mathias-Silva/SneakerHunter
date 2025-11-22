@@ -19,8 +19,12 @@ export class LoginComponent {
   confirmacaoSenha = '';
   erro = '';
   modoCadastro = false;
+  isAdmin = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   aoEnviar(event?: Event): void {
     if (event) event.preventDefault();
@@ -80,6 +84,12 @@ export class LoginComponent {
     }
 
     const user = this.authService.login(this.email, this.senha);
+    if (user && user.role === 'admin') {
+      this.isAdmin = true;
+    } else {
+      this.isAdmin = false;
+    }
+
     if (!user) {
       this.erro = 'Credenciais inválidas';
       return;
@@ -129,6 +139,10 @@ export class LoginComponent {
     return this.authService.currentUser?.email ?? null;
   }
 
+  get isAdminUser(): boolean {
+    return this.estaLogado && this.authService.currentUser?.role === 'admin';
+  }
+
   // validações
 
   private validarEmail(email: string): boolean {
@@ -166,6 +180,10 @@ export class LoginComponent {
 
     // atualiza o modelo com formato
     this.cpf = formatted;
+  }
+
+  goToAdmin() {
+    this.router.navigate(['/admin']);
   }
 }
 

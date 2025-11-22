@@ -127,6 +127,11 @@ button:hover {
 
 .cart-total button:hover {
   background-color: #31b0d5;
+  
+}
+.cart-total .btn-primary:disabled, .cart-total .btn-clear:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 
 @media (max-width: 600px) {

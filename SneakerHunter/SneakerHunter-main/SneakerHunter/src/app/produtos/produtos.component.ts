@@ -5,7 +5,10 @@ import { SneakerService } from '../services/sneaker.service';
 import { Sneaker } from '../models/sneaker';
 import { Subscription } from 'rxjs';
 import { CartService } from '../services/cart.service';
-import { FavoritesService } from '../services/favorite.service'
+import { FavoritesService } from '../services/favorite.service';
+import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-produtos',
   standalone: true,
@@ -19,10 +22,13 @@ export class ProdutosComponent implements OnInit, OnDestroy {
   loading = false;
   error = '';
   private sub?: Subscription;
+  erro = '';
 
   constructor(public sneakerService: SneakerService,
               private cartService: CartService,
-              private favService: FavoritesService) {} // mudei de private para public
+              private favService: FavoritesService,
+              private authService: AuthService,
+              private router: Router) {} // mudei de private para public
 
   ngOnInit(): void {
     this.loading = true;
@@ -66,5 +72,16 @@ export class ProdutosComponent implements OnInit, OnDestroy {
 
   isFavorited(s: Sneaker): boolean {
     return this.favService.isFavoriteId(s.id);
+  }
+
+  comprar(produto: any) {
+    if (!this.authService.isLoggedIn()) {
+      this.erro = 'Você precisa estar logado para comprar!';
+      return;
+    }
+    // Adicione ao carrinho ou prossiga com a compra
+    // Exemplo:
+    // this.cartService.addToCart(produto);
+    // this.router.navigate(['/cart']);
   }
 }

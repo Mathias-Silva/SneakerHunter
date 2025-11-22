@@ -1,13 +1,14 @@
 import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Sneaker } from '../models/sneaker';
 import { SneakerService } from '../services/sneaker.service';
 import { CartService } from '../services/cart.service';
 import { FavoritesService } from '../services/favorite.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -36,10 +37,15 @@ export class HomeComponent implements OnInit {
   selectedSneaker: Sneaker | null = null;
   showPreview = false;
 
+  // mensagem de erro para compra
+  erro = '';
+
   constructor(
     private sneakerService: SneakerService,
     private cart: CartService,
-    private fav: FavoritesService
+    private fav: FavoritesService,
+    private authService: AuthService,
+    private router: Router
   ) {
     this.cartCount$ = this.cart.items$.pipe(
       map((list: any[]) => list.reduce((s, e) => s + (e.qty || 0), 0))
@@ -122,6 +128,17 @@ export class HomeComponent implements OnInit {
   addToFavorites(s: Sneaker) { this.fav.toggleFavorite(s); }
   toggleFavorite(s: Sneaker) { this.fav.toggleFavorite(s); }
   isFavorited(s: Sneaker): boolean { return this.fav.isFavoriteId(s.id); }
+
+  comprar(produto: any) {
+    if (!this.authService.isLoggedIn()) {
+      this.erro = 'Você precisa estar logado para comprar!';
+      return;
+    }
+    // Adicione ao carrinho ou prossiga com a compra
+    // Exemplo:
+    // this.cartService.addToCart(produto);
+    // this.router.navigate(['/cart']);
+  }
 
   // openPreview(s: Sneaker) {
   //   this.selectedSneaker = s;

@@ -7,10 +7,7 @@
   </div>
 
   <!-- Erro -->
-  <div *ngIf="error && !loading" class="error">
-    <p>{{ error }}</p>
-    <button (click)="reload()">Tentar novamente</button>
-  </div>
+  <div *ngIf="erro" class="error">{{ erro }}</div>
 
   <!-- Produtos -->
   <div *ngIf="!loading && sneakers.length > 0" class="produtos-grid">
@@ -23,8 +20,9 @@
           onerror="this.src='assets/images/placeholder.png'"
         />
         <div *ngIf="!sneaker.imageUrl" class="no-image">Sem imagem</div>
+        <!-- ...dentro do *ngFor de produtos... -->
       </div>
-
+      
       <div class="produto-info">
         <h3>{{ sneaker.name }}</h3>
         <p class="brand">{{ sneaker.brand }}</p>
@@ -35,15 +33,16 @@
           
           <div class="actions">
             <button (click)="addToCart(sneaker)" class="btn-cart" title="Adicionar ao carrinho">
-              <ion-icon name="cart-outline"></ion-icon>
+              <ion-icon  class="icones" name="cart-outline"></ion-icon>
             </button>
-
+            
             <button (click)="addToFavorites(sneaker)"
-                    class="btn-favorite"
-                    [class.active]="isFavorited(sneaker)"
-                    title="Adicionar aos favoritos">
-              <ion-icon [attr.name]="isFavorited(sneaker) ? 'heart' : 'heart-outline'"></ion-icon>
-            </button>
+            class="btn-favorite"
+            [class.active]="isFavorited(sneaker)"
+            title="Adicionar aos favoritos">
+            <ion-icon class="icones" [attr.name]="isFavorited(sneaker) ? 'heart' : 'heart-outline'"></ion-icon>
+          </button>
+          <button class="btn-primary" (click)="comprar(sneaker)">Comprar</button>
           </div>
         </div>
       </div>
