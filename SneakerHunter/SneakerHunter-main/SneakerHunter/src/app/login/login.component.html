@@ -23,7 +23,7 @@
       </p>
     </div>
 
-    <!-- Formulário de login ou cadastro -->
+    <!-- Formulário de  cadastro -->
     <form *ngIf="!estaLogado || modoCadastro" (submit)="aoEnviar($event)" #loginForm="ngForm" novalidate>
       <div class="field" *ngIf="modoCadastro">
         <label for="nome">Nome Completo</label>

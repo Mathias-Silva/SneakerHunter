@@ -1,4 +1,4 @@
-/* Container centralizado */
+
 .login-container {
   min-height: calc(100vh - var(--site-header-height, 0px));
   display: flex;
@@ -24,7 +24,7 @@
 .carousel {
   flex: 1 1 480px;
   max-width: 520px;
-  aspect-ratio: 1 / 1; /* mantém proporção quadrada sem altura fixa */
+  aspect-ratio: 1 / 1; 
   overflow: hidden;
   border-radius: 12px;
   display: flex;
@@ -157,7 +157,7 @@
   font-size: 0.95rem;
 }
 
-/* Responsividade */
+
 @media (max-width: 900px) {
   .login-content {
     flex-direction: column;

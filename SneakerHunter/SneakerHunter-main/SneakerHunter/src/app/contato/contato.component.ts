@@ -5,7 +5,7 @@ import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
   standalone: true,
   imports: [],
   templateUrl: './contato.component.html',
-  styleUrls: ['./contato.component.css'], // <-- corrigido
+  styleUrls: ['./contato.component.css'], 
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ContatoComponent implements AfterViewInit {

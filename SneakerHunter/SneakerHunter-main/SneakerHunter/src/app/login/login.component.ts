@@ -34,100 +34,65 @@ export class LoginComponent {
     this.authService.login(this.email, this.senha).subscribe(user => {
       if (!user) { this.erro = 'Credenciais inválidas'; return; }
       const userId = user.id;
-      // merge guest/session data if needed (services provide merge methods)
       this.favoritesService.mergeSessionIntoUser?.(userId);
       this.cartService.mergeSessionIntoUser?.(userId);
-      // load user data
       this.favoritesService.loadForUser(userId).subscribe();
       this.cartService.loadCartForUser(userId).subscribe();
-      // navigate
       if (user.role === 'admin') this.router.navigate(['/admin']);
       else this.router.navigate(['/']);
     }, () => this.erro = 'Erro ao conectar');
   }
-  aoEnviar(event?: Event): void {
-    if (event) event.preventDefault();
-    this.erro = '';
+ aoEnviar(event?: Event): void {
+  if (event) event.preventDefault();
+  this.erro = '';
 
-    if (this.modoCadastro) {
-      // validações para cadastro
-      if (!this.nome.trim()) {
-        this.erro = 'Nome é obrigatório';
-        return;
-      }
-      if (!this.email.trim() || !this.validarEmail(this.email)) {
-        this.erro = 'Email inválido';
-        return;
-      }
-      if (!this.cpf.trim() || !this.validarCPF(this.cpf)) {
-        this.erro = 'CPF inválido (use 11 dígitos válidos)';
-        return;
-      }
-      if (!this.senha) {
-        this.erro = 'Senha é obrigatória';
-        return;
-      }
-      if (!this.senhaValida(this.senha)) {
-        this.erro = 'A senha deve ter ao menos 6 caracteres';
-        return;
-      }
-      if (!this.confirmacaoSenha) {
-        this.erro = 'Confirme a senha';
-        return;
-      }
-      if (this.senha !== this.confirmacaoSenha) {
-        this.erro = 'As senhas não coincidem';
-        return;
-      }
+  if (this.modoCadastro) {
+    if (!this.nome.trim()) { this.erro = 'Nome é obrigatório'; return; }
+    if (!this.email.trim() || !this.validarEmail(this.email)) { this.erro = 'Email inválido'; return; }
+    if (!this.cpf.trim() || !this.validarCPF(this.cpf)) { this.erro = 'CPF inválido'; return; }
+    if (!this.senhaValida(this.senha)) { this.erro = 'A senha deve ter ao menos 6 caracteres'; return; }
+    if (this.senha !== this.confirmacaoSenha) { this.erro = 'As senhas não coincidem'; return; }
 
-      // tenta cadastrar (authService.register deve retornar boolean ou similar)
-      const ok = this.authService.register(this.email, this.senha);
-      if (!ok) {
-        this.erro = 'Não foi possível cadastrar: e-mail já existe';
-        return;
-      }
-
-      // sucesso: navegar / manter usuário logado conforme serviço
-      this.navegarAposLogin();
-      return;
+    this.authService.register(this.email, this.senha, this.nome, this.cpf).subscribe({
+      next: () => {
+        this.modoCadastro = false;
+        this.erro = 'Cadastro realizado com sucesso! Faça login.';
+        this.senha = '';
+        this.email = '';
+      },
+      error: (err) => {
+        if (err.message.includes(this.email) || err.message.includes(this.cpf)) {
+      this.erro = err.message;
+    } else {
+      this.erro = 'Erro ao cadastrar usuário';
     }
 
-    // validações para login
-    if (!this.email.trim() || !this.validarEmail(this.email)) {
-      this.erro = 'Email inválido';
-      return;
-    }
-    if (!this.senha) {
-      this.erro = 'Senha é obrigatória';
-      return;
-    }
-
-    this.authService.login(this.email, this.senha).subscribe(user => {
-      if (!user) {
-        this.erro = 'Credenciais inválidas';
-        return;
       }
-      // user salvo no AuthService via tap
+    });
+    return;
+  }
+
+  if (!this.email.trim() || !this.validarEmail(this.email)) { this.erro = 'Email inválido'; return; }
+  if (!this.senha) { this.erro = 'Senha é obrigatória'; return; }
+
+  this.authService.login(this.email, this.senha).subscribe({
+    next: user => {
+      if (!user) { this.erro = 'Credenciais inválidas'; return; }
       const userId = user.id;
-      // carregar dados dependentes do usuário
       this.favoritesService.loadForUser(userId).subscribe();
       this.cartService.loadCartForUser(userId).subscribe();
 
-      if (user.role === 'admin') {
-        this.router.navigate(['/admin']);
-        return;
-      }
-      this.navegarAposLogin();
-    });
-  }
-
+      if (user.role === 'admin') this.router.navigate(['/admin']);
+      else this.router.navigate(['/']);
+    },
+    error: () => this.erro = 'Erro ao conectar'
+  });
+}
   alternarCadastro(): void {
     this.modoCadastro = !this.modoCadastro;
     this.erro = '';
-    // limpa campos relevantes ao alternar
     this.confirmacaoSenha = '';
     if (!this.modoCadastro) {
-      // volta ao modo login: não precisa manter nome/cpf
       this.nome = '';
       this.cpf = '';
     }
@@ -138,6 +103,9 @@ export class LoginComponent {
     this.email = '';
     this.senha = '';
     this.erro = '';
+    this.cpf = '';
+    this.nome = '';
+    this.confirmacaoSenha = '';
     this.modoCadastro = false;
   }
 
@@ -177,12 +145,36 @@ export class LoginComponent {
     return s.length >= 6;
   }
 
-  // validação de CPF (verificação dos dígitos)
-  private validarCPF(cpf: string): boolean {
-    // validação simples: exatamente 11 dígitos numéricos
-    const digits = (cpf || '').replace(/\D/g, '');
-    return digits.length === 11;
+ 
+private validarCPF(cpf: string): boolean {
+  const digits = (cpf || '').replace(/\D/g, '');
+
+  // precisa ter 11 dígitos
+  if (digits.length !== 11) return false;
+
+  // rejeita sequências com todos os dígitos iguais (ex.: 00000000000, 11111111111)
+  if (/^(\d)\1{10}$/.test(digits)) return false;
+
+  // valida primeiro dígito verificador
+  let sum = 0;
+  for (let i = 0; i < 9; i++) {
+    sum += parseInt(digits[i], 10) * (10 - i);
   }
+  let first = (sum * 10) % 11;
+  if (first === 10) first = 0;
+  if (first !== parseInt(digits[9], 10)) return false;
+
+  // valida segundo dígito verificador
+  sum = 0;
+  for (let i = 0; i < 10; i++) {
+    sum += parseInt(digits[i], 10) * (11 - i);
+  }
+  let second = (sum * 10) % 11;
+  if (second === 10) second = 0;
+  if (second !== parseInt(digits[10], 10)) return false;
+
+  return true;
+}
 
   onCpfInput(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -207,9 +199,9 @@ export class LoginComponent {
 
     cadastrar() {
     if (!this.email || !this.senha) { this.erro = 'Preencha email e senha'; return; }
-    this.authService.register(this.email, this.senha, this.nome).subscribe({
+    this.authService.register(this.email, this.senha, this.nome, this.cpf).subscribe({
       next: () => {
-        // após cadastro, direciona para tela de login
+        
         this.router.navigate(['/login']);
       },
       error: () => {

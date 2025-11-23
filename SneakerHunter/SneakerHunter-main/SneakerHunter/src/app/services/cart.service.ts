@@ -12,12 +12,10 @@ export class CartService {
   private itemsSubject = new BehaviorSubject<{ sneakerId: string; qty: number }[]>([]);
   items$ = this.itemsSubject.asObservable();
 
-  // evita criar múltiplos registros no backend
   private loadedFor = new Set<number>();
 
   constructor(private http: HttpClient, private auth: AuthService) {}
 
-  // load cart for current user or provided id
   loadCartForUser(userId?: number): Observable<{ sneakerId: string; qty: number }[]> {
     const uid = userId ?? this.auth.getCurrentUser()?.id;
     if (!uid) { this.itemsSubject.next([]); return of([]); }
@@ -44,7 +42,6 @@ export class CartService {
     );
   }
 
-  // addToCart accepts object or id; uses current user
   addToCart(itemOrId: any, qty = 1): void {
     const uid = this.auth.getCurrentUser()?.id;
     if (!uid) return;
@@ -139,10 +136,7 @@ export class CartService {
     ).subscribe();
   }
 
-  // mergeSessionIntoUser: placeholder para evitar erro de compilação
-  // Implementar migração do carrinho da sessão para o usuário quando desejar
   mergeSessionIntoUser(userId: number): void {
-    // sem-op por enquanto; se existir SessionService, faça o merge dos itens aqui
     return;
   }
 }

@@ -1,4 +1,3 @@
-// src/app/models/sneaker.ts
 export interface Sneaker {
   id: number;
   name: string;

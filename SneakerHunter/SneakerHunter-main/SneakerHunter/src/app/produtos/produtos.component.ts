@@ -28,7 +28,7 @@ export class ProdutosComponent implements OnInit, OnDestroy {
               private cartService: CartService,
               private favService: FavoritesService,
               private authService: AuthService,
-              private router: Router) {} // mudei de private para public
+              private router: Router) {} 
 
   ngOnInit(): void {
     this.loading = true;
@@ -82,9 +82,6 @@ getAll(): string[] {
       this.erro = 'Você precisa estar logado para comprar!';
       return;
     }
-    // Adicione ao carrinho ou prossiga com a compra
-    // Exemplo:
-    // this.cartService.addToCart(produto);
-    // this.router.navigate(['/cart']);
+   
   }
 }

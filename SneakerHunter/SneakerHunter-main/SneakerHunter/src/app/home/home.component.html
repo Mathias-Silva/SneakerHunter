@@ -5,7 +5,8 @@
       <!-- Hero Section -->
       <section class="hero">
         <div class="hero-content">
-          <h1>SneakerHunter</h1>
+          <!-- <img src="assets/images/hero-banner.png" alt="Banner do SneakerHunter"> -->
+          <!-- <h1>SneakerHunter</h1> -->
           <p>Encontre os melhores tênis do mercado</p>
         </div>
       </section>
@@ -111,7 +112,6 @@
               <div *ngIf="!sneaker.imageUrl" class="no-image">Sem imagem</div>
               <span *ngIf="sneaker.gender" class="gender-badge">{{ sneaker.gender }}</span>
             </div>
-            <!-- ...dentro do *ngFor de produtos... -->
             <div class="produto-info">
               <h3>{{ sneaker.name }}</h3>
               <p class="brand">{{ sneaker.brand }}</p>

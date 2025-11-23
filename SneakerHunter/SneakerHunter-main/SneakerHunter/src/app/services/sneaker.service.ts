@@ -1,4 +1,3 @@
-// src/app/services/sneaker.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -22,16 +21,13 @@ export class SneakerService {
     });
   }
 
-  // compatibilidade: muitos componentes chamam getAll() esperando Observable<Sneaker[]>
   getAll(): Observable<Sneaker[]> {
-    // se ainda não carregado, dispara loadAll()
     if (!this.subject.value || this.subject.value.length === 0) {
       this.loadAll();
     }
     return this.sneakers$;
   }
 
-  // busca um sneaker por id (retorna Observable<Sneaker | undefined>)
   getById(id: string): Observable<Sneaker | undefined> {
     return this.http.get<Sneaker[]>(`${this.api}/sneakers?id=${encodeURIComponent(id)}`).pipe(
       map(list => (list && list.length) ? list[0] : undefined)

@@ -1,8 +1,7 @@
-// src/app/services/auth.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, tap , switchMap} from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -11,7 +10,6 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  // Login via json-server users
   login(email: string, password: string): Observable<any | null> {
     return this.http
       .get<any[]>(`${this.api}/users?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`)
@@ -21,11 +19,28 @@ export class AuthService {
       );
   }
 
-  // Register creates user in db.json but does NOT auto-login
-  register(email: string, password: string, name = '', role = 'user'): Observable<any> {
-    const user = { email, password, name, role };
-    return this.http.post<any>(`${this.api}/users`, user);
-  }
+register(email: string, password: string, name = '', cpf = '', role = 'user'): Observable<any> {
+  const user = { email, password, name, role, cpf };
+
+  return this.http.get<any[]>(`${this.api}/users?email=${encodeURIComponent(email)}&cpf=${encodeURIComponent(cpf)}`)
+    .pipe(
+      switchMap(() =>
+        this.http.get<any[]>(`${this.api}/users?email=${encodeURIComponent(email)}`)
+      ),
+      switchMap(emailMatches => {
+        if (emailMatches.length > 0) {
+          throw new Error('Email já cadastrado');
+        }
+        return this.http.get<any[]>(`${this.api}/users?cpf=${encodeURIComponent(cpf)}`);
+      }),
+      switchMap(cpfMatches => {
+        if (cpfMatches.length > 0) {
+          throw new Error('CPF já cadastrado');
+        }
+        return this.http.post<any>(`${this.api}/users`, user);
+      })
+    );
+}
 
   logout(): void {
     this.currentUser$.next(null);
@@ -40,7 +55,6 @@ export class AuthService {
     return !!(u && u.role === 'admin');
   }
 
-  // compatibility getter used by components
   get currentUser(): any | null {
     return this.currentUser$.value;
   }

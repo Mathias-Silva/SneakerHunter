@@ -48,8 +48,8 @@ html, body {
   border-radius: var(--radius);
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* mantém detalhes no rodapé */
-  gap: 18px;                       /* menos gap que antes */
+  justify-content: space-between; 
+  gap: 18px;                       
   background: linear-gradient(180deg, rgba(255,122,24,0.03), rgba(255,122,24,0.01));
   color: var(--text);
   text-align: left;
@@ -114,7 +114,6 @@ html, body {
   box-shadow: 0 4px 10px rgba(0,0,0,0.06);
 }
 
-/* atribui as cores conforme a ordem/versão anterior */
 .social-links a:nth-child(1) {
   background: linear-gradient(45deg,#f09433 0%,#bc1888 50%,#515bd4 100%); /* Instagram */
 }
@@ -152,7 +151,7 @@ html, body {
   box-sizing: border-box;
 }
 
-/* campos */
+
 .form-group {
   margin-bottom: 8px;
   display: flex;
@@ -178,7 +177,7 @@ html, body {
   background: #e6e6e6;
 }
 
-/* botão Enviar: cor laranja padrão e efeito hover */
+
 .btn-entrar {
   width: 160px;
   padding: 12px 18px;
@@ -203,7 +202,7 @@ html, body {
   box-shadow: 0 0 0 6px rgba(255,122,24,0.12);
 }
 
-/* responsivo: empilha sem scroll e reduz tamanhos */
+
 @media (max-width: 900px) {
   .contact-card {
     flex-direction: column;
@@ -222,7 +221,7 @@ html, body {
   }
 }
 
-/* para telas baixas em altura */
+
 @media (max-height: 640px) {
   .contact-card { gap: 12px; }
   .contact-info { padding: 16px; }

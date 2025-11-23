@@ -1,11 +1,9 @@
-/* Reset e estilos gerais */
 .page-container {
   display: flex;
   min-height: 100vh;
   padding-top: 90px;
 }
 
-/* Sidebar com listagem de marcas */
 .sidebar {
   width: 220px;
   background-color: #fff;
@@ -47,7 +45,6 @@
   color: #fff;
 }
 
-/* Grade de produtos com 4 colunas */
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -58,7 +55,6 @@
   margin-left: 220px;
 }
 
-/* Cada card de produto */
 .product-item {
   background-color: #f0f0f0;
   border: 1px solid #ddd;

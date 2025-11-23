@@ -136,40 +136,65 @@
   ],
   "users": [
     {
-      "id": 1,
+      "id": "1",
       "email": "admin@sneakerhunter.com",
       "password": "senha123",
       "role": "admin",
+      "cpf": "000.000.000-00",
       "name": "Admin"
     },
     {
-      "id": 2,
+      "id": "2",
       "email": "mathias@sneakerhunter.com",
       "password": "senha456",
       "role": "user",
+      "cpf": "111.111.111-11",
       "name": "Mathias"
+    },
+    {
+      "id": "8a84",
+      "email": "mathias@gmail.com",
+      "password": "123456",
+      "name": "MATHIAS DA SILVA SANTOS",
+      "role": "user",
+      "cpf": "488.665.908-00"
     }
   ],
   "carts": [
     {
-      "id": 1,
+      "id": "1",
       "userId": 1,
-      "items": [
-        {
-          "sneakerId": "085f",
-          "qty": 2
-        }
-      ]
+      "items": []
     },
     {
       "id": "2cfc",
       "userId": 2,
       "items": []
+    },
+    {
+      "id": "bb39",
+      "userId": "c06c",
+      "items": []
+    },
+    {
+      "id": "09d2",
+      "userId": "df44",
+      "items": []
+    },
+    {
+      "id": "1383",
+      "userId": "9792",
+      "items": []
+    },
+    {
+      "id": "3e9a",
+      "userId": "8a84",
+      "items": []
     }
   ],
   "favorites": [
     {
-      "id": 1,
+      "id": "1",
       "userId": 1,
       "items": [
         "085f",
@@ -177,16 +202,24 @@
       ]
     },
     {
-      "id": "2fe8",
-      "userId": 2,
-      "items": [
-        "2be7"
-      ]
+      "id": "f94f",
+      "userId": "2",
+      "items": []
+    },
+    {
+      "id": "4a0b",
+      "userId": "9792",
+      "items": []
+    },
+    {
+      "id": "7eb7",
+      "userId": "8a84",
+      "items": []
     }
   ],
   "orders": [
     {
-      "id": 1,
+      "id": "1",
       "userId": 1,
       "items": [
         {

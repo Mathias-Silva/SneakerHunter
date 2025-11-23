@@ -25,10 +25,8 @@ export class FavoritesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // garante carregamento do registro (usa sessionId quando anon)
     this.fav.loadForUser().subscribe();
 
-    // agora use diretamente getAll() que retorna Observable<Sneaker[]>
     const allSneakers$ = this.sneakerService.getAll();
 
     this.favItems$ = combineLatest([this.fav.items$, allSneakers$]).pipe(

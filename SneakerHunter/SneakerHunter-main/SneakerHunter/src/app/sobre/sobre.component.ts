@@ -5,7 +5,7 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './sobre.component.html',
-  styleUrls: ['./sobre.component.css'], // <-- corrigido
+  styleUrls: ['./sobre.component.css'], 
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SobreComponent {

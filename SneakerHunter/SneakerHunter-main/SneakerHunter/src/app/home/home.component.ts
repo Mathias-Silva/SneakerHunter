@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit {
   filteredSneakers: Sneaker[] = [];
   loading = false;
   error: string | null = null;
-  erro: string | null = null; // compat com templates antigos
+  erro: string | null = null; 
   searchTerm = '';
   selectedGender = 'todos';
   brands: string[] = [];

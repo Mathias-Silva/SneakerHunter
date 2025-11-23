@@ -10,12 +10,10 @@ export class FavoritesService {
   private sub = new BehaviorSubject<string[]>([]);
   items$ = this.sub.asObservable();
 
-  // evita carregar/criar múltiplos registros para mesmo user
   private loadedFor = new Set<number>();
 
   constructor(private http: HttpClient, private auth: AuthService) {}
 
-  // load favorites for current user (or for provided userId)
   loadForUser(userId?: number): Observable<string[]> {
     const uid = userId ?? this.auth.getCurrentUser()?.id;
     if (!uid) { this.sub.next([]); return of([]); }
@@ -41,10 +39,9 @@ export class FavoritesService {
     );
   }
 
-  // toggle favorite using current logged user
   toggle(itemOrId: any): void {
     const uid = this.auth.getCurrentUser()?.id;
-    if (!uid) return; // require login in UI
+    if (!uid) return; 
     const id = String(itemOrId?.id ?? itemOrId);
     this.http.get<any[]>(`${this.api}/favorites?userId=${uid}`).pipe(
       switchMap(list => {
@@ -72,15 +69,10 @@ export class FavoritesService {
     return this.sub.value.includes(String(id));
   }
 
-  // compatibility helpers used across app
   isFavoriteId(id: any): boolean { return this.isFavorite(id); }
   getAll(): string[] { return this.sub.value; }
 
-  // mergeSessionIntoUser: placeholder para evitar erro de compilação
-  // Implementar a lógica de migração session -> user se desejar
   mergeSessionIntoUser(userId: number): void {
-    // atualmente sem-op; se você tiver SessionService, mova a lógica de merge aqui
-    // Exemplo: buscar registro com sessionId, combinar itens e remover registro session
     return;
   }
 }

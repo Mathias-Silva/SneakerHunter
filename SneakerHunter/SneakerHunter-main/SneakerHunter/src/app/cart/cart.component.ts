@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { combineLatest, map, Observable } from 'rxjs';
+import { combineLatest, map, Observable, firstValueFrom} from 'rxjs';
 import { CartService } from '../services/cart.service';
 import { SneakerService } from '../services/sneaker.service';
 import { AuthService } from '../services/auth.service';
 import { Sneaker } from '../models/sneaker';
+
+
 
 @Component({
   selector: 'app-cart',
@@ -44,7 +46,7 @@ export class CartComponent implements OnInit {
     );
   }
 
-  // métodos usados no template
+
   setQty(id: any, qty: number) {
     if (id == null) return;
     this.cart.updateQty(String(id), Number(qty));
@@ -69,13 +71,17 @@ export class CartComponent implements OnInit {
     this.cart.clear();
   }
 
-  comprarTodos() {
-    if (!confirm('Deseja realmente finalizar a compra?')) return;
-    this.cart.clear();
-    alert('Compra realizada com sucesso!');
-  }
+comprarTodos() {
+  if (!confirm('Deseja realmente finalizar a compra?')) return;
 
-  // propriedade usada pelo template
+  firstValueFrom(this.total$).then(total => {
+    this.cart.clear();
+    alert(`Compra de R$ ${total.toFixed(2)} realizada com sucesso!`);
+  });
+}
+
+
+  
   get estaLogado(): boolean {
     return this.auth.isLoggedIn();
   }
