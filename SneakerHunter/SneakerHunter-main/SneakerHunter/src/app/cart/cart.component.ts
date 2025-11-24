@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { combineLatest, map, Observable, firstValueFrom} from 'rxjs';
+import { combineLatest, map, Observable } from 'rxjs';
 import { CartService } from '../services/cart.service';
 import { SneakerService } from '../services/sneaker.service';
 import { AuthService } from '../services/auth.service';
 import { Sneaker } from '../models/sneaker';
-
-
 
 @Component({
   selector: 'app-cart',
@@ -16,8 +14,7 @@ import { Sneaker } from '../models/sneaker';
   styleUrls: ['./cart.component.css']
 })
 export class CartComponent implements OnInit {
-  // items$ corresponde ao que o template espera (lista enriquecida com objeto do produto)
-  items$!: Observable<{ item?: Sneaker; qty: number }[]>;
+  items$!: Observable<{ item?: Sneaker; qty: number; size?: number }[]>;
   total$!: Observable<number>;
 
   constructor(
@@ -27,7 +24,6 @@ export class CartComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // carrega registro (usa session ou usuário logado internamente)
     this.cart.loadCartForUser().subscribe();
 
     const allSneakers$ = this.sneakerService.getAll();
@@ -36,7 +32,8 @@ export class CartComponent implements OnInit {
       map(([items, allSneakers]) =>
         (items || []).map(i => ({
           item: allSneakers.find(s => String(s.id) === String(i.sneakerId)),
-          qty: i.qty
+          qty: i.qty,
+          size: i.size
         }))
       )
     );
@@ -46,43 +43,27 @@ export class CartComponent implements OnInit {
     );
   }
 
-
-  setQty(id: any, qty: number) {
+  setQty(id: any, qty: number, size?: number) {
     if (id == null) return;
-    this.cart.updateQty(String(id), Number(qty));
+    this.cart.updateQty(String(id), qty, size);
   }
 
   increase(e: any) {
-    const id = e?.item?.id ?? e?.item?.sneakerId ?? e;
-    this.cart.addToCart(String(id), 1);
+    const id = e?.item?.id ?? e;
+    this.cart.addToCart(id, 1, e.size);
   }
 
   decrease(e: any) {
-    const id = e?.item?.id ?? e?.item?.sneakerId ?? e;
-    this.cart.decreaseQty(String(id), 1);
+    const id = e?.item?.id ?? e;
+    this.cart.decreaseQty(String(id), 1, e.size);
   }
 
   remove(e: any) {
-    const id = e?.item?.id ?? e?.item?.sneakerId ?? e;
-    this.cart.removeFromCart(String(id));
+    const id = e?.item?.id ?? e;
+    this.cart.removeFromCart(String(id), e.size);
   }
 
-  clear() {
-    this.cart.clear();
-  }
-
-comprarTodos() {
-  if (!confirm('Deseja realmente finalizar a compra?')) return;
-
-  firstValueFrom(this.total$).then(total => {
-    this.cart.clear();
-    alert(`Compra de R$ ${total.toFixed(2)} realizada com sucesso!`);
-  });
-}
-
-
-  
-  get estaLogado(): boolean {
-    return this.auth.isLoggedIn();
-  }
+  clear() { this.cart.clear(); }
+  comprarTodos() { if (!confirm('Deseja realmente finalizar a compra?')) return; this.cart.clear(); alert('Compra realizada!'); }
+  get estaLogado(): boolean { return this.auth.isLoggedIn(); }
 }

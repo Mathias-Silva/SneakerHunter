@@ -19,7 +19,13 @@
       "brand": "Nike",
       "description": "Air Force: tênis clássico, versátil e confortável.",
       "imageUrl": "assets/images/AirForce.jpg",
-      "gender": "masculino"
+      "gender": "masculino",
+      "sizes": [
+        38,
+        39,
+        40,
+        41
+      ]
     },
     {
       "id": "0251",
@@ -28,7 +34,12 @@
       "brand": "Nike",
       "description": "Nike Tech Hera: tênis moderno, robusto e estiloso.",
       "imageUrl": "assets/images/TechHeraFeminino.jpg",
-      "gender": "feminino"
+      "gender": "feminino",
+      "sizes": [
+        40,
+        41,
+        42
+      ]
     },
     {
       "id": "9a86",
@@ -37,7 +48,11 @@
       "brand": "Nike",
       "description": "Criado pela Nike em parceria com Michael Jordan em 1984, o Air Jordan revolucionou o mercado esportivo e se tornou um dos tênis mais desejados do mundo.",
       "imageUrl": "assets/images/AirJordan.jpg",
-      "gender": "unissex"
+      "gender": "unissex",
+      "sizes": [
+        38,
+        39
+      ]
     },
     {
       "id": "8733",
@@ -46,7 +61,11 @@
       "brand": "Adidas",
       "description": "Com design retrô, cabedal em camurça e solado de borracha, é um tênis versátil que combina conforto e autenticidade no dia a dia.",
       "imageUrl": "assets/images/AdidasCampus.jpg",
-      "gender": "unissex"
+      "gender": "unissex",
+      "sizes": [
+        37,
+        39
+      ]
     },
     {
       "id": "1d1c",
@@ -55,7 +74,12 @@
       "brand": "Mizuno",
       "description": "Mizuno Wave Prophecy LS: tênis tecnológico, robusto e confortável",
       "imageUrl": "assets/images/MizunoWave.jpg",
-      "gender": "masculino"
+      "gender": "masculino",
+      "sizes": [
+        39,
+        40,
+        41
+      ]
     },
     {
       "id": "0d26",
@@ -64,7 +88,12 @@
       "brand": "Nike",
       "description": "Com cabedal em couro preto e branco, é um dos modelos mais populares por sua combinação simples e marcante, perfeito para qualquer ocasião.",
       "imageUrl": "assets/images/DunkLowPanda.jpg",
-      "gender": "masculino"
+      "gender": "masculino",
+      "sizes": [
+        39,
+        40,
+        41
+      ]
     },
     {
       "id": "5b7b",
@@ -73,7 +102,11 @@
       "brand": "Adidas",
       "description": "Lançado nos anos 70, ficou famoso pelo design com biqueira em formato de concha, cabedal em couro e solado de borracha. Ícone da moda urbana, combina estilo retrô com conforto, sendo um dos tênis mais reconhecidos da Adidas.\n",
       "imageUrl": "assets/images/AdidasSuperstar.jpg",
-      "gender": "unissex"
+      "gender": "unissex",
+      "sizes": [
+        38,
+        39
+      ]
     },
     {
       "id": "5ebc",
@@ -82,7 +115,12 @@
       "brand": "Nike",
       "description": "O Air Jordan 4 é um tênis lançado em 1989, criado por Tinker Hatfield. Ele se destaca pelo design robusto, alças de suporte no tornozelo, malha lateral para respirabilidade e a famosa unidade Air-Sole visível no calcanhar. Tornou-se icônico após Michael Jordan usá-lo em momentos históricos, como o “The Shot” nos playoffs de 1989\n",
       "imageUrl": "assets/images/AirJordan4.jpg",
-      "gender": "unissex"
+      "gender": "unissex",
+      "sizes": [
+        39,
+        40,
+        42
+      ]
     },
     {
       "id": "1aa5",
@@ -100,7 +138,13 @@
       "brand": "Puma",
       "description": "O Tênis Puma-180 Unissex é um modelo inspirado na cultura do skate dos anos 2000, com design robusto, acolchoamento grande e estilo urbano. Ele combina formas volumosas com cores neutras, trazendo conforto e autenticidade para o dia a dia.\n\n\n",
       "imageUrl": "assets/images/Puma180.jpg",
-      "gender": "unissex"
+      "gender": "unissex",
+      "sizes": [
+        36,
+        37,
+        38,
+        40
+      ]
     },
     {
       "id": "2f9b",
@@ -109,7 +153,14 @@
       "brand": "Adidas",
       "description": "O Adidas Adizero Evo SL Feminino é um tênis de corrida leve e moderno, projetado para oferecer velocidade, conforto e estilo. Ele combina design minimalista com tecnologia de amortecimento eficiente, ideal para treinos e provas",
       "imageUrl": "assets/images/AdidasAdizero.jpg",
-      "gender": "feminino"
+      "gender": "feminino",
+      "sizes": [
+        35,
+        36,
+        37,
+        38,
+        39
+      ]
     },
     {
       "id": "cbf1",
@@ -119,7 +170,11 @@
       "imageUrl": "assets/images/NikeShow.jpg",
       "description": "Uma versão repaginada do ícone do início dos anos 2000, o Nike Shox R4 replica o original com suas linhas de design futuristas e amortecimento de alto desempenho. As colunas Nike Shox no calcanhar distribuem o peso para maximizar o conforto, proporcionando um visual ousado nas ruas.",
       "gender": "masculino",
-      "sizes": []
+      "sizes": [
+        38,
+        40,
+        42
+      ]
     },
     {
       "id": "2865",
@@ -130,7 +185,13 @@
       "description": "3ere",
       "gender": "masculino",
       "sizes": [
-        40
+        34,
+        35,
+        38,
+        39,
+        40,
+        41,
+        43
       ]
     }
   ],
@@ -139,17 +200,17 @@
       "id": "1",
       "email": "admin@sneakerhunter.com",
       "password": "senha123",
+      "name": "Admin",
       "role": "admin",
-      "cpf": "000.000.000-00",
-      "name": "Admin"
+      "cpf": "000.000.000-00"
     },
     {
       "id": "2",
       "email": "mathias@sneakerhunter.com",
       "password": "senha456",
+      "name": "Mathias",
       "role": "user",
-      "cpf": "111.111.111-11",
-      "name": "Mathias"
+      "cpf": "111.111.111-11"
     },
     {
       "id": "8a84",
@@ -158,17 +219,51 @@
       "name": "MATHIAS DA SILVA SANTOS",
       "role": "user",
       "cpf": "488.665.908-00"
+    },
+    {
+      "id": "233a",
+      "email": "mariadejesus@senacsp.edu.br",
+      "password": "teste1234",
+      "name": "Maria de Jesus",
+      "role": "user",
+      "cpf": "121.212.121-12"
+    },
+    {
+      "id": "guest",
+      "email": null,
+      "password": null,
+      "name": "Guest",
+      "role": "guest",
+      "cpf": null
+    },
+    {
+      "id": "393b",
+      "email": "carlos@gmail.com",
+      "password": "teste123",
+      "name": "carol",
+      "role": "070.620.327-51"
     }
   ],
   "carts": [
     {
       "id": "1",
       "userId": 1,
-      "items": []
+      "items": [
+        {
+          "sneakerId": "2be7",
+          "qty": 1,
+          "size": 38
+        }
+      ]
     },
     {
       "id": "2cfc",
       "userId": 2,
+      "items": []
+    },
+    {
+      "id": "guest-cart",
+      "userId": "guest",
       "items": []
     },
     {
@@ -190,6 +285,21 @@
       "id": "3e9a",
       "userId": "8a84",
       "items": []
+    },
+    {
+      "id": "2f7a",
+      "userId": "9113",
+      "items": []
+    },
+    {
+      "id": "938a",
+      "userId": "7cec",
+      "items": []
+    },
+    {
+      "id": "020c",
+      "userId": "233a",
+      "items": []
     }
   ],
   "favorites": [
@@ -198,7 +308,8 @@
       "userId": 1,
       "items": [
         "085f",
-        "2be7"
+        "2be7",
+        "0251"
       ]
     },
     {
@@ -207,13 +318,8 @@
       "items": []
     },
     {
-      "id": "4a0b",
-      "userId": "9792",
-      "items": []
-    },
-    {
-      "id": "7eb7",
-      "userId": "8a84",
+      "id": "guest-fav",
+      "userId": "guest",
       "items": []
     }
   ],

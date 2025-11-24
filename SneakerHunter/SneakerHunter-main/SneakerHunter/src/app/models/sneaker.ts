@@ -9,4 +9,5 @@ export interface Sneaker {
   gender?: string;
   quantity?: number;
   rating?: number;
+  sizes?: number[];
 }

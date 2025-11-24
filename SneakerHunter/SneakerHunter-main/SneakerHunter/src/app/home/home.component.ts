@@ -22,11 +22,14 @@ export class HomeComponent implements OnInit {
   filteredSneakers: Sneaker[] = [];
   loading = false;
   error: string | null = null;
-  erro: string | null = null; 
+  erro: string | null = null;
   searchTerm = '';
   selectedGender = 'todos';
   brands: string[] = [];
   selectedBrands: string[] = [];
+
+  // map product id -> selected size
+  selectedSizes: { [id: string]: number | null } = {};
 
   constructor(
     private sneakerService: SneakerService,
@@ -42,6 +45,11 @@ export class HomeComponent implements OnInit {
         this.sneakers = list || [];
         this.brands = Array.from(new Set((this.sneakers || []).map(s => (s.brand || '').toString()).filter(Boolean)));
         this.applyFilters();
+        // initialize selectedSizes with first available size (or null)
+        for (const s of this.sneakers) {
+          const id = String(s.id ?? '');
+          this.selectedSizes[id] = (s.sizes && s.sizes.length) ? s.sizes[0] : null;
+        }
         this.loading = false;
       },
       error: (err: any) => {
@@ -93,7 +101,23 @@ export class HomeComponent implements OnInit {
     this.applyFilters();
   }
 
+  // size helpers
+  selectSize(s: Sneaker, size: number) {
+    if (!s?.id) return;
+    this.selectedSizes[String(s.id)] = size;
+  }
+  isSelectedSize(s: Sneaker, size: number): boolean {
+    return String(this.selectedSizes[String(s.id)]) === String(size);
+  }
+
   addToFavorites(s: Sneaker) { this.fav.toggle(s); }
-  addToCart(s: Sneaker) { this.cart.addToCart(s, 1); }
+
+  // add to cart passes selected size (may be null)
+  addToCart(s: Sneaker) {
+    const id = String(s.id ?? '');
+    const size = this.selectedSizes[id] ?? undefined;
+    this.cart.addToCart(s, 1, size);
+  }
+
   isFavorited(s: Sneaker) { return this.fav.isFavorite(s.id); }
 }

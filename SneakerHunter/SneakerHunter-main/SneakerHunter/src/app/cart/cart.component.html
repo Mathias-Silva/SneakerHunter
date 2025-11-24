@@ -6,6 +6,7 @@
     <div *ngFor="let e of items" class="cart-row">
       <img [src]="e.item?.image || e.item?.imageUrl" alt="{{ e.item?.name }}" class="thumb"/>
       <div><strong>{{ e.item?.name }}</strong></div>
+      <div class="tamanho" *ngIf="e.size">Tamanho: {{ e.size }}</div>
       <div>Preço unit.: R$ {{ e.item?.price | number:'1.2-2' }}</div>
       <div>Subtotal: R$ {{ ((e.item?.price || 0) * (e.qty || 0)) | number:'1.2-2' }}</div>
 
