@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { switchMap, tap, map } from 'rxjs/operators';
 import { AuthService } from './auth.service';
@@ -174,5 +174,52 @@ export class CartService {
         );
       })
     ).subscribe();
+  }
+
+  /**
+   * cria um pedido (orders) com os itens atuais do carrinho do usuário logado,
+   * depois limpa o carrinho (items: [])
+   */
+  placeOrder() {
+    const uid = this.getUserId();
+    if (!uid) {
+      return of(null); // não deveria permitir checkout se não estiver logado
+    }
+
+    return this.http.get<CartRecord[]>(`${this.api}/carts?userId=${uid}`).pipe(
+      switchMap(list => {
+        if (!list || !list.length) return of(null);
+        const rec = list[0];
+        const items = rec.items || [];
+        if (!items.length) return of(null);
+
+        // buscar preços para calcular total
+        return this.http.get<any[]>(`${this.api}/sneakers`).pipe(
+          switchMap(sneakers => {
+            const total = items.reduce((acc, it) => {
+              const s = sneakers.find(x => String(x.id) === String(it.sneakerId));
+              return acc + ((s?.price || 0) * (it.qty || 0));
+            }, 0);
+
+            const orderPayload: any = {
+              userId: uid,
+              items: items.map(i => ({ sneakerId: i.sneakerId, qty: i.qty })), // conforme exemplo
+              total,
+              createdAt: new Date().toISOString()
+            };
+
+            return this.http.post(`${this.api}/orders`, orderPayload).pipe(
+              switchMap(order => 
+                // limpar o carrinho do usuário
+                this.http.patch(`${this.api}/carts/${rec.id}`, { items: [] }).pipe(
+                  tap(() => { this.itemsSubject.next([]); this.loaded.delete(uid); }),
+                  map(() => order)
+                )
+              )
+            );
+          })
+        );
+      })
+    );
   }
 }
