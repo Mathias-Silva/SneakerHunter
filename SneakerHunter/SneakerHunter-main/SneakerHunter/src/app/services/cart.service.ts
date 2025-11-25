@@ -5,44 +5,29 @@ import { switchMap, tap, map } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 
 interface CartItem { sneakerId: string; qty: number; size?: number; }
-interface CartRecord { id?: number; userId?: number; sessionId?: string; items: CartItem[]; }
+interface CartRecord { id?: number; userId?: number | null; items: CartItem[]; }
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
   private api = 'http://localhost:3000';
   private itemsSubject = new BehaviorSubject<CartItem[]>([]);
   items$ = this.itemsSubject.asObservable();
-  private loaded = new Set<string>();
+  private loaded = new Set<number | null | string>();
 
   constructor(private http: HttpClient, private auth: AuthService) {}
 
-  // local session id management (no SessionService required)
-  private getSessionId(): string {
-    const key = 'sneaker_session';
-    let sid = localStorage.getItem(key);
-    if (!sid) {
-      sid = this.uuidv4();
-      localStorage.setItem(key, sid);
-    }
-    return sid;
+  // retorna userId (ou null se deslogado)
+  private getUserId(): number | null {
+    return this.auth.getCurrentUser()?.id ?? null;
   }
 
-  private uuidv4() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
-      const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
-      return v.toString(16);
-    });
+  private qFor(userId: number | null) {
+    return userId ? `userId=${userId}` : 'userId=null';
   }
 
-  private qFor(userId?: number) {
-    const sid = this.getSessionId();
-    return userId ? `userId=${userId}` : `sessionId=${encodeURIComponent(sid)}`;
-  }
-
-  loadCartForUser(userId?: number): Observable<CartItem[]> {
-    const uid = userId ?? this.auth.getCurrentUser()?.id;
-    const key = uid ? `u:${uid}` : `s:${this.getSessionId()}`;
-    if (this.loaded.has(key)) return of(this.itemsSubject.value);
+  loadCartForUser(userId?: number | null): Observable<CartItem[]> {
+    const uid = userId ?? this.getUserId();
+    if (this.loaded.has(uid)) return of(this.itemsSubject.value);
 
     const q = this.qFor(uid);
     return this.http.get<CartRecord[]>(`${this.api}/carts?${q}`).pipe(
@@ -50,12 +35,12 @@ export class CartService {
         if (list && list.length) {
           const items = list[0].items || [];
           this.itemsSubject.next(items);
-          this.loaded.add(key);
+          this.loaded.add(uid);
           return of(items);
         } else {
-          const payload: any = uid ? { userId: uid, items: [] } : { sessionId: this.getSessionId(), items: [] };
+          const payload: CartRecord = { userId: uid, items: [] };
           return this.http.post<CartRecord>(`${this.api}/carts`, payload).pipe(
-            tap(rec => { this.itemsSubject.next(rec.items || []); this.loaded.add(key); }),
+            tap(rec => { this.itemsSubject.next(rec.items || []); this.loaded.add(uid); }),
             map(rec => rec.items || [])
           );
         }
@@ -64,10 +49,9 @@ export class CartService {
   }
 
   addToCart(itemOrId: any, qty = 1, size?: number): void {
-    const uid = this.auth.getCurrentUser()?.id;
-    const sid = this.getSessionId();
+    const uid = this.getUserId();
     const sneakerId = String(itemOrId?.id ?? itemOrId);
-    const q = uid ? `userId=${uid}` : `sessionId=${encodeURIComponent(sid)}`;
+    const q = this.qFor(uid);
 
     this.http.get<CartRecord[]>(`${this.api}/carts?${q}`).pipe(
       switchMap(list => {
@@ -81,9 +65,7 @@ export class CartService {
             tap(() => this.itemsSubject.next(items))
           );
         } else {
-          const payload: any = uid
-            ? { userId: uid, items: [{ sneakerId, qty, ...(size != null ? { size } : {}) }] }
-            : { sessionId: sid, items: [{ sneakerId, qty, ...(size != null ? { size } : {}) }] };
+          const payload: CartRecord = { userId: uid, items: [{ sneakerId, qty, ...(size != null ? { size } : {}) }] };
           return this.http.post<CartRecord>(`${this.api}/carts`, payload).pipe(
             tap(rec => this.itemsSubject.next(rec.items || []))
           );
@@ -93,7 +75,7 @@ export class CartService {
   }
 
   decreaseQty(itemOrId: any, qty = 1, size?: number): void {
-    const uid = this.auth.getCurrentUser()?.id;
+    const uid = this.getUserId();
     const q = this.qFor(uid);
     const sneakerId = String(itemOrId?.id ?? itemOrId);
     this.http.get<CartRecord[]>(`${this.api}/carts?${q}`).pipe(
@@ -113,7 +95,7 @@ export class CartService {
   }
 
   updateQty(itemOrId: any, qty: number, size?: number): void {
-    const uid = this.auth.getCurrentUser()?.id;
+    const uid = this.getUserId();
     const q = this.qFor(uid);
     const sneakerId = String(itemOrId?.id ?? itemOrId);
     this.http.get<CartRecord[]>(`${this.api}/carts?${q}`).pipe(
@@ -132,7 +114,7 @@ export class CartService {
   }
 
   removeFromCart(itemOrId: any, size?: number): void {
-    const uid = this.auth.getCurrentUser()?.id;
+    const uid = this.getUserId();
     const q = this.qFor(uid);
     const sneakerId = String(itemOrId?.id ?? itemOrId);
     this.http.get<CartRecord[]>(`${this.api}/carts?${q}`).pipe(
@@ -148,7 +130,7 @@ export class CartService {
   }
 
   clear(): void {
-    const uid = this.auth.getCurrentUser()?.id;
+    const uid = this.getUserId();
     const q = this.qFor(uid);
     this.http.get<CartRecord[]>(`${this.api}/carts?${q}`).pipe(
       switchMap(list => {
@@ -161,32 +143,31 @@ export class CartService {
     ).subscribe();
   }
 
-  // merge guest session cart into user cart (uses localStorage sessionId)
+  // merge guest (userId: null) cart into logged-in user cart
   mergeSessionIntoUser(userId: number): void {
-    const sid = this.getSessionId();
-    this.http.get<CartRecord[]>(`${this.api}/carts?sessionId=${encodeURIComponent(sid)}`).pipe(
-      switchMap(sessionList => {
-        if (!sessionList || !sessionList.length) return of(null);
-        const sess = sessionList[0];
+    this.http.get<CartRecord[]>(`${this.api}/carts?userId=null`).pipe(
+      switchMap(guestList => {
+        if (!guestList || !guestList.length) return of(null);
+        const guest = guestList[0];
         return this.http.get<CartRecord[]>(`${this.api}/carts?userId=${userId}`).pipe(
           switchMap(userList => {
             if (userList && userList.length) {
               const userRec = userList[0];
               const combined = [...(userRec.items || [])];
-              for (const it of (sess.items || [])) {
+              for (const it of (guest.items || [])) {
                 const idx = combined.findIndex(x => x.sneakerId === it.sneakerId && (x.size ?? null) === (it.size ?? null));
                 if (idx > -1) combined[idx].qty += it.qty;
                 else combined.push({ sneakerId: it.sneakerId, qty: it.qty, ...(it.size != null ? { size: it.size } : {}) });
               }
               return this.http.patch(`${this.api}/carts/${userRec.id}`, { items: combined }).pipe(
-                switchMap(() => this.http.delete(`${this.api}/carts/${sess.id}`)),
-                tap(() => this.itemsSubject.next(combined))
+                switchMap(() => this.http.delete(`${this.api}/carts/${guest.id}`)),
+                tap(() => { this.itemsSubject.next(combined); this.loaded.delete(null); this.loaded.delete(userId); })
               );
             } else {
-              const payload = { userId, items: sess.items || [] };
+              const payload = { userId, items: guest.items || [] };
               return this.http.post(`${this.api}/carts`, payload).pipe(
-                switchMap(() => this.http.delete(`${this.api}/carts/${sess.id}`)),
-                tap(() => this.itemsSubject.next(sess.items || []))
+                switchMap(() => this.http.delete(`${this.api}/carts/${guest.id}`)),
+                tap(() => { this.itemsSubject.next(guest.items || []); this.loaded.delete(null); this.loaded.delete(userId); })
               );
             }
           })

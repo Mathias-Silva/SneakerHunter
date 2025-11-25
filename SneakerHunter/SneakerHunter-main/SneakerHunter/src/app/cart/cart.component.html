@@ -4,12 +4,20 @@
     <p *ngIf="!items?.length">Nenhum Produto no carrinho.</p>
 
     <div *ngFor="let e of items" class="cart-row">
-      <img [src]="e.item?.image || e.item?.imageUrl" alt="{{ e.item?.name }}" class="thumb"/>
-      <div><strong>{{ e.item?.name }}</strong></div>
-      <div class="tamanho" *ngIf="e.size">Tamanho: {{ e.size }}</div>
-      <div>Preço unit.: R$ {{ e.item?.price | number:'1.2-2' }}</div>
-      <div>Subtotal: R$ {{ ((e.item?.price || 0) * (e.qty || 0)) | number:'1.2-2' }}</div>
+      <!-- Imagem -->
+      <img [src]="e.item?.image || e.item?.imageUrl" 
+           alt="{{ e.item?.name }}" 
+           class="thumb"/>
 
+      <!-- Informações do produto -->
+      <div class="info">
+        <strong>{{ e.item?.name }}</strong>
+        <div class="tamanho" *ngIf="e.size">Tamanho: {{ e.size }}</div>
+        <div>Preço unit.: R$ {{ e.item?.price | number:'1.2-2' }}</div>
+        <div>Subtotal: R$ {{ ((e.item?.price || 0) * (e.qty || 0)) | number:'1.2-2' }}</div>
+      </div>
+
+      <!-- Controles de quantidade (fixo à direita) -->
       <div class="qty-controls">
         <button (click)="decrease(e)" title="Diminuir">-</button>
         <input type="number" min="1" [value]="e.qty"
@@ -17,18 +25,31 @@
         <button (click)="increase(e)" title="Aumentar">+</button>
       </div>
 
-      <button (click)="remove(e)">Remover</button>
+      <!-- Botão remover (também à direita) -->
+      <button class="remove-btn" (click)="remove(e)">Remover</button>
     </div>
 
+    <!-- Total -->
     <div class="cart-total">
       <strong>Total: R$ {{ (total$ | async) | number:'1.2-2' }}</strong>
     </div>
 
+    <!-- Ações do carrinho -->
     <div class="cart-actions">
-      <button (click)="clear()"  class="btn-clear" [disabled]="!items?.length">Limpar carrinho</button>
-      <button (click)="comprarTodos()" class="btn-primary" [disabled]="!items?.length || !estaLogado">Finalizar compra</button>
-      <p *ngIf="!estaLogado && items?.length">Faça login para finalizar a compra.</p>
+      <button (click)="clear()" class="btn-clear" [disabled]="!items?.length">
+        Limpar carrinho
+      </button>
+      <button (click)="comprarTodos()" class="btn-primary" 
+              [disabled]="!items?.length || !estaLogado">
+        Finalizar compra
+      </button>
+      <p *ngIf="!estaLogado && items?.length">
+        Faça login para finalizar a compra.
+      </p>
     </div>
   </div>
-  <ng-template #empty><p>Carregando...</p></ng-template>
+
+  <ng-template #empty>
+    <p>Carregando...</p>
+  </ng-template>
 </section>

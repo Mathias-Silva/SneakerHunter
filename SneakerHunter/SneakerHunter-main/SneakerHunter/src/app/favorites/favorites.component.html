@@ -2,17 +2,36 @@
   <h2>Favoritos</h2>
   <div *ngIf="(favItems$ | async) as items; else empty">
     <p *ngIf="items.length === 0">Nenhum favorito salvo.</p>
-    <ul *ngIf="items.length > 0">
+    <ul *ngIf="items.length > 0" class="favorites-list">
       <li *ngFor="let s of items" class="fav-row">
         <img [src]="s.image || s.imageUrl" alt="{{ s.name }}" class="thumb"/>
         <div class="info">
-          <strong>{{ s.name }}</strong>
-          <div>R$ {{ s.price | number:'1.2-2' }}</div>
+          <div class="name-size">
+            <strong>{{ s.name }}</strong>
+            <span class="tamanho-display" *ngIf="selectedSizes[s.id]">
+              — Tamanho: {{ selectedSizes[s.id] }}
+            </span>
+          </div>
+          <p class="brand">{{ s.brand }}</p>
+          <div class="price">R$ {{ s.price | number:'1.2-2' }}</div>
+          
+          <!-- Tamanhos -->
+          <div class="sizes" *ngIf="s.sizes && s.sizes.length">
+            <label>Escolher tamanho:</label>
+            <div class="sizes-list">
+              <button *ngFor="let sz of s.sizes"
+                      type="button"
+                      class="size-btn"
+                      [class.selected]="isSelectedSize(s, sz)"
+                      (click)="selectSize(s, sz)">
+                {{ sz }}
+              </button>
+            </div>
+          </div>
         </div>
         <div class="actions">
-          <button (click)="addToCart(s)">Adicionar ao carrinho</button>
-          <button (click)="fav.toggle(s.id)">Remover</button>
-        
+          <button (click)="addToCart(s)" class="btn-primary">Adicionar ao carrinho</button>
+          <button (click)="toggleFavorite(s.id)" class="btn-danger">Remover</button>
         </div>
       </li>
     </ul>

@@ -1,3 +1,4 @@
+/* Página do carrinho */
 .cart-page {
   max-width: 960px;
   margin: 0 auto;
@@ -13,15 +14,19 @@
   padding-bottom: 8px;
 }
 
+/* Linha do carrinho */
 .cart-row {
   display: flex;
+  justify-content: space-between; /* separa info e qty/remover */
+  align-items: center;
   flex-wrap: wrap;
   gap: 16px;
-  align-items: flex-start;
   padding: 16px 0;
   border-bottom: 1px solid #eee;
+  position: relative;
 }
 
+/* Imagem */
 .thumb {
   width: 120px;
   height: 120px;
@@ -30,11 +35,13 @@
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
+/* Informações do produto */
 .info {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 8px;
+  min-width: 200px;
 }
 
 .info strong {
@@ -42,27 +49,14 @@
   color: #222;
 }
 
-#teste {
-  background-color: #f9f9f9;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  align-items: center;
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 8px;
-  justify-content: space-between;
-  width: 100%;
-}
-
-
+/* Controles de quantidade */
 .qty-controls {
-  margin-left: auto; 
   display: flex;
   align-items: center;
   gap: 6px;
+  flex-shrink: 0; /* não encolhe */
+  margin-left: auto; /* fixa à direita */
 }
-
 
 .qty-controls button {
   background-color: #fb923c;
@@ -88,6 +82,19 @@ input[type="number"] {
   font-family: 'Segoe UI', sans-serif;
 }
 
+/* Botão remover */
+.cart-row button.remove-btn {
+  margin-left: 12px;
+  flex-shrink: 0;
+  white-space: nowrap;
+  background-color: #e74c3c;
+}
+
+.cart-row button.remove-btn:hover {
+  background-color: #c0392b;
+}
+
+/* Botões gerais */
 button {
   background-color: #fb923c;
   color: white;
@@ -103,6 +110,14 @@ button:hover {
   background-color: #d4c1b6;
 }
 
+/* Total */
+.cart-total {
+  margin-top: 16px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Ações do carrinho */
 .cart-actions {
   margin-top: 24px;
   display: flex;
@@ -111,6 +126,8 @@ button:hover {
   font-size: 18px;
   padding-top: 16px;
   border-top: 2px solid #ddd;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .cart-actions button {
@@ -125,17 +142,19 @@ button:hover {
 
 .cart-actions button:hover {
   background-color: #dd7d00 !important;
-  
 }
-.cart-actions .btn-primary:disabled, .cart-actions .btn-clear:disabled {
+
+.cart-actions .btn-primary:disabled,
+.cart-actions .btn-clear:disabled {
   background-color: #ccc !important;
   cursor: not-allowed !important;
 }
 
-@media (max-width: 600px) {
+/* Responsividade */
+@media (max-width: 768px) {
   .cart-row {
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
   }
 
   .thumb {
@@ -144,17 +163,46 @@ button:hover {
   }
 
   .info {
-    align-items: center;
-    text-align: center;
+    width: 100%;
+    text-align: left;
   }
 
-  #teste {
+  .qty-controls {
     justify-content: center;
+    margin: 12px 0;
+  }
+
+  .cart-row button.remove-btn {
+    align-self: center;
+    margin-top: 8px;
   }
 
   .cart-actions {
     flex-direction: column;
-    gap: 12px;
     text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .cart-page {
+    padding: 12px;
+  }
+
+  .cart-page h2 {
+    font-size: 22px;
+  }
+
+  .info strong {
+    font-size: 16px;
+  }
+
+  button,
+  .cart-actions button {
+    width: 100%; /* botões ocupam largura total */
+  }
+
+  input[type="number"] {
+    width: 100%;
+    max-width: 80px;
   }
 }

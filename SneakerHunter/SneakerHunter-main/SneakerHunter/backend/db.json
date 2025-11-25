@@ -177,20 +177,17 @@
       ]
     },
     {
-      "id": "2865",
-      "name": "TESTE",
-      "price": 21231.01,
-      "brand": "Nike",
-      "imageUrl": "assets/images/airmax.jpg",
-      "description": "3ere",
+      "id": "88b2",
+      "name": "BALENCIAGA TRIPLE S DISTRESSED IN DYED GRAY",
+      "price": 5330,
+      "brand": "Balenciaga",
+      "imageUrl": "assets/images/balenciaga.jpg",
+      "description": "Confeccionado em couro vegano e nylon, na cor cinza, modelo triple S . O modelo possui recortes em couro, sola robusta emborracha nas cores cinza e manchas  de tinta, com estilo desconstruído. ",
       "gender": "masculino",
       "sizes": [
-        34,
-        35,
-        38,
-        39,
         40,
         41,
+        42,
         43
       ]
     }
@@ -213,34 +210,10 @@
       "cpf": "111.111.111-11"
     },
     {
-      "id": "8a84",
-      "email": "mathias@gmail.com",
-      "password": "123456",
-      "name": "MATHIAS DA SILVA SANTOS",
-      "role": "user",
-      "cpf": "488.665.908-00"
-    },
-    {
-      "id": "233a",
-      "email": "mariadejesus@senacsp.edu.br",
-      "password": "teste1234",
-      "name": "Maria de Jesus",
-      "role": "user",
-      "cpf": "121.212.121-12"
-    },
-    {
-      "id": "guest",
-      "email": null,
-      "password": null,
-      "name": "Guest",
-      "role": "guest",
-      "cpf": null
-    },
-    {
-      "id": "393b",
-      "email": "carlos@gmail.com",
+      "id": "6061",
+      "email": "marcos@gmail.com",
       "password": "teste123",
-      "name": "carol",
+      "name": "Marcos",
       "role": "070.620.327-51"
     }
   ],
@@ -252,7 +225,32 @@
         {
           "sneakerId": "2be7",
           "qty": 1,
+          "size": 41
+        },
+        {
+          "sneakerId": "2be7",
+          "qty": 1,
+          "size": 40
+        },
+        {
+          "sneakerId": "2be7",
+          "qty": 1,
+          "size": 39
+        },
+        {
+          "sneakerId": "2be7",
+          "qty": 6,
           "size": 38
+        },
+        {
+          "sneakerId": "0d26",
+          "qty": 1,
+          "size": 39
+        },
+        {
+          "sneakerId": "085f",
+          "qty": 1,
+          "size": 41
         }
       ]
     },
@@ -300,6 +298,11 @@
       "id": "020c",
       "userId": "233a",
       "items": []
+    },
+    {
+      "id": "c2d5",
+      "userId": null,
+      "items": []
     }
   ],
   "favorites": [
@@ -307,9 +310,9 @@
       "id": "1",
       "userId": 1,
       "items": [
-        "085f",
+        "0251",
         "2be7",
-        "0251"
+        "0d26"
       ]
     },
     {
