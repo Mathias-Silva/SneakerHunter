@@ -30,64 +30,66 @@ export class LoginComponent {
     private favoritesService: FavoritesService
   ) {}
 
-    fazerLogin() {
-    this.authService.login(this.email, this.senha).subscribe(user => {
-      if (!user) { this.erro = 'Credenciais inválidas'; return; }
-      const userId = user.id;
-      this.favoritesService.mergeSessionIntoUser?.(userId);
-      this.cartService.mergeSessionIntoUser?.(userId);
-      this.favoritesService.loadForUser(userId).subscribe();
-      this.cartService.loadCartForUser(userId).subscribe();
-      if (user.role === 'admin') this.router.navigate(['/admin']);
-      else this.router.navigate(['/']);
-    }, () => this.erro = 'Erro ao conectar');
-  }
- aoEnviar(event?: Event): void {
-  if (event) event.preventDefault();
-  this.erro = '';
-
-  if (this.modoCadastro) {
-    if (!this.nome.trim()) { this.erro = 'Nome é obrigatório'; return; }
-    if (!this.email.trim() || !this.validarEmail(this.email)) { this.erro = 'Email inválido'; return; }
-    if (!this.cpf.trim() || !this.validarCPF(this.cpf)) { this.erro = 'CPF inválido'; return; }
-    if (!this.senhaValida(this.senha)) { this.erro = 'A senha deve ter ao menos 6 caracteres'; return; }
-    if (this.senha !== this.confirmacaoSenha) { this.erro = 'As senhas não coincidem'; return; }
-
-    this.authService.register(this.email, this.senha, this.nome, this.cpf).subscribe({
-      next: () => {
-        this.modoCadastro = false;
-        this.erro = 'Cadastro realizado com sucesso! Faça login.';
-        this.senha = '';
-        this.email = '';
+  Login() {
+    this.erro = '';
+    this.authService.login(this.email, this.senha).subscribe({
+      next: user => {
+        if (!user) { this.erro = 'Credenciais inválidas'; return; }
+        const userId = user.id;
+        this.favoritesService.mergeSessionIntoUser?.(userId);
+        this.cartService.mergeSessionIntoUser?.(userId);
+        this.favoritesService.loadForUser(userId).subscribe();
+        this.cartService.loadCartForUser(userId).subscribe();
+        if (user.role === 'admin') this.router.navigate(['/admin']);
+        else this.router.navigate(['/']);
       },
-      error: (err) => {
-        if (err.message.includes(this.email) || err.message.includes(this.cpf)) {
-      this.erro = err.message;
-    } else {
-      this.erro = 'Erro ao cadastrar usuário';
+      error: () => this.erro = 'Erro ao conectar'
+    });
+  }
+
+  aoEnviar(event?: Event): void {
+    if (event) event.preventDefault();
+    this.erro = '';
+
+    if (this.modoCadastro) {
+      if (!this.nome.trim()) { this.erro = 'Nome é obrigatório'; return; }
+      if (!this.email.trim() || !this.validarEmail(this.email)) { this.erro = 'Email inválido'; return; }
+      if (!this.cpf.trim() || !this.validarCPF(this.cpf)) { this.erro = 'CPF inválido'; return; }
+      if (!this.senhaValida(this.senha)) { this.erro = 'A senha deve ter ao menos 6 caracteres'; return; }
+      if (this.senha !== this.confirmacaoSenha) { this.erro = 'As senhas não coincidem'; return; }
+
+      this.authService.register(this.email, this.senha, this.nome, this.cpf).subscribe({
+        next: () => {
+          this.modoCadastro = false;
+          this.erro = 'Cadastro realizado com sucesso! Faça login.';
+          this.senha = '';
+          this.email = '';
+        },
+        error: (err: any) => {
+          // exibe a mensagem de erro retornada pelo service (email/cpf duplicado)
+          this.erro = err?.message ?? err?.error?.message ?? 'Erro ao cadastrar usuário';
+        }
+      });
+      return;
     }
 
-      }
+    if (!this.email.trim() || !this.validarEmail(this.email)) { this.erro = 'Email inválido'; return; }
+    if (!this.senha) { this.erro = 'Senha é obrigatória'; return; }
+
+    this.authService.login(this.email, this.senha).subscribe({
+      next: user => {
+        if (!user) { this.erro = 'Credenciais inválidas'; return; }
+        const userId = user.id;
+        this.favoritesService.loadForUser(userId).subscribe();
+        this.cartService.loadCartForUser(userId).subscribe();
+
+        if (user.role === 'admin') this.router.navigate(['/admin']);
+        else this.router.navigate(['/']);
+      },
+      error: () => this.erro = 'Erro ao conectar'
     });
-    return;
   }
 
-  if (!this.email.trim() || !this.validarEmail(this.email)) { this.erro = 'Email inválido'; return; }
-  if (!this.senha) { this.erro = 'Senha é obrigatória'; return; }
-
-  this.authService.login(this.email, this.senha).subscribe({
-    next: user => {
-      if (!user) { this.erro = 'Credenciais inválidas'; return; }
-      const userId = user.id;
-      this.favoritesService.loadForUser(userId).subscribe();
-      this.cartService.loadCartForUser(userId).subscribe();
-
-      if (user.role === 'admin') this.router.navigate(['/admin']);
-      else this.router.navigate(['/']);
-    },
-    error: () => this.erro = 'Erro ao conectar'
-  });
-}
   alternarCadastro(): void {
     this.modoCadastro = !this.modoCadastro;
     this.erro = '';
@@ -201,11 +203,10 @@ private validarCPF(cpf: string): boolean {
     if (!this.email || !this.senha) { this.erro = 'Preencha email e senha'; return; }
     this.authService.register(this.email, this.senha, this.nome, this.cpf).subscribe({
       next: () => {
-        
         this.router.navigate(['/login']);
       },
-      error: () => {
-        this.erro = 'Erro ao cadastrar usuário';
+      error: (err: any) => {
+        this.erro = err?.message ?? err?.error?.message ?? 'Erro ao cadastrar usuário';
       }
     });
   }

@@ -14,6 +14,8 @@ export const routes: Routes = [
   // { path: 'produtos', component: ProdutosComponent },
   { path: 'login', component: LoginComponent },
   { path: 'contato', component: ContatoComponent },
+  
+  // rota admin protegida por AuthGuard (apenas administradores)
   {
     path: 'admin',
     component: AdminComponent,

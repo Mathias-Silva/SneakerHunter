@@ -28,7 +28,7 @@ export class HomeComponent implements OnInit {
   brands: string[] = [];
   selectedBrands: string[] = [];
 
-  // map product id -> selected size
+
   selectedSizes: { [id: string]: number | null } = {};
 
   constructor(
@@ -37,6 +37,7 @@ export class HomeComponent implements OnInit {
     private cart: CartService
   ) {}
 
+  //inicializa o carregamento dos produtos
   ngOnInit(): void {
     this.loading = true;
     this.sneakers$ = this.sneakerService.getAll();
@@ -45,7 +46,7 @@ export class HomeComponent implements OnInit {
         this.sneakers = list || [];
         this.brands = Array.from(new Set((this.sneakers || []).map(s => (s.brand || '').toString()).filter(Boolean)));
         this.applyFilters();
-        // initialize selectedSizes with first available size (or null)
+        
         for (const s of this.sneakers) {
           const id = String(s.id ?? '');
           this.selectedSizes[id] = (s.sizes && s.sizes.length) ? s.sizes[0] : null;
@@ -101,11 +102,12 @@ export class HomeComponent implements OnInit {
     this.applyFilters();
   }
 
-  // size helpers
+  
   selectSize(s: Sneaker, size: number) {
     if (!s?.id) return;
     this.selectedSizes[String(s.id)] = size;
   }
+  
   isSelectedSize(s: Sneaker, size: number): boolean {
     return String(this.selectedSizes[String(s.id)]) === String(size);
   }

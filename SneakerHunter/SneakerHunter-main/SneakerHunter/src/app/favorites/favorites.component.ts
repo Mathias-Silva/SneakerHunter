@@ -25,7 +25,7 @@ export class FavoritesComponent implements OnInit {
     private cart: CartService,
     public auth: AuthService
   ) {}
-
+//inicializa os favoritos
   ngOnInit(): void {
     this.fav.loadForUser().subscribe();
 

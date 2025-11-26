@@ -208,9 +208,84 @@
       "name": "Mathias",
       "role": "user",
       "cpf": "111.111.111-11"
+    },
+    {
+      "id": "afdd",
+      "email": "teste@gmail.com",
+      "password": "teste123",
+      "name": "teste",
+      "role": "488.665.908-00"
+    },
+    {
+      "id": "7402",
+      "email": "teste@gmail.com",
+      "password": "teste123",
+      "name": "teste",
+      "role": "488.665.908-00"
     }
   ],
-  "carts": [],
-  "favorites": [],
-  "orders": []
+  "carts": [
+    {
+      "id": "5d07",
+      "userId": "afdd",
+      "items": [
+        {
+          "sneakerId": "88b2",
+          "qty": 3,
+          "size": 40
+        },
+        {
+          "sneakerId": "88b2",
+          "qty": 1,
+          "size": 42
+        },
+        {
+          "sneakerId": "88b2",
+          "qty": 1,
+          "size": 41
+        }
+      ]
+    },
+    {
+      "id": "1b51",
+      "userId": null,
+      "items": [
+        {
+          "sneakerId": "9a86",
+          "qty": 11,
+          "size": 38
+        }
+      ]
+    }
+  ],
+  "favorites": [
+    {
+      "id": "aa82",
+      "userId": "afdd",
+      "items": [
+        "88b2"
+      ]
+    },
+    {
+      "id": "8978",
+      "userId": "1",
+      "items": [
+        "9a86"
+      ]
+    }
+  ],
+  "orders": [
+    {
+      "id": "7e62",
+      "userId": "afdd",
+      "items": [
+        {
+          "sneakerId": "2be7",
+          "qty": 1
+        }
+      ],
+      "total": 799,
+      "createdAt": "2025-11-26T04:28:37.700Z"
+    }
+  ]
 }

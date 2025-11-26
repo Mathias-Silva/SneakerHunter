@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./admin.component.css']
 })
 export class AdminComponent implements OnInit, OnDestroy {
+  //lista de sneakers carregados do back
   sneakers: Sneaker[] = [];
   newSneaker: any = {
     name: '',
@@ -31,6 +32,7 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   constructor(private sneakerService: SneakerService) {}
 
+  //inicializa o carregamento dos produtos
   ngOnInit(): void {
     this.loading = true;
     this.sub = this.sneakerService.sneakers$.subscribe({
@@ -40,6 +42,7 @@ export class AdminComponent implements OnInit, OnDestroy {
     this.sneakerService.loadAll();
   }
 
+  //cancela a inscrição para evitar vazamentos de memória
   ngOnDestroy(): void {
     this.sub?.unsubscribe();
   }
@@ -56,6 +59,7 @@ export class AdminComponent implements OnInit, OnDestroy {
     }
     
     if (this.editMode) {
+       // atualização de produto existente
       if (!this.newSneaker.id || this.newSneaker.id === 0) {
         this.error = 'ID inválido para atualização';
         console.error('[AdminComponent] update attempted with id 0', this.newSneaker);
@@ -67,8 +71,9 @@ export class AdminComponent implements OnInit, OnDestroy {
         error: (err: any) => { this.error = 'Erro ao atualizar'; console.error(err); }
       });
     } else {
+      // criação de novo produto
       const toCreate = { ...this.newSneaker };
-      // force id as string if present
+      // force id como string 
       if (toCreate.id != null) toCreate.id = String(toCreate.id);
       this.sneakerService.createSneaker(toCreate as any).subscribe({
         next: (created: any) => { console.debug('[Admin] created', created); this.sneakerService.loadAll(); },

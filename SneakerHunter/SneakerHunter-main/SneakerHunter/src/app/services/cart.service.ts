@@ -10,15 +10,24 @@ interface CartRecord { id?: number; userId?: number | null; items: CartItem[]; }
 @Injectable({ providedIn: 'root' })
 export class CartService {
   private api = 'http://localhost:3000';
+
+  // BehaviorSubject que guarda os itens do carrinho (para a UI)
   private itemsSubject = new BehaviorSubject<CartItem[]>([]);
   items$ = this.itemsSubject.asObservable();
+
+  // controle de carregamento por userId (evita chamadas repetidas)
   private loaded = new Set<number | null | string>();
 
   constructor(private http: HttpClient, private auth: AuthService) {}
 
-  // retorna userId (ou null se deslogado)
   private getUserId(): number | null {
-    return this.auth.getCurrentUser()?.id ?? null;
+    const id = this.auth.getCurrentUser()?.id;
+    if (typeof id === 'number') return id;
+    if (typeof id === 'string' && id.trim() !== '') {
+      const n = Number(id);
+      return Number.isFinite(n) ? n : null;
+    }
+    return null;
   }
 
   private qFor(userId: number | null) {
@@ -74,6 +83,7 @@ export class CartService {
     ).subscribe();
   }
 
+  // Diminui quantidade de um item; remove se qty chegar a zero
   decreaseQty(itemOrId: any, qty = 1, size?: number): void {
     const uid = this.getUserId();
     const q = this.qFor(uid);
@@ -143,7 +153,6 @@ export class CartService {
     ).subscribe();
   }
 
-  // merge guest (userId: null) cart into logged-in user cart
   mergeSessionIntoUser(userId: number): void {
     this.http.get<CartRecord[]>(`${this.api}/carts?userId=null`).pipe(
       switchMap(guestList => {
@@ -176,14 +185,12 @@ export class CartService {
     ).subscribe();
   }
 
-  /**
-   * cria um pedido (orders) com os itens atuais do carrinho do usuário logado,
-   * depois limpa o carrinho (items: [])
-   */
+  
+  //cria um pedido do carrinho, e limpa o carrinho após o pedido ser criado
   placeOrder() {
     const uid = this.getUserId();
     if (!uid) {
-      return of(null); // não deveria permitir checkout se não estiver logado
+      return of(null); 
     }
 
     return this.http.get<CartRecord[]>(`${this.api}/carts?userId=${uid}`).pipe(
@@ -193,7 +200,7 @@ export class CartService {
         const items = rec.items || [];
         if (!items.length) return of(null);
 
-        // buscar preços para calcular total
+        
         return this.http.get<any[]>(`${this.api}/sneakers`).pipe(
           switchMap(sneakers => {
             const total = items.reduce((acc, it) => {
@@ -203,14 +210,14 @@ export class CartService {
 
             const orderPayload: any = {
               userId: uid,
-              items: items.map(i => ({ sneakerId: i.sneakerId, qty: i.qty })), // conforme exemplo
+              items: items.map(i => ({ sneakerId: i.sneakerId, qty: i.qty })), 
               total,
               createdAt: new Date().toISOString()
             };
 
             return this.http.post(`${this.api}/orders`, orderPayload).pipe(
               switchMap(order => 
-                // limpar o carrinho do usuário
+                // limpar o carrinho do usuário após criar o pedido
                 this.http.patch(`${this.api}/carts/${rec.id}`, { items: [] }).pipe(
                   tap(() => { this.itemsSubject.next([]); this.loaded.delete(uid); }),
                   map(() => order)

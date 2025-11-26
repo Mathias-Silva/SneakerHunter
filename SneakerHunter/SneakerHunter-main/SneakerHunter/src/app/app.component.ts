@@ -15,6 +15,7 @@ import { FavoritesService } from './services/favorite.service';
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppComponent implements OnInit {
+  // Observables usados na UI para exibir contadores e total do carrinho
   cartCount$;
   cartTotal$;
   favCount$;

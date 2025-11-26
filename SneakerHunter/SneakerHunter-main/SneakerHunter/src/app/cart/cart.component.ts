@@ -49,6 +49,7 @@ export class CartComponent implements OnInit {
     this.cart.updateQty(String(id), qty, size);
   }
 
+  // Aumenta quantidade de um item no carrinho
   increase(e: any) {
     const id = e?.item?.id ?? e;
     this.cart.addToCart(id, 1, e.size);
@@ -65,7 +66,7 @@ export class CartComponent implements OnInit {
   }
 
   clear() { this.cart.clear(); }
-  comprarTodos() {
+  buyAll() {
     // pega o total atual (um valor) e mostra no confirm com formatação BRL
     this.total$.pipe(take(1)).subscribe(total => {
       const formatted = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(total || 0);

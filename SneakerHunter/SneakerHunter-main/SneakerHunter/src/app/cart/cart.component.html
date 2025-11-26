@@ -39,7 +39,7 @@
       <button (click)="clear()" class="btn-clear" [disabled]="!items?.length">
         Limpar carrinho
       </button>
-      <button (click)="comprarTodos()" class="btn-primary" 
+      <button (click)="buyAll()" class="btn-primary" 
               [disabled]="!items?.length || !estaLogado">
         Finalizar compra
       </button>
