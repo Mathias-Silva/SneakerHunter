@@ -1,43 +1,43 @@
 main {
   font-family: 'Segoe UI', sans-serif;
   color: #333;
-  line-height: 1.45;           /* linha mais compacta */
-  padding: 24px 12px;          /* menos padding para reduzir scroll */
+  line-height: 1.45;           
+  padding: 24px 12px;          
   background-color: #fdfdfd;
 }
 
 .container {
-  max-width: 880px;            /* largura levemente reduzida para melhor leitura */
+  max-width: 880px;            
   margin: 0 auto;
 }
 
 /* Introdução */
 .about-intro {
   text-align: center;
-  margin-bottom: 32px;         /* menos espaço vertical */
+  margin-bottom: 32px;         
 }
 
 .about-title {
-  font-size: 28px;             /* menor para evitar scroll */
+  font-size: 28px;             
   margin-bottom: 12px;
   color: #222;
 }
 
 .about-text {
-  font-size: 15px;             /* texto menor e mais compacto */
+  font-size: 15px;             
   color: #555;
   max-width: 720px;
   margin: 0 auto;
-  text-align: center;          /* mantém centralizado e alinhado */
+  text-align: center;          
 }
 
-/* Equipe */
+
 .about-team {
-  margin-bottom: 32px;         /* reduzido */
+  margin-bottom: 32px;         
 }
 
 .section-title {
-  font-size: 22px;             /* menor */
+  font-size: 22px;             
   margin-bottom: 18px;
   text-align: center;
   color: #222;
@@ -45,8 +45,8 @@ main {
 
 .team-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* colunas menores para caber mais itens por linha */
-  gap: 12px;                   /* gap reduzido para compactar */
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;                   
   align-items: start;
 }
 
@@ -54,7 +54,7 @@ main {
   background-color: #fff;
   border: 1px solid #eee;
   border-radius: 8px;
-  padding: 10px;               /* padding ligeiramente menor */
+  padding: 10px;              
   text-align: center;
   box-shadow: 0 1px 4px rgba(0,0,0,0.04);
   transition: transform 0.18s ease;
@@ -68,17 +68,17 @@ main {
 }
 
 .team-photo {
-  width: 96px;                /* imagem menor e quadrada */
+  width: 96px;                
   height: 96px;
   object-fit: cover;
-  border-radius: 6px;         /* cantos levemente arredondados, não totalmente circulares */
+  border-radius: 6px;        
   margin-bottom: 10px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.06);
   flex-shrink: 0;
 }
 
 .team-name {
-  font-size: 16px;             /* menor e mais proporcional */
+  font-size: 16px;             
   font-weight: 600;
   margin-bottom: 6px;
 }
@@ -88,9 +88,9 @@ main {
   color: #777;
 }
 
-/* Valores */
+
 .about-values {
-  margin-bottom: 24px;         /* reduzido */
+  margin-bottom: 24px;         
 }
 
 .values-list {
@@ -98,7 +98,7 @@ main {
   padding: 0;
   margin: 0 auto;
   max-width: 720px;
-  font-size: 14px;             /* menor */
+  font-size: 14px;          
   color: #444;
 }
 
@@ -106,7 +106,7 @@ main {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 0;             /* padding menor */
+  padding: 10px 0;            
   border-bottom: 1px solid #eee;
 }
 
@@ -115,7 +115,7 @@ main {
   color: #38ac18;
 }
 
-/* Ajustes para telas muito pequenas: manter várias colunas quando possível */
+
 @media (max-width: 480px) {
   .team-grid {
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -125,4 +125,11 @@ main {
     width: 80px;
     height: 80px;
   }
+}
+
+
+img#fora {
+  filter: grayscale(100%);
+  opacity: 0.6; 
+  pointer-events: none; 
 }

@@ -34,7 +34,9 @@ export class LoginComponent {
     this.erro = '';
     this.authService.login(this.email, this.senha).subscribe({
       next: user => {
-        if (!user) { this.erro = 'Credenciais inválidas'; return; }
+        if (!user) { this.erro = 'Credenciais inválidas';
+          this.email = ''; this.senha = '';
+          return; }
         const userId = user.id;
         this.favoritesService.mergeSessionIntoUser?.(userId);
         this.cartService.mergeSessionIntoUser?.(userId);
@@ -78,7 +80,7 @@ export class LoginComponent {
 
     this.authService.login(this.email, this.senha).subscribe({
       next: user => {
-        if (!user) { this.erro = 'Credenciais inválidas'; return; }
+        if (!user) { this.erro = 'Credenciais inválidas';  this.senha =''; this.email= ''; return; }
         const userId = user.id;
         this.favoritesService.loadForUser(userId).subscribe();
         this.cartService.loadCartForUser(userId).subscribe();

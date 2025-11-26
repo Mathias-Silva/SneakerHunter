@@ -27,7 +27,7 @@
   max-width: 100% !important;
   height: auto !important;
   display: block ;
-  margin-left: 110px; /* centraliza e dá espaçamento */
+  margin-left: 110px; 
   margin-right: 111px;
 }
 
@@ -427,14 +427,12 @@
   display: block;
 }
 
-/* Lista de tamanhos */
+
 .sizes-list {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
 }
-
-/* Botões de tamanho */
 .size-btn {
   padding: 6px 12px;
   border: 1px solid #ccc;
@@ -451,7 +449,7 @@
   border-color: #ff7a18;
 }
 
-/* Quando o tamanho está selecionado */
+
 .size-btn.selected {
   background: #ff7a18;
   color: #ffffff;

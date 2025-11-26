@@ -9,7 +9,7 @@
   background-color: #fafbfc;
 }
 
-/* Wrapper flexível */
+
 .login-content {
   display: flex;
   gap: 32px;
@@ -20,7 +20,7 @@
   padding: 8px;
 }
 
-/* Carrossel */
+
 .carousel {
   flex: 1 1 480px;
   max-width: 520px;
@@ -46,7 +46,7 @@
   border-radius: 12px;
 }
 
-/* Formulário */
+
 .form-container {
   flex: 1 1 480px;
   max-width: 520px;
@@ -66,7 +66,7 @@
   color: #111827;
 }
 
-/* Campos */
+
 .field {
   display: flex;
   flex-direction: column;
@@ -96,14 +96,14 @@
   outline: none;
 }
 
-/* Erro */
+
 .error {
   color: #b91c1c;
   font-size: 0.9rem;
   margin-bottom: 8px;
 }
 
-/* Botões */
+
 .actions {
   display: flex;
   gap: 12px;
@@ -150,7 +150,7 @@
   align-self: flex-start;
 }
 
-/* Estado logado */
+
 .signed-in {
   margin-bottom: 12px;
   color: #374151;
@@ -168,7 +168,7 @@
   .carousel,
   .form-container {
     max-width: 100%;
-    aspect-ratio: auto; /* libera proporção */
+    aspect-ratio: auto; 
   }
 
   .form-container {

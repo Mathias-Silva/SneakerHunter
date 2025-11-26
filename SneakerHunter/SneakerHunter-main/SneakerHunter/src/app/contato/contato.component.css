@@ -72,7 +72,7 @@ html, body {
   max-width: 60ch;
 }
 
-/* empurra os detalhes para o final da coluna e organiza itens verticalmente */
+
 .contact-details {
   margin: 0;
   color: var(--muted);
@@ -82,7 +82,7 @@ html, body {
   margin-top: auto;
 }
 
-/* garante que cada parágrafo tenha espaçamento consistente */
+
 .contact-details p {
   margin: 0;
   padding: 0;
@@ -91,7 +91,7 @@ html, body {
   line-height: 1.45;
 }
 
-/* mantém links sociais alinhados à esquerda e com espaçamento visual */
+
 .social-links {
   margin-top: 8px;
   display: flex;

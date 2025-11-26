@@ -76,7 +76,9 @@ export class AdminComponent implements OnInit, OnDestroy {
       // force id como string 
       if (toCreate.id != null) toCreate.id = String(toCreate.id);
       this.sneakerService.createSneaker(toCreate as any).subscribe({
-        next: (created: any) => { console.debug('[Admin] created', created); this.sneakerService.loadAll(); },
+        next: (created: any) => { console.debug('[Admin] created', created); this.sneakerService.loadAll();
+          this.resetForm();
+         },
         error: (err: any) => { this.error = 'Erro ao criar'; console.error(err); }
       });
     }

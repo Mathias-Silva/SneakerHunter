@@ -1,4 +1,4 @@
-/* Página do carrinho */
+
 .cart-page {
   max-width: 960px;
   margin: 0 auto;
@@ -14,10 +14,10 @@
   padding-bottom: 8px;
 }
 
-/* Linha do carrinho */
+
 .cart-row {
   display: flex;
-  justify-content: space-between; /* separa info e qty/remover */
+  justify-content: space-between; 
   align-items: center;
   flex-wrap: wrap;
   gap: 16px;
@@ -26,7 +26,7 @@
   position: relative;
 }
 
-/* Imagem */
+
 .thumb {
   width: 120px;
   height: 120px;
@@ -35,7 +35,7 @@
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
-/* Informações do produto */
+
 .info {
   flex: 1;
   display: flex;
@@ -49,13 +49,13 @@
   color: #222;
 }
 
-/* Controles de quantidade */
+
 .qty-controls {
   display: flex;
   align-items: center;
   gap: 6px;
-  flex-shrink: 0; /* não encolhe */
-  margin-left: auto; /* fixa à direita */
+  flex-shrink: 0;
+  margin-left: auto; 
 }
 
 .qty-controls button {
@@ -82,7 +82,7 @@ input[type="number"] {
   font-family: 'Segoe UI', sans-serif;
 }
 
-/* Botão remover */
+
 .cart-row button.remove-btn {
   margin-left: 12px;
   flex-shrink: 0;
@@ -94,7 +94,7 @@ input[type="number"] {
   background-color: #c0392b;
 }
 
-/* Botões gerais */
+
 button {
   background-color: #fb923c;
   color: white;
@@ -110,14 +110,14 @@ button:hover {
   background-color: #d4c1b6;
 }
 
-/* Total */
+
 .cart-total {
   margin-top: 16px;
   font-size: 18px;
   font-weight: bold;
 }
 
-/* Ações do carrinho */
+
 .cart-actions {
   margin-top: 24px;
   display: flex;
@@ -150,7 +150,7 @@ button:hover {
   cursor: not-allowed !important;
 }
 
-/* Responsividade */
+
 @media (max-width: 768px) {
   .cart-row {
     flex-direction: column;
@@ -198,7 +198,7 @@ button:hover {
 
   button,
   .cart-actions button {
-    width: 100%; /* botões ocupam largura total */
+    width: 100%; 
   }
 
   input[type="number"] {
