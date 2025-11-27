@@ -163,32 +163,16 @@
       ]
     },
     {
-      "id": "cbf1",
-      "name": "NIKE SHOX R4 Metallic Silver Deep",
-      "price": 1299,
-      "brand": "Nike",
-      "imageUrl": "assets/images/NikeShow.jpg",
-      "description": "Uma versão repaginada do ícone do início dos anos 2000, o Nike Shox R4 replica o original com suas linhas de design futuristas e amortecimento de alto desempenho. As colunas Nike Shox no calcanhar distribuem o peso para maximizar o conforto, proporcionando um visual ousado nas ruas.",
+      "id": "b39d",
+      "name": "Papete do Mickey",
+      "price": 100,
+      "brand": "Disney",
+      "imageUrl": "assets/images/Papete.jpg",
+      "description": "Papete",
       "gender": "masculino",
       "sizes": [
-        38,
         40,
         42
-      ]
-    },
-    {
-      "id": "88b2",
-      "name": "BALENCIAGA TRIPLE S DISTRESSED IN DYED GRAY",
-      "price": 5330,
-      "brand": "Balenciaga",
-      "imageUrl": "assets/images/balenciaga.jpg",
-      "description": "Confeccionado em couro vegano e nylon, na cor cinza, modelo triple S . O modelo possui recortes em couro, sola robusta emborracha nas cores cinza e manchas  de tinta, com estilo desconstruído. ",
-      "gender": "masculino",
-      "sizes": [
-        40,
-        41,
-        42,
-        43
       ]
     }
   ],
@@ -202,37 +186,48 @@
       "cpf": "000.000.000-00"
     },
     {
-      "id": "fa82",
-      "email": "mathiassilvasantos@gmail.com",
-      "password": "teste123",
-      "name": "mathias",
-      "cpf": "488.665.908-00",
+      "id": "a824",
+      "email": "matheus@senac.com",
+      "password": "Matheus",
+      "name": "Matheus",
+      "cpf": "655.799.490-50",
+      "role": "user"
+    },
+    {
+      "id": "2382",
+      "email": "matheus2@senac.com",
+      "password": "Matheus",
+      "name": "Matheus",
+      "cpf": "100.100.100-10",
       "role": "user"
     }
   ],
   "carts": [
     {
-      "id": "d620",
-      "userId": 1,
-      "items": []
-    },
-    {
-      "id": "8e47",
+      "id": "de7e",
       "userId": null,
       "items": []
     }
   ],
   "favorites": [
     {
-      "id": "f639",
-      "userId": "1",
-      "items": []
-    },
-    {
-      "id": "b2b4",
-      "userId": "fa82",
+      "id": "9d75",
+      "userId": "2382",
       "items": []
     }
   ],
-  "orders": []
+  "orders": [
+    {
+      "id": "5d37",
+      "userId": 2382,
+      "items": [
+        {
+          "sneakerId": "085f",
+          "qty": 1
+        }
+      ],
+      "total": 1499,
+      "createdAt": "2025-11-26T13:22:44.054Z"
+    }
+  ]
 }

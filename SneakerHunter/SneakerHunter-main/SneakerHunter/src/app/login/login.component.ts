@@ -159,41 +159,22 @@ private validarCPF(cpf: string): boolean {
   // rejeita sequências com todos os dígitos iguais (ex.: 00000000000, 11111111111)
   if (/^(\d)\1{10}$/.test(digits)) return false;
 
-  // valida primeiro dígito verificador
-  let sum = 0;
-  for (let i = 0; i < 9; i++) {
-    sum += parseInt(digits[i], 10) * (10 - i);
-  }
-  let first = (sum * 10) % 11;
-  if (first === 10) first = 0;
-  if (first !== parseInt(digits[9], 10)) return false;
-
-  // valida segundo dígito verificador
-  sum = 0;
-  for (let i = 0; i < 10; i++) {
-    sum += parseInt(digits[i], 10) * (11 - i);
-  }
-  let second = (sum * 10) % 11;
-  if (second === 10) second = 0;
-  if (second !== parseInt(digits[10], 10)) return false;
-
   return true;
 }
 
   onCpfInput(event: Event): void {
     const input = event.target as HTMLInputElement;
-    // remove tudo que não for dígito e limita a 11 dígitos
     const digits = (input.value || '').replace(/\D/g, '').slice(0, 11);
 
     // formata progressivamente: ###.###.###.##
     let formatted = '';
     if (digits.length <= 3) {
       formatted = digits;
-    } else if (digits.length <= 6) {
+    } else if(digits.length <= 6) {
       formatted = `${digits.slice(0,3)}.${digits.slice(3)}`;
     } else if (digits.length <= 9) {
       formatted = `${digits.slice(0,3)}.${digits.slice(3,6)}.${digits.slice(6)}`;
-    } else {
+    }else {
       formatted = `${digits.slice(0,3)}.${digits.slice(3,6)}.${digits.slice(6,9)}-${digits.slice(9,11)}`;
     }
 
